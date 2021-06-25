@@ -25,7 +25,7 @@ namespace BackEnd
 
         public DbSet<Manufacture> Manufactures { get; set; }
 
-        public DbSet<Mark> Marks { get; set; }
+  
 
         public DbSet<Platform> Platforms { get; set; }
 
@@ -244,7 +244,7 @@ namespace BackEnd
             modelBuilder.Entity<Genre>().HasKey(p => p.Id);
             modelBuilder.Entity<Localization>().HasKey(p => p.Id);
             modelBuilder.Entity<Manufacture>().HasKey(p => p.Id);
-            modelBuilder.Entity<Mark>().HasKey(p => p.Id);
+       
             modelBuilder.Entity<Platform>().HasKey(p => p.Id);
             modelBuilder.Entity<Role>().HasKey(p => p.Id);
             modelBuilder.Entity<Publication>().HasKey(p => p.Id);
