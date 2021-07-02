@@ -18,6 +18,10 @@ namespace BackEnd.Models
         [Display(Name = "Дата выхода")]
         public DateTime DateRelese { get; set; }
 
+        public List<Manufacture> Manufactures { get; set; } = new List<Manufacture>();
+
+
+        public List<Product> Products { get; set; } = new List<Product>();
 
         public int? Idseriesofgame { get; set; }
 
@@ -30,24 +34,23 @@ namespace BackEnd.Models
 
 
 
-        public List<Platform> Platforms { get; set; }
-
-      
+        public List<Platform> Platforms { get; set; } = new List<Platform>();
 
 
 
-        public List<Localization> Localizations { get; set; }
 
- 
 
-        public List<Genre> Genres { get; set; }
+        public List<Localization> Localizations { get; set; } = new List<Localization>();
 
-      
-        public List<Country> RegionRestricts { get; set; }
 
-        public List<Product> Products { get; set; }
 
-        public List<Manufacture> Manufactures { get; set; }
+        public List<Genre> Genres { get; set; } = new List<Genre>();
+
+
+        public List<Country> RegionRestricts { get; set; } = new List<Country>();
+
+
+     
       
     }
 }

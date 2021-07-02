@@ -15,6 +15,11 @@ namespace BackEnd.Models
         [Display(Name = "Цена")]
         public double Price { get; set; }
 
+        public int? idmark { get; set; }
+
+        public Mark Mark { get; set; }
+
+
         [Display(Name = "Комментарии")]
         public List<Comment> Comments { get; set; }
         

@@ -31,7 +31,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public void AddPublication(string titleofgame, string description, DateTime datarealese, int idplatforms,int idlocalizations, int idgenres, int idmanufactures, int idregionRestrict, int idseries, double price)
         {
-            Game game = new Game();
+            Game game = _context.Games.SingleOrDefault(p=>p.Titleofgame==titleofgame);
+            
            Platform  platforms= _context.Platforms.SingleOrDefault(p => idplatforms==p.Id);
            Localization localizations = _context.Localizations.SingleOrDefault(p => idlocalizations == p.Id);
             Genre genres = _context.Genres.SingleOrDefault(p => idgenres == p.Id);
@@ -46,8 +47,9 @@ namespace BackEnd.Models.Repository.PublicationRepository
             game.Localizations.Add(localizations);
             game.Genres.Add(genres);
             game.Series=series;
+            _context.Entry(game).State = EntityState.Modified;
             _context.Games.Add(game);
-
+            _context.SaveChanges();
             game.Products.Add(new Product { Game = game, Genre = genres, Localization = localizations, Manufacture=manufactures, Platform=platforms, RegionRestrict=country});
 
             _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>() });

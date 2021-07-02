@@ -12,6 +12,6 @@ namespace BackEnd.Models
 
         [Display(Name = "Статус")]
         public string Titleofstatuse { get; set; }
-        public List<User> Users { get; set; }
+        public  List<User> Users { get; set; }
     }
 }

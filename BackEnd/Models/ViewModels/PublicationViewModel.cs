@@ -23,6 +23,9 @@ namespace BackEnd.Models.ViewModels
 
         public double Price { get; set; }
 
+        public int Countofrecommendation { get; set; }
+
+        public int Countofnotrecommendation { get; set; }
     
     }
 }

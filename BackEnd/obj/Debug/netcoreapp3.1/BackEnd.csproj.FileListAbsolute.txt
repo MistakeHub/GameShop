@@ -1,4 +1,3 @@
-C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.csprojAssemblyReference.cache
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.AssemblyInfoInputs.cache
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.AssemblyInfo.cs
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.csproj.CoreCompileInputs.cache
@@ -43,3 +42,7 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\Newtons
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.csproj.AssemblyReference.cache
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.1\Humanizer.dll
