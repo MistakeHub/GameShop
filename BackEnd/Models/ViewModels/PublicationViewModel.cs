@@ -23,9 +23,9 @@ namespace BackEnd.Models.ViewModels
 
         public double Price { get; set; }
 
-        public int Countofrecommendation { get; set; }
+        public int[] Marks { get; set; }
 
-        public int Countofnotrecommendation { get; set; }
+        public double Rating { get; set; }
     
     }
 }

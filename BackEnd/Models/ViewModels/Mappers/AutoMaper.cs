@@ -19,8 +19,8 @@ namespace BackEnd.Models.ViewModels.Mappers
                 ForMember(p=>p.Genres, opt=>opt.MapFrom(d=>d.Game.Genres.Select(p=> p.Titleofgenre))).
                 ForMember(p=>p.Series, opt=>opt.MapFrom(d=>d.Game.Series.Titleofseries)).
                 ForMember(p => p.Description, opt => opt.MapFrom(d => d.Game.Description)).
-                ForMember(p => p.Countofnotrecommendation, opt => opt.MapFrom(d => d.Mark.Countofnotrecommendation)).
-                ForMember(p => p.Countofrecommendation, opt => opt.MapFrom(d => d.Mark.Countofrecommendation));
+                ForMember(p => p.Marks, opt => opt.MapFrom(d => d.Marks.Select(p=>p.Numberofmark))).
+                ForMember(p => p.Rating, opt => opt.MapFrom(d => d.Rating));
         
         }
     }

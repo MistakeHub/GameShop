@@ -57,6 +57,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         }
 
+
+
        
 
         public void EditPublication(int id, string titleofgame, string description, DateTime datarealese, int[] platforms, int[] manufactures, int[] localizations, int[] genres, int series, double price)
@@ -85,7 +87,9 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public IEnumerable<Publication> GetPublications(int page, int size=5)
         {
-            return _context.Publications.Include(p=>p.Game).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Skip((page - 1) * size).Take(size).ToList();
+            AverageRating();
+
+            return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public void RemoveComment(int id)
@@ -100,6 +104,25 @@ namespace BackEnd.Models.Repository.PublicationRepository
             var remove = _context.Publications.SingleOrDefault(p => p.Id == id);
             _context.Remove(remove);
             _context.SaveChanges();
+        }
+
+        //Для вычесления рейтинга, на основе выставленных пользователями оценок
+        public void AverageRating()
+        {
+
+            foreach (var item in _context.Publications.Include(d => d.Marks).ToList())
+            {
+                if (item.Marks.Count() > 0)
+                {
+                    item.Rating = item.Marks.Average(d => d.Numberofmark);
+                    _context.Publications.Update(item);
+                    _context.SaveChanges();
+                }
+
+
+            }
+
+
         }
     }
 }

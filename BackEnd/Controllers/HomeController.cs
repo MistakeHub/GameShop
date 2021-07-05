@@ -32,7 +32,7 @@ namespace BackEnd.Controllers
         public IEnumerable Get()
         {
 
-
+           
             var data = context.GetPublications(1);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
             

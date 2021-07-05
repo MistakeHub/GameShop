@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BackEnd.Models
 {
     public class Publication
@@ -15,10 +17,12 @@ namespace BackEnd.Models
         [Display(Name = "Цена")]
         public double Price { get; set; }
 
-        public int? idmark { get; set; }
+       
 
-        public Mark Mark { get; set; }
+        public List<Mark> Marks { get; set; }= new List<Mark>();
 
+     
+        public double? Rating { get; set; } 
 
         [Display(Name = "Комментарии")]
         public List<Comment> Comments { get; set; }

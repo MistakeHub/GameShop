@@ -35,6 +35,6 @@ namespace BackEnd.Models
         public int? Idcart { get; set; }
         public Cart Cart { get; set; }
 
-        public List<Mark>? Marks { get; set; }
+        public List<Mark>? Marks { get; set; } = new List<Mark>();
     }
 }

@@ -15,6 +15,6 @@ namespace BackEnd.Models.Repository.PublicationRepository
         void RemovePublication(int id);
         void AddComment(int id, string text);
         void RemoveComment(int id);
-
+         void AverageRating();
     }
 }

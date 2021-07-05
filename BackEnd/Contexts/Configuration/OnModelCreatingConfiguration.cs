@@ -31,11 +31,12 @@ namespace BackEnd.Contexts.Configuration
 
             modelBuilder.Entity<Game>().HasOne(p => p.Publication).WithOne(a => a.Game).HasForeignKey<Publication>(d => d.idgame);
 
-            modelBuilder.Entity<Mark>().HasMany(p => p.Users).WithMany(d => d.Marks);
+            modelBuilder.Entity<Mark>().HasOne(p => p.User).WithMany(d => d.Marks).HasForeignKey(d=>d.idpublication);
 
-            modelBuilder.Entity<Publication>().HasOne(p => p.Mark).WithOne(d => d.Publication).HasForeignKey<Mark>(p => p.idpublication);
-
-            modelBuilder.Entity<Mark>().HasOne(p => p.Publication).WithOne(d => d.Mark).HasForeignKey<Publication>(p => p.idmark);
+            modelBuilder.Entity<Publication>().HasMany(p => p.Marks).WithOne(d => d.Publication).HasForeignKey(p => p.idpublication);
+ 
+          
+         
 
             modelBuilder
           .Entity<Game>()
