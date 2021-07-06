@@ -6,9 +6,30 @@
     <b-card-header header-tag="nav" variant="dark">
       <b-nav>
         <b-navbar-brand active href="/" variant="dark">GameShop</b-navbar-brand>
-        <b-nav-item active href="">Active</b-nav-item>
-        <b-nav-item>Inactive</b-nav-item>
-        <b-nav-item >Disabled</b-nav-item>
+        <b-nav-item active href="">Каталог</b-nav-item>
+        <b-dropdown v-if="Login.local==null" text="вход" variant="success" class="m-2">
+    <!-- Default form login -->
+  <form @submit.prevent="loginUser">
+    <p class="h4 text-center mb-4">Sign in</p>
+    <label for="defaultFormLoginEmailEx" class="grey-text">Your Login</label>
+    <input type="text" id="defaultFormLoginEmailEx" class="form-control" v-model="Login.login"/>
+    <br/>
+    <label for="defaultFormLoginPasswordEx" class="grey-text">Your password</label>
+    <input type="password" id="defaultFormLoginPasswordEx" class="form-control" v-model="Login.password"/>
+    <div class="text-center mt-4">
+      <b-button class="btn btn-indigo" type="submit" variant="success">Login</b-button>
+    </div>
+    <div class="modal-footer">
+                    <div class="options font-weight-light">
+                        <p>Ещё не зарегистрированны? <a href="#">Sign Up</a></p>
+                        <p>Забыли пароль? <a href="#">Password?</a></p>
+                    </div>
+                </div>
+  </form>
+ 
+  <!-- Default form login -->
+  </b-dropdown>
+    <b-nav-item  v-if="Login.local!==null" @click="Logout">выход</b-nav-item>
       </b-nav>
     </b-card-header>
   </b-card>
@@ -171,3 +192,44 @@
   }
 }
 </style>
+
+<script>
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      Login: {
+        login: "",
+        password: "",
+        local:localStorage.getItem("user")
+      }
+    };
+  },
+  methods: {
+    async Logout(){
+
+      await localStorage.removeItem("user");
+      window.location.reload();
+
+    },
+    async loginUser() {
+      
+        let response = await axios({
+                method: 'POST',
+                url: 'https://localhost:44303/token',
+                params: { login: this.Login.login, password:this.Login.password }
+            }).then((response) => {
+                localStorage.setItem("user",response.data.access_token);
+                window.location.reload();
+            });
+     
+     
+        // navigate to a protected resource 
+      
+    
+     
+    }
+  }
+};
+</script>
+

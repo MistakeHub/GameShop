@@ -76,7 +76,11 @@ import axios from 'axios'
           },
           mounted(){
 
-           axios.get('https://localhost:44303/api/Home').then(Response =>this.games=Response.data );
+           axios.get('https://localhost:44303/api/Home',{headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")  // передача токена в заголовке
+                }}).then(Response =>this.games=Response.data );
+           
           },
           methods: {
               setMessage: function(event){
@@ -87,7 +91,10 @@ import axios from 'axios'
       },
       onSlideEnd(slide) {
         this.sliding = false
-      }
+      },
+      
+
+      
    
           }
     

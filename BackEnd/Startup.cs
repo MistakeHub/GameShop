@@ -14,6 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackEnd.Models;
 using BackEnd.Models.Repository.GenericRepository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using BackEnd.Models.Authentication;
+using BackEnd.Models.Repository.UserRepository;
 
 namespace BackEnd
 {
@@ -38,6 +42,32 @@ namespace BackEnd
  );       services.AddCors();
             services.AddAutoMapper(typeof(Startup));
 
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                   .AddJwtBearer(options =>
+                   {
+                       options.RequireHttpsMetadata = false;
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            ValidateIssuer = true,
+                            // строка, представляющая издателя
+                            ValidIssuer = AuthOptions.ISSUER,
+
+                            // будет ли валидироваться потребитель токена
+                            ValidateAudience = true,
+                            // установка потребителя токена
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            // будет ли валидироваться время существования
+                            ValidateLifetime = true,
+
+                            // установка ключа безопасности
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            // валидация ключа безопасности
+                            ValidateIssuerSigningKey = true,
+                       };
+                   });
+
             services.AddScoped<IGenericRepository<Country>,CountryRepository>();
             services.AddScoped<IGenericRepository<Genre>, GenreRepository>();
             services.AddScoped<IGenericRepository<Localization>, LocalizationRepository>();
@@ -46,7 +76,7 @@ namespace BackEnd
             services.AddScoped<IGenericRepository<Role>, RoleRepository>();
             services.AddScoped<IGenericRepository<Serie>, SeriesRepository>();
             services.AddScoped<IGenericRepository<Statuse>, StatuseRepository>();
-
+            services.AddTransient<IUserRepository,UserRepositoryImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +88,9 @@ namespace BackEnd
             }
 
             app.UseHttpsRedirection();
+
+          
+         
             app.UseCors(builder =>
             {
                 builder.AllowAnyOrigin();
@@ -66,8 +99,8 @@ namespace BackEnd
             });
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

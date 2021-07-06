@@ -2,6 +2,7 @@
 using BackEnd.Models;
 using BackEnd.Models.Repository.PublicationRepository;
 using BackEnd.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,6 +29,7 @@ namespace BackEnd.Controllers
             this.context = _context;
             this._mapper = mapper;
         }
+        [Authorize]
         [HttpGet]
         public IEnumerable Get()
         {
