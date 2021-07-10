@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace BackEnd.Models.Repository.GenericRepository
         public IEnumerable<Localization> GetElements()
         {
             return _context.Localizations.ToList();
+        }
+
+        public IEnumerable GetTitles()
+        {
+               return _context.Localizations.Select(d => d.Titleoflocalization).ToList();
         }
 
         public void RemoveElement(int id)

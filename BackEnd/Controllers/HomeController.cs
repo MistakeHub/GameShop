@@ -21,15 +21,15 @@ namespace BackEnd.Controllers
     {
         private IPublicationRepository context;
         private IMapper _mapper;
-        private shopContext Context;
+       
 
-        public HomeController(IPublicationRepository _context, IMapper mapper,shopContext con)
+        public HomeController(IPublicationRepository _context, IMapper mapper)
         {
-            this.Context = con;
+         
             this.context = _context;
             this._mapper = mapper;
         }
-        [Authorize]
+        
         [HttpGet]
         public IEnumerable Get()
         {
@@ -42,6 +42,8 @@ namespace BackEnd.Controllers
             return dataViewModel;
             
         }
+
+        
 
         [HttpPost("{id}")]
        public void Remove(int id)

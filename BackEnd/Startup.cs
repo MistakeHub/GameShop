@@ -93,9 +93,13 @@ namespace BackEnd
          
             app.UseCors(builder =>
             {
+
+              
                 builder.AllowAnyOrigin();
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
+               
+
             });
             app.UseRouting();
 

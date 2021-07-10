@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,11 @@ namespace BackEnd.Models.Repository.GenericRepository
         public IEnumerable<Statuse> GetElements()
         {
             return _context.Statuses.ToList();
+        }
+
+        public IEnumerable GetTitles()
+        {
+            return _context.Statuses.Select(d => d.Titleofstatuse).ToList();
         }
 
         public void RemoveElement(int id)

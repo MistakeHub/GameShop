@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,9 +34,14 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Platforms.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Platform> GetElements()
+        public IEnumerable GetElements()
         {
             return _context.Platforms.ToList();
+        }
+
+        public IEnumerable GetTitles()
+        {
+            return _context.Platforms.Select(d => d.Titleofplatform).ToList();
         }
 
         public void RemoveElement(int id)
@@ -45,5 +51,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             _context.SaveChanges();
         }
 
+        IEnumerable<Platform> IGenericRepository<Platform>.GetElements()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

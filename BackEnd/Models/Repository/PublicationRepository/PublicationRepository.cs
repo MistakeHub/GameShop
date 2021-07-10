@@ -85,9 +85,18 @@ namespace BackEnd.Models.Repository.PublicationRepository
             return _context.Publications.SingleOrDefault(p=>p.Id==id);
         }
 
+        public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)
+        {
+
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Where(p=>p.Game.Genres.Any(d=>genres.Contains(d.Titleofgenre)) & p.Game.Manufactures.Any(d=>manufactures.Contains(d.Titleofmanufactures) & p.Game.Platforms.Any(d=>platforms.Contains(d.Titleofplatform)) & p.Game.Localizations.Any(d=>localizations.Contains(d.Titleoflocalization))  )).ToList();
+
+        } 
+
         public IEnumerable<Publication> GetPublications(int page, int size=5)
         {
             AverageRating();
+
+
 
             return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Skip((page - 1) * size).Take(size).ToList();
         }

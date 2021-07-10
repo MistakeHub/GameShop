@@ -80,7 +80,7 @@ import axios from 'axios'
                     "Accept": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("user")  // передача токена в заголовке
                 }}).then(Response =>this.games=Response.data );
-           
+                console.log(localStorage.getItem("user"));
           },
           methods: {
               setMessage: function(event){

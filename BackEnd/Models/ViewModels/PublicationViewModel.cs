@@ -26,6 +26,8 @@ namespace BackEnd.Models.ViewModels
         public int[] Marks { get; set; }
 
         public double Rating { get; set; }
+
+        public string DateRealese  { get; set; }
     
     }
 }

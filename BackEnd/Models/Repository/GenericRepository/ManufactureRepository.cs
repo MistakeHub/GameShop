@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,11 +40,18 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Manufactures.ToList();
         }
 
+        public IEnumerable GetTitles()
+        {
+            return _context.Manufactures.Select(d => d.Titleofmanufactures).ToList(); ;
+        }
+
         public void RemoveElement(int id)
         {
             Manufacture manufacture = _context.Manufactures.SingleOrDefault(p => p.Id == id);
             _context.Manufactures.Remove(manufacture);
             _context.SaveChanges();
         }
+
+      
     }
 }

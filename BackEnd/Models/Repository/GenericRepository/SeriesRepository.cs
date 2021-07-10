@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace BackEnd.Models.Repository.GenericRepository
         public IEnumerable<Serie> GetElements()
         {
             return _context.Series.ToList();
+        }
+
+        public IEnumerable GetTitles()
+        {
+            return _context.Series.Select(d => d.Titleofseries);
         }
 
         public void RemoveElement(int id)

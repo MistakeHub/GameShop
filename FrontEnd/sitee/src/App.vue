@@ -1,15 +1,16 @@
-<template>
-  <div id="app" :style="{ backgroundImage: 'url(' + require(`@/assets/background.jpg`) + ')', width: '100%', height: '100%' }"  >
+<template :style="Login.bgImg">
+<body  >
+  <div id="app" :style="Login.bgImg"  >
    <div>
- <div>
-  <b-card title="Card Title" no-body  >
+   <div>
+   <b-card title="Card Title" no-body  >
     <b-card-header header-tag="nav" variant="dark">
       <b-nav>
         <b-navbar-brand active href="/" variant="dark">GameShop</b-navbar-brand>
-        <b-nav-item active href="">Каталог</b-nav-item>
+        <b-nav-item active href="/catalog">Каталог</b-nav-item>
         <b-dropdown v-if="Login.local==null" text="вход" variant="success" class="m-2">
     <!-- Default form login -->
-  <form @submit.prevent="loginUser">
+   <form @submit.prevent="loginUser">
     <p class="h4 text-center mb-4">Sign in</p>
     <label for="defaultFormLoginEmailEx" class="grey-text">Your Login</label>
     <input type="text" id="defaultFormLoginEmailEx" class="form-control" v-model="Login.login"/>
@@ -25,26 +26,32 @@
                         <p>Забыли пароль? <a href="#">Password?</a></p>
                     </div>
                 </div>
-  </form>
+   </form>
  
   <!-- Default form login -->
-  </b-dropdown>
+   </b-dropdown>
+  
     <b-nav-item  v-if="Login.local!==null" @click="Logout">выход</b-nav-item>
+       <b-nav-item  v-if="Login.local!==null">Здравствуйте,{{Login.user}}</b-nav-item>
       </b-nav>
     </b-card-header>
-  </b-card>
 
     
-</div>
-</div>
+    
+    
+   </b-card>
+
+    
+   </div>
+   </div>
    
     <router-view/>
-  <!-- Footer -->
-<footer class="text-center text-lg-start bg-dark text-muted">
-  <!-- Section: Social media -->
-  <section
+   <!-- Footer -->
+   <footer class="text-center text-lg-start bg-dark text-muted " >
+   <!-- Section: Social media -->
+   <section
     class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-  >
+   >
     <!-- Left -->
     <div class="me-5 d-none d-lg-block">
       <span>Get connected with us on social networks:</span>
@@ -73,12 +80,13 @@
       </a>
     </div>
     <!-- Right -->
-  </section>
-  <!-- Section: Social media -->
+   </section>
+   <!-- Section: Social media -->
 
-  <!-- Section: Links  -->
-  <section class="">
-    <div class="container text-center text-md-start mt-5">
+   <!-- Section: Links  -->
+
+   <section class="">
+    <div class="container text-center text-md-start mt-5 ">
       <!-- Grid row -->
       <div class="row mt-3">
         <!-- Grid column -->
@@ -154,21 +162,21 @@
       </div>
       <!-- Grid row -->
     </div>
-  </section>
-  <!-- Section: Links  -->
+   </section>
+   <!-- Section: Links  -->
 
-  <!-- Copyright -->
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+   <!-- Copyright -->
+   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
     © 2021 Copyright:
     <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-  </div>
-  <!-- Copyright -->
-</footer>
-<!-- Footer -->
+   </div>
+   <!-- Copyright -->
+   </footer>
+   <!-- Footer -->
 
   </div>
-
-</template>
+</body>
+ </template>
 
 <style lang="scss">
 #app {
@@ -199,9 +207,15 @@ export default {
   data() {
     return {
       Login: {
+           bgImg: {
+                backgroundImage: 'url(' + require(`@/assets/background.jpg`) + ')' ,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: '100% auto'
+            },
         login: "",
         password: "",
-        local:localStorage.getItem("user")
+        local:localStorage.getItem("user"),
+        user:localStorage.getItem("username")
       }
     };
   },
@@ -209,17 +223,19 @@ export default {
     async Logout(){
 
       await localStorage.removeItem("user");
+      await localStorage.removeItem("username")
       window.location.reload();
 
     },
     async loginUser() {
       
-        let response = await axios({
+         await axios({
                 method: 'POST',
                 url: 'https://localhost:44303/token',
                 params: { login: this.Login.login, password:this.Login.password }
             }).then((response) => {
                 localStorage.setItem("user",response.data.access_token);
+                localStorage.setItem("username",this.Login.login)
                 window.location.reload();
             });
      
