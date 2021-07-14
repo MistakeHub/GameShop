@@ -80,9 +80,9 @@ namespace BackEnd.Models.Repository.PublicationRepository
             _context.SaveChanges();
         }
 
-        public Publication GetPublication(int id)
+        public Publication GetPublication(string Titleofgame)
         {
-            return _context.Publications.SingleOrDefault(p=>p.Id==id);
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
         }
 
         public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)

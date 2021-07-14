@@ -8,6 +8,8 @@
       <b-nav>
         <b-navbar-brand active href="/" variant="dark">GameShop</b-navbar-brand>
         <b-nav-item active href="/catalog">Каталог</b-nav-item>
+
+
         <b-dropdown v-if="Login.local==null" text="вход" variant="success" class="m-2">
     <!-- Default form login -->
    <form @submit.prevent="loginUser">
@@ -202,6 +204,8 @@
 </style>
 
 <script>
+
+  
 import axios from 'axios'
 export default {
   data() {

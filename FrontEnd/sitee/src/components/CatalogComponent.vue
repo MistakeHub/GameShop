@@ -90,7 +90,7 @@
       <small class="text-black-50 d-flex justify-content-center"> {{elem.dateRealese}},</small>
       <div class="d-flex justify-content-center" >  <div v-for="genre in elem.genres">  <small class="text-black-50">{{genre}},</small></div></div>
         <b class="text-primary d-flex justify-content-center"> Цена:{{elem.price}}руб</b>
-      <b-button variant="success" >Подробнее </b-button>
+      <b-button variant="success" :href="'/game/'+elem.titleofgame" >Подробнее </b-button>
      </b-card>
 
    </div>

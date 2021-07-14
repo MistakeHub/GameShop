@@ -11,6 +11,8 @@ namespace BackEnd.Models.ViewModels
 
         public string Description { get; set; }
 
+        public string[] Localizations { get; set; }
+
         public string[] Manufactures { get; set; }
         
         public string[] Genres { get; set; }
@@ -28,6 +30,8 @@ namespace BackEnd.Models.ViewModels
         public double Rating { get; set; }
 
         public string DateRealese  { get; set; }
+
+        public List<Image> Images { get; set; }
     
     }
 }

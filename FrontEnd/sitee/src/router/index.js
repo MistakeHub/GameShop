@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Catalog from "../views/Catalog.vue"
+import GameDetail from "../views/GameDetail.vue"
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,13 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+
+  {
+   path:"/game/:titleofgame",
+   name:"Game",
+   component:GameDetail
+
   },
   {
     path: '/catalog',

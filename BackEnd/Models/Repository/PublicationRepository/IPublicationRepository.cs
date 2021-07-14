@@ -9,7 +9,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
     {
      
         IEnumerable<Publication> GetPublications(int page, int size=5);
-        Publication GetPublication(int id);
+        Publication GetPublication(string Titleofgame);
         void AddPublication(string titleofgame, string description, DateTime datarealese, int idplatforms, int idlocalizations, int idgenres, int idmanufactures, int idregionRestrict, int idseries, double price);
         void EditPublication(int id, string titleofgame, string description, DateTime datarealese, int[] platforms, int[] manufactures, int[] localizations, int[] genres, int series, double price);
         void RemovePublication(int id);

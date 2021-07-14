@@ -22,7 +22,7 @@
           alt="image slot"
         >
         <b-card-title class=" badge bg-primary text-wrap fs-4">  {{elem.titleofgame}} </b-card-title>
-        <b-button variant="success" class="fs-5">Подробнее</b-button>
+        <b-button variant="success" class="fs-5" :href="'/game/'+elem.titleofgame">Подробнее</b-button>
         
     </b-carousel-slide>
   </b-carousel>
@@ -50,7 +50,7 @@
       {{elem.description}}
     </b-card-text>
 
-    <b-button href="#" variant="primary">Подробнее</b-button>
+    <b-button href="#" variant="primary" :href="'/game/'+elem.titleofgame">Подробнее</b-button>
   </b-card>
         </b-card-group>
 </div>
