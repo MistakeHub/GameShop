@@ -34,9 +34,11 @@ namespace BackEnd.Contexts.Configuration
             modelBuilder.Entity<Mark>().HasOne(p => p.User).WithMany(d => d.Marks).HasForeignKey(d=>d.idpublication);
 
             modelBuilder.Entity<Publication>().HasMany(p => p.Marks).WithOne(d => d.Publication).HasForeignKey(p => p.idpublication);
- 
-          
-         
+
+            modelBuilder.Entity<User>().HasOne(p => p.Avatar).WithMany(d => d.Users).HasForeignKey(d => d.Idavatar);
+
+            modelBuilder.Entity<Image>().HasOne(p => p.Publication).WithMany(d => d.Images).HasForeignKey(p => p.Idpublication);
+
 
             modelBuilder
           .Entity<Game>()
@@ -195,19 +197,28 @@ namespace BackEnd.Contexts.Configuration
           .HasForeignKey(bc => bc.Idplatform);
 
 
-            modelBuilder.Entity<Gamecart>()
-      .HasKey(bc => new { bc.Idproduct });
+
+        modelBuilder.Entity<Cart>()
+          .HasMany(c => c.Publications)
+          .WithMany(s => s.Carts)
+          .UsingEntity<Gamecart>(
+             j =>
+              j.HasOne(pt => pt.Publication)
+              .WithMany(t => t.GameCarts)
+              .HasForeignKey(pt => pt.idpublication),
+          j =>
+              j.HasOne(pt => pt.Cart)
+              .WithMany(p => p.Gamecart)
+              .HasForeignKey(pt => pt.idcart),
 
 
-            modelBuilder.Entity<Gamecart>()
-             .HasOne(bc => bc.Product)
-             .WithOne(b => b.Gamecart)
-             .HasForeignKey<Product>(bc => bc.Idgamecart);
-            modelBuilder.Entity<Gamecart>()
-                .HasOne(bc => bc.Cart)
-                .WithMany(b => b.Gamecart)
-                .HasForeignKey(bc => bc.idcart);
+          j =>
+          {
 
+              j.HasKey(t => new { t.idpublication, t.idcart});
+              j.ToTable("Gamecarts");
+          }
+      );
             modelBuilder.Entity<Cart>().HasKey(p => p.Id);
             modelBuilder.Entity<Comment>().HasKey(p => p.Id);
             modelBuilder.Entity<Country>().HasKey(p => p.Id);

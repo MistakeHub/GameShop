@@ -55,6 +55,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
             _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>() });
             _context.SaveChanges();
 
+            AverageRating();
+
         }
 
 
@@ -78,11 +80,12 @@ namespace BackEnd.Models.Repository.PublicationRepository
             _context.Games.Update(game);
             _context.Publications.Update(publication);
             _context.SaveChanges();
+            AverageRating();
         }
 
         public Publication GetPublication(string Titleofgame)
         {
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Images).Include(p=>p.Carts).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
         }
 
         public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)
@@ -94,7 +97,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public IEnumerable<Publication> GetPublications(int page, int size=5)
         {
-            AverageRating();
+           
 
 
 

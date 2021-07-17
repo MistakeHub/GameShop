@@ -31,7 +31,7 @@ namespace BackEnd.Models.ViewModels
 
         public string DateRealese  { get; set; }
 
-        public List<Image> Images { get; set; }
+        public string[] Images { get; set; }
     
     }
 }

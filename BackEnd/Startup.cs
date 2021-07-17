@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BackEnd.Models.Authentication;
 using BackEnd.Models.Repository.UserRepository;
+using BackEnd.Models.Repository.CartRepository;
 
 namespace BackEnd
 {
@@ -35,6 +36,7 @@ namespace BackEnd
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IPublicationRepository, PublicationRepository>();
+            services.AddTransient<ICartRepository, CartRepositoryImpl>();
             services.AddControllers();
             services.AddDbContext<shopContext>(options => options.UseMySql(Configuration.GetConnectionString("shopContex"), new MySqlServerVersion(new Version(8, 0, 11))));
             services.AddControllers().AddNewtonsoftJson(options =>

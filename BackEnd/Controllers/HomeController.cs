@@ -21,10 +21,12 @@ namespace BackEnd.Controllers
     {
         private IPublicationRepository context;
         private IMapper _mapper;
+        private shopContext Context;
        
 
-        public HomeController(IPublicationRepository _context, IMapper mapper)
+        public HomeController(IPublicationRepository _context, IMapper mapper, shopContext contextt )
         {
+            this.Context = contextt;
          
             this.context = _context;
             this._mapper = mapper;
@@ -34,6 +36,7 @@ namespace BackEnd.Controllers
         public IEnumerable Get()
         {
 
+            
            
             var data = context.GetPublications(1);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);

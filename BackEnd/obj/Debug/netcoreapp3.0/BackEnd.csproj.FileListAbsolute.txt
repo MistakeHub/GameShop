@@ -53,3 +53,7 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.pdb
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.genruntimeconfig.cache
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Imgur.API.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Text.Encodings.Web.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Text.Json.dll

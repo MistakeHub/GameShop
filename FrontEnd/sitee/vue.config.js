@@ -20,5 +20,11 @@ module.exports = {
   
           return options
         })
+    },
+    configureWebpack:{
+    devServer: {
+      host: 'yourprojectname',
+      port: '8080'
+    }
     }
   }

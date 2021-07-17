@@ -22,8 +22,13 @@ namespace BackEnd.Models
         public List<Mark> Marks { get; set; }= new List<Mark>();
 
      
-        public double? Rating { get; set; } 
+        public double? Rating { get; set; }
 
+
+        public List<Cart> Carts { get; set; }
+        public List<Gamecart> GameCarts { get; set; }
+
+        public List<Image> Images { get; set; }
         [Display(Name = "Комментарии")]
         public List<Comment> Comments { get; set; }
         

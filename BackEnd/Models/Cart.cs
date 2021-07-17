@@ -11,11 +11,18 @@ namespace BackEnd.Models
         public int Id { get; }
 
 
+        
 
 
         public int? Iduser { get; set; }
         public User User { get; set; }
 
-        public List<Gamecart> Gamecart { get; set; }
+        public int? Countof { get; set; }
+
+        public double? Sum { get; set; }
+
+        public List<Publication> Publications { get; set; } = new List<Publication>();
+
+        public List<Gamecart> Gamecart { get; set; } = new List<Gamecart>();
     }
 }

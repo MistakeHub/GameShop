@@ -29,13 +29,10 @@ namespace BackEnd
 
         public DbSet<Localization> Localizations { get; set; }
 
-      
+        public DbSet<Platform> Platforms { get; set; }     
 
-  
+        public DbSet<Image> Images { get; set; }
 
-        public DbSet<Platform> Platforms { get; set; }
-
-     
 
         public DbSet<Publication> Publications { get; set; }
 
@@ -58,8 +55,9 @@ namespace BackEnd
            
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            
-        
+         
+
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -24,7 +24,10 @@ namespace BackEnd.Models.ViewModels.Mappers
                 ForMember(p => p.DateRealese, opt => opt.MapFrom(d => d.Game.DateRelese.ToString("D"))).
                
                 ForMember(p => p.Localizations, opt => opt.MapFrom(d => d.Game.Localizations.Select(p => p.Titleoflocalization))).
-                 ForMember(p => p.Images, opt => opt.MapFrom(d => d.Images));
+                 ForMember(p => p.Images, opt => opt.MapFrom(d => d.Images.Select(p=>p.Url)));
+
+            CreateMap<Cart, CartViewModel>().ForMember(p => p.Publication, opt => opt.MapFrom(d => d.Publications)).ForMember(p => p.Countof, opt => opt.MapFrom(d => d.Countof)).ForMember(p => p.Sumof, opt => opt.MapFrom(d => d.Sum)).
+                ForMember(p=>p.Image, opt=>opt.MapFrom(d=>d.Publications.Select(d=>d.Images).Select(a=>a.Select(d=>d.Url))));
         
         }
     }

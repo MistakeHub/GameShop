@@ -5,14 +5,19 @@
   <div id="app">
     <div class="container container-space">
       <div class="row">
-        <div class="col-md-6">
-          <img class="img-fluid" :src="require(`../assets/${games.titleofgame.replace(/\s+/g, '')}.jpg`)" alt="" />
-          <div class="product-thumbnails">
-            <ul>
-              <li  ><img :src="require(`../assets/${games.titleofgame.replace(/\s+/g, '')}.jpg`)" alt="" /></li>
+        <div class="col-md-6" >
+          <div style="min-height:1px;" width="500px">
+          <img class="img-fluid"  style="min-height:400px; max-height:500px;" width="600px" :src="selectedimage" alt="" />
+          </div>
+          <div class="product-thumbnails" >
+            <ul >
+              <li v-for="item in games.images" ><img height="50px" width="300px" style=" margin-left: 10px;"
+    :src="item" alt="" @click="selectimage(item)"/></li>
             </ul>
           </div>
+            <b-form-rating v-model="games.rating" ></b-form-rating>
         </div>
+        
         <div class="col-md-5 ">
           <h1 class="my-4"></h1>
           <h3 class="my-3">
@@ -48,12 +53,12 @@
            
            <div class="description"><b> Дата Выпуска:</b><div  class="d-flex align-items-start">  <p>{{games.dateRealese}}</p></div></div>
  <div>
-    <b-form-rating v-model="games.rating" ></b-form-rating>
+  
     <p class="mt-2">Value: {{ value }}</p>
   </div>
           <h3>Цена :{{games.price}}руб</h3>
-          <button type="button" class="  btn-outline-primary btn-lg btn-block btn-custom-color" @click="addToCart">
-            ADD TO CART
+          <button type="button" class="  btn-outline-primary btn-lg btn-block btn-custom-color" @click="addToCart()">
+            В корзину
           </button>
         </div>
       </div>
@@ -69,8 +74,8 @@
 <p style="margin-left:0cm; margin-right:0cm">{{games.description}}</p>
 
 <hr>
-
-
+ <button @click="showimgur()"></button>
+    <img :src= src> 
 </div>
 
   </div>
@@ -179,6 +184,7 @@ import axios from 'axios'
                selectedseries:[],
                selectedlocalizations:[],
                selectedplatforms:[],
+               selectedimage:""
               
               
             
@@ -192,6 +198,7 @@ import axios from 'axios'
              axios.get("https://localhost:44303/api/Series").then(Response=> this.series=Response.data)
             axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.manufactures=Response.data)
             axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
+         
           axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/GameDetail/'+this.$route.params.titleofgame ,
@@ -200,13 +207,49 @@ import axios from 'axios'
             }).then((response) => {
                  
                this.games=response.data
+                 this.selectedimage=this.games.images[0]
             });
+           
+              
+              
           },
           methods:{
     
            addToCart:function(){
+                 axios({
+                method: 'POST',
+                url: 'https://localhost:44303/api/Cart/',
+             
+                params: { username:localStorage.getItem("username"), game:this.games.titleofgame
+                }
+            }).then((response) => {
+                 
+               this.games=response.data
+            });
+
+            
+
+           },
+           showimgur:function(){
+             axios({
+method:"GET",
+url:"https://api.imgur.com/3/image/HgVYU3U",
+headers:{
+Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
 
 
+}
+
+              }).then((response) => {
+                 
+               this.src=response.data.link
+            });
+
+           },
+           selectimage:function(image){
+
+                    this.selectedimage=image
+                    console.log(this.selectedimage)
 
            }
 

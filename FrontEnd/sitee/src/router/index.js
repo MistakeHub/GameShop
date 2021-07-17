@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Catalog from "../views/Catalog.vue"
 import GameDetail from "../views/GameDetail.vue"
+import Cart from "../views/Cart.vue"
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,13 @@ const routes = [
    component:GameDetail
 
   },
+
+  {
+    path:"/cart/:user",
+    name:"Cart",
+    component:Cart
+ 
+   },
   {
     path: '/catalog',
     name: 'Catalog',

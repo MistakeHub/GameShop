@@ -66,7 +66,7 @@
   <b-button href="#" variant="primary" @click.prevent="Filter()">Go somewhere</b-button>
 </b-card>
 <b-list-group class="">
-  <b-list-group-item href="#" active class="flex-column align-items-start">
+  <b-list-group-item  active class="flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">Сортировка по</h5>
       <b-button variant="success" @click="SortByDateRealese()">Дате выхода</b-button>
@@ -77,7 +77,7 @@
          
     </div>
     <div >
-   <div v-for="elem in games"  >
+   <div v-for="elem in games" >
  
      <b-card class="d-flex justify-content-center" style="overflow: auto;   float: none;">
   <b-card-img :src="require(`../assets/${elem.titleofgame.replace(/\s+/g, '')}.jpg`)"    style="max-width: 25rem;" img-center ></b-card-img>

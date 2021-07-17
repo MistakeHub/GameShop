@@ -3,9 +3,11 @@ using BackEnd.Models;
 using BackEnd.Models.Repository.PublicationRepository;
 using BackEnd.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,15 +33,23 @@ namespace BackEnd.Controllers
         [HttpGet("{titleofgame}")]
         public PublicationViewModel Get(string titleofgame)
          {
+           
+        
+         
+
 
 
             var data = context.GetPublication(titleofgame);
+
+        
+
             var dataViewModel = _mapper.Map<PublicationViewModel>(data);
 
 
             return dataViewModel;
 
         }
+
 
         // GET api/<GameDetailController>/5
       
