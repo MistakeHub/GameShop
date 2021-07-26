@@ -7,6 +7,8 @@ namespace BackEnd.Models.ViewModels
 {
     public class PublicationViewModel
     {
+        public int Id { get; set; }
+
         public string Titleofgame { get; set; }
 
         public string Description { get; set; }
@@ -32,6 +34,8 @@ namespace BackEnd.Models.ViewModels
         public string DateRealese  { get; set; }
 
         public string[] Images { get; set; }
+
+        public List<Comment> Comments { get; set; }
     
     }
 }

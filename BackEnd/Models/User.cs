@@ -39,5 +39,7 @@ namespace BackEnd.Models
         public Image Avatar { get; set; }
 
         public List<Mark>? Marks { get; set; } = new List<Mark>();
+
+        public List<Comment>? Comments { get; set; } = new List<Comment>();
     }
 }

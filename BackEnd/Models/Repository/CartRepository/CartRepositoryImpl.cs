@@ -20,30 +20,25 @@ namespace BackEnd.Models.Repository.CartRepository
         {
 
             Cart cart = _context.Carts.AsNoTrackingWithIdentityResolution().Include(d=>d.User).AsNoTrackingWithIdentityResolution().Include(d=>d.Publications).AsNoTrackingWithIdentityResolution().FirstOrDefault(p => p.User.Login.Equals(username));
-            Publication game = _context.Publications.AsNoTrackingWithIdentityResolution().Include(d => d.Game).AsNoTrackingWithIdentityResolution().FirstOrDefault(d => d.Game.Titleofgame.Equals(gamee));
+            Publication publication = _context.Publications.AsNoTrackingWithIdentityResolution().Include(d => d.Game).AsNoTrackingWithIdentityResolution().FirstOrDefault(d => d.Game.Titleofgame.Equals(gamee));
 
 
 
-            cart.Publications.Add(game);
+            cart.Publications.Add(publication);
             cart.Countof = countof;
             cart.Sum = sumof;
-            
+
+         
+
+
+
+            _context.Gamecarts.Add(new Gamecart { idcart = cart.Id, idpublication = publication.Id });
+
+            _context.SaveChanges();
             _context.Carts.Update(cart);
-     
-            _context.Entry(cart).State = EntityState.Modified;
            
-            _context.SaveChanges();
-            foreach (var item in _context.Gamecarts)
-            {
 
-                _context.Entry(item).State = EntityState.Detached;
-
-            }
-            _context.Gamecarts.Add(new Gamecart { Cart = cart, Publication = game });
-
-            _context.SaveChanges();
-
-            SumPrice(cart.User.Login);
+   
         }
 
         public Cart GetCart(string user)
@@ -81,12 +76,12 @@ namespace BackEnd.Models.Repository.CartRepository
         {
 
 
-            var item = _context.Carts.AsNoTrackingWithIdentityResolution().Include(d => d.Publications).AsNoTrackingWithIdentityResolution().Include(d => d.User).AsNoTrackingWithIdentityResolution().FirstOrDefault(d=>d.User.Login.Equals(user));
+            var item = _context.Carts.Include(d => d.Publications).Include(d => d.User).FirstOrDefault(d=>d.User.Login.Equals(user));
             
         
                 
                     item.Sum = item.Publications.Sum(d => d.Price) * item.Countof;
-                    _context.Carts.Update(item);
+                    
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
                 

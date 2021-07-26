@@ -39,6 +39,14 @@ namespace BackEnd.Contexts.Configuration
 
             modelBuilder.Entity<Image>().HasOne(p => p.Publication).WithMany(d => d.Images).HasForeignKey(p => p.Idpublication);
 
+            modelBuilder.Entity<Comment>().HasOne(p => p.User).WithMany(d => d.Comments).HasForeignKey(d => d.Iduser);
+
+            modelBuilder.Entity<User>().HasMany(p => p.Comments).WithOne(d => d.User).HasForeignKey(p => p.Iduser);
+
+
+            modelBuilder.Entity<Comment>().HasOne(p => p.Publication).WithMany(d => d.Comments).HasForeignKey(d => d.Idpublication);
+
+            modelBuilder.Entity<Publication>().HasMany(p => p.Comments).WithOne(d => d.Publication).HasForeignKey(p => p.Idpublication);
 
             modelBuilder
           .Entity<Game>()

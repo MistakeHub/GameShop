@@ -12,6 +12,7 @@ namespace BackEnd.Models.ViewModels.Mappers
         public AutoMaper() {
 
             CreateMap<Publication, PublicationViewModel>().
+                 ForMember(p => p.Id, opt => opt.MapFrom(d => d.Id)).
                 ForMember(p => p.Manufactures, opt => opt.MapFrom(d => d.Game.Manufactures.Select(p => p.Titleofmanufactures))).
                 ForMember(p => p.Titleofgame, opt => opt.MapFrom(d => d.Game.Titleofgame)).
                 ForMember(p => p.RegionRestricts, opt => opt.MapFrom(d => d.Game.RegionRestricts.Select(p => p.Titleofcountry))).
@@ -22,9 +23,9 @@ namespace BackEnd.Models.ViewModels.Mappers
                 ForMember(p => p.Marks, opt => opt.MapFrom(d => d.Marks.Select(p => p.Numberofmark))).
                 ForMember(p => p.Rating, opt => opt.MapFrom(d => d.Rating)).
                 ForMember(p => p.DateRealese, opt => opt.MapFrom(d => d.Game.DateRelese.ToString("D"))).
-               
                 ForMember(p => p.Localizations, opt => opt.MapFrom(d => d.Game.Localizations.Select(p => p.Titleoflocalization))).
-                 ForMember(p => p.Images, opt => opt.MapFrom(d => d.Images.Select(p=>p.Url)));
+                 ForMember(p => p.Images, opt => opt.MapFrom(d => d.Images.Select(p=>p.Url))).
+                 ForMember(p => p.Comments, opt => opt.MapFrom(d => d.Comments));
 
             CreateMap<Cart, CartViewModel>().ForMember(p => p.Publication, opt => opt.MapFrom(d => d.Publications)).ForMember(p => p.Countof, opt => opt.MapFrom(d => d.Countof)).ForMember(p => p.Sumof, opt => opt.MapFrom(d => d.Sum)).
                 ForMember(p=>p.Image, opt=>opt.MapFrom(d=>d.Publications.Select(d=>d.Images).Select(a=>a.Select(d=>d.Url))));

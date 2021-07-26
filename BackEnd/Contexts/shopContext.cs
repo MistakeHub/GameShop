@@ -33,6 +33,7 @@ namespace BackEnd
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Mark> Marks { get; set; }
 
         public DbSet<Publication> Publications { get; set; }
 

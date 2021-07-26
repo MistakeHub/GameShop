@@ -54,15 +54,26 @@ namespace BackEnd.Controllers
         // GET api/<GameDetailController>/5
       
         // POST api/<GameDetailController>
-        [HttpPost]
+        [HttpPost] 
         public void Post([FromBody] string value)
         {
         }
 
         // PUT api/<GameDetailController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public StatusCodeResult Put(string username, int idpublication, double numberofmark)
         {
+
+            context.AddMark(idpublication, username, numberofmark);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("addComment")]
+        public IEnumerable AddComment(string username, int idpublication,string text)
+        {
+
+            return context.AddComment(username, idpublication, text); ;
         }
 
         // DELETE api/<GameDetailController>/5

@@ -12,7 +12,7 @@ namespace BackEnd.Models
 
         public int Id { get; set; }
         [Range(0,5)]
-        public int Numberofmark { get; set; }
+        public double Numberofmark { get; set; }
 
     
 

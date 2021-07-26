@@ -13,9 +13,12 @@ namespace BackEnd.Models
      
         public string Text { get; set; }
         [Display(Name ="Количество оцененных")]
-        public int Counoflikes { get; set; }
+        public int Countoflikes { get; set; }
 
         public int? Idpublication { get; set; }
         public Publication Publication { get; set; }
+
+        public int? Iduser { get; set; }
+        public User User { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,17 +17,20 @@ namespace BackEnd.Models.Repository.PublicationRepository
         {
             _context = context;
         }
-        public void AddComment(int id,string text)
+        public IEnumerable AddComment(string username, int idpublication, string text)
         {
+            User user = _context.Users.FirstOrDefault(d => d.Login == username);
             Comment comment = new Comment();
             comment.Text = text;
-            comment.Counoflikes = 0;
-            _context.Comments.Add(comment);
+            comment.Countoflikes = 0;
+            user.Comments.Add(comment);
+            _context.Users.Update(user);
             _context.SaveChanges();
-            Publication publication=_context.Publications.SingleOrDefault(p => p.Id == comment.Publication.Id);
+            Publication publication=_context.Publications.Include(d=>d.Comments).SingleOrDefault(p => p.Id == idpublication);
             publication.Comments.Add(comment);
             _context.Publications.Update(publication);
             _context.SaveChanges();
+            return publication.Comments.ToList();
         }
 
         public void AddPublication(string titleofgame, string description, DateTime datarealese, int idplatforms,int idlocalizations, int idgenres, int idmanufactures, int idregionRestrict, int idseries, double price)
@@ -84,14 +88,16 @@ namespace BackEnd.Models.Repository.PublicationRepository
         }
 
         public Publication GetPublication(string Titleofgame)
+
         {
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Images).Include(p=>p.Carts).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
+            AverageRating();
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Images).Include(p => p.Comments).ThenInclude(d=>d.User).Include(p=>p.Carts).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
         }
 
         public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)
         {
 
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Where(p=>p.Game.Genres.Any(d=>genres.Contains(d.Titleofgenre)) & p.Game.Manufactures.Any(d=>manufactures.Contains(d.Titleofmanufactures) & p.Game.Platforms.Any(d=>platforms.Contains(d.Titleofplatform)) & p.Game.Localizations.Any(d=>localizations.Contains(d.Titleoflocalization))  )).ToList();
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Comments).Where(p=>p.Game.Genres.Any(d=>genres.Contains(d.Titleofgenre)) & p.Game.Manufactures.Any(d=>manufactures.Contains(d.Titleofmanufactures) & p.Game.Platforms.Any(d=>platforms.Contains(d.Titleofplatform)) & p.Game.Localizations.Any(d=>localizations.Contains(d.Titleoflocalization))  )).ToList();
 
         } 
 
@@ -101,7 +107,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
 
 
-            return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Skip((page - 1) * size).Take(size).ToList();
+            return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public void RemoveComment(int id)
@@ -118,22 +124,61 @@ namespace BackEnd.Models.Repository.PublicationRepository
             _context.SaveChanges();
         }
 
-        //Для вычесления рейтинга, на основе выставленных пользователями оценок
+        //Для вычисления рейтинга, на основе выставленных пользователями оценок
         public void AverageRating()
         {
 
+           
             foreach (var item in _context.Publications.Include(d => d.Marks).ToList())
             {
-                if (item.Marks.Count() > 0)
-                {
+                if (item.Marks.Count() > 0) { 
+               
                     item.Rating = item.Marks.Average(d => d.Numberofmark);
-                    _context.Publications.Update(item);
+
+                    _context.Entry(item).State = EntityState.Modified;
+                   
                     _context.SaveChanges();
                 }
 
 
             }
 
+
+        }
+
+        public void AddMark(int idpublication, string username,double numberofmark)
+        {
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
+            Publication publication = _context.Publications.AsNoTracking().Include(d=>d.Marks).AsNoTracking().FirstOrDefault(d => d.Id == idpublication);
+            User user = _context.Users.AsNoTracking().Include(d=>d.Marks).AsNoTracking().FirstOrDefault(d => d.Login == username);
+            Mark mark = _context.Marks.AsNoTracking().Include(d=>d.User).AsNoTracking().Include(d=>d.Publication).AsNoTracking().FirstOrDefault(d => d.idpublication == idpublication && d.User.Login == username);
+
+            if (mark != null)
+            {
+
+                mark.Numberofmark = numberofmark;
+                _context.Marks.Update(mark);
+           
+                _context.SaveChanges();
+            }
+            else {
+
+             
+                mark=new Mark() { Numberofmark=numberofmark, idpublication=publication.Id, iduser=user.Id };
+                
+                _context.Marks.Add(mark);
+                _context.SaveChanges();
+              
+                user.Marks.Add(mark);
+
+                
+
+                _context.SaveChanges();
+
+            }
+          
+            _context.SaveChanges();
+      
 
         }
     }

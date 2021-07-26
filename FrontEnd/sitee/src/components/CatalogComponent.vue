@@ -3,9 +3,13 @@
 <b-card bg-variant="dark" class="d-flex align-items-start" text-variant="white" title="Фильтры">
  <div >
    <b-form >
-  
-
-    <b-form-group label="Жанры:"  v-slot="{ ariaDescribedby }" >
+     <div class="d-flex align-items-start">
+ 
+     </div>
+     <b-form-group label="Жанры" v-b-toggle.my-collapse v-slot="{ ariaDescribedby }" >
+ <b-collapse id="my-collapse">
+    
+      
       <b-form-checkbox-group
       v-for="elem in genres"
         id="checkbox-group-2"
@@ -16,9 +20,11 @@
         <b-form-checkbox :value=elem class="d-flex justify-content-start"  v-model="selectedgenres" @change="Filter()">{{elem}}</b-form-checkbox>
      
       </b-form-checkbox-group>
+       </b-collapse>
     </b-form-group>
-
-      <b-form-group label="Издатель:"  v-slot="{ ariaDescribedby }" >
+   <b-form-group label="Производители" v-b-toggle.my-collapse2 v-slot="{ ariaDescribedby }" >
+<b-collapse id="my-collapse2">
+   
       <b-form-checkbox-group
       v-for="elem in manufactures"
         id="checkbox-group-2"
@@ -29,9 +35,12 @@
         <b-form-checkbox :value=elem class="d-flex justify-content-start"  v-model="selectedmanufactures" @change="Filter()">{{elem}}</b-form-checkbox>
      
       </b-form-checkbox-group>
+      </b-collapse>
     </b-form-group>
-
-      <b-form-group label="Палтформа:"  v-slot="{ ariaDescribedby }" >
+ 
+    <b-form-group label="Палтформа:" v-b-toggle.my-collapse3 v-slot="{ ariaDescribedby }" >
+<b-collapse id="my-collapse3">
+   
       <b-form-checkbox-group
       v-for="elem in platforms"
         id="checkbox-group-2"
@@ -42,10 +51,13 @@
         <b-form-checkbox :value=elem class="d-flex justify-content-start"  v-model="selectedplatforms" @change="Filter()">{{elem}}</b-form-checkbox>
      
       </b-form-checkbox-group>
+      </b-collapse>
     </b-form-group>
 
+ 
+      <b-form-group label="Языки:" v-b-toggle.my-collapse4  v-slot="{ ariaDescribedby }" >
+<b-collapse id="my-collapse4">
     
-      <b-form-group label="Языки:"  v-slot="{ ariaDescribedby }" >
       <b-form-checkbox-group
       v-for="elem in localizations"
         id="checkbox-group-2"
@@ -57,8 +69,9 @@
      
       </b-form-checkbox-group>
 
-      
+      </b-collapse>
     </b-form-group>
+ 
 
 </b-form>
   

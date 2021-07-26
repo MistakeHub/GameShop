@@ -54,10 +54,12 @@ namespace BackEnd.Controllers
 
         // POST api/<CartController>
         [HttpPost]
-        public void Post([FromQuery] string username,[FromQuery] string game )
+        public StatusCodeResult Post([FromQuery] string username,[FromQuery] string game )
         {
 
             _context.AddToCart(username, game);
+            return StatusCode(200);
+
         }
 
         // PUT api/<CartController>/5
