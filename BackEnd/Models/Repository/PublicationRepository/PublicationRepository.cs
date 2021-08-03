@@ -101,11 +101,11 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         } 
 
-        public IEnumerable<Publication> GetPublications(int page, int size=5)
+        public IEnumerable<Publication> GetPublications(int page, out int totalitems, int size)
         {
            
 
-
+            totalitems=_context.Publications.Count();
 
             return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }

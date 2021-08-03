@@ -3,6 +3,7 @@ using BackEnd.Models.Authentication;
 using BackEnd.Models.Repository.UserRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,17 +14,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Controllers
 {
-
+  
+  
     public class AccountController : Controller
     {
         // GET: AccountController
 
         private IUserRepository _context;
 
-        public AccountController(IUserRepository context)
+        private IMemoryCache cache;
+
+        public AccountController(IUserRepository context, IMemoryCache _cache )
         {
             _context = context;
-
+            cache = _cache;
 
         }
         [HttpGet]
@@ -58,6 +62,31 @@ namespace BackEnd.Controllers
             return Json(response);
 
         }
+
+        [HttpPut("/verification")]
+
+        public StatusCodeResult Verification(string userkey, string email)
+        {
+
+            User user = _context.AcceptVerification(ref cache,userkey, email);
+
+            return Ok();
+
+        }
+
+        [HttpPost(("/register"))]
+        public StatusCodeResult Register(string login, string email, string password)
+        {
+            _context.RequestForVerification(ref cache,login, email, password, DateTime.UtcNow);
+
+
+           
+
+          
+            return Ok();
+
+        }
+            
 
         private ClaimsIdentity GetIdentity(string login, string password)
         {

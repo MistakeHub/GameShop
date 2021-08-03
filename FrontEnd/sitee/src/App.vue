@@ -1,6 +1,6 @@
 <template :style="Login.bgImg">
 <body  >
-  <div id="app" :style="Login.bgImg"  >
+  <div id="app" :style="Login.bgImg" v-if="!$route.meta.AdminLayout"  >
    <div>
    <div>
    <b-card title="Card Title" no-body  >
@@ -8,8 +8,6 @@
       <b-nav>
         <b-navbar-brand active href="/" variant="dark">GameShop</b-navbar-brand>
         <b-nav-item active href="/catalog">Каталог</b-nav-item>
-        <i class="fa" style="font-size:24px">&#xf07a;</i>
-
          <b-nav-item active :href="'/cart/'+Login.user" v-if="Login.local !==null">Корзина</b-nav-item>
 
 
@@ -27,7 +25,7 @@
     </div>
     <div class="modal-footer">
                     <div class="options font-weight-light">
-                        <p>Ещё не зарегистрированны? <a href="#">Sign Up</a></p>
+                        <p>Ещё не зарегистрированны? <a href="/register">Sign Up</a></p>
                         <p>Забыли пароль? <a href="#">Password?</a></p>
                     </div>
                 </div>
@@ -180,7 +178,26 @@
    <!-- Footer -->
 
   </div>
+
+
+  <div id="app" :style="Login.bgImg" v-if="$route.meta.AdminLayout"  >
+   <div class="basic-layout">
+    <header>[Company logo]</header>
+    <hr>
+
+   <router-view></router-view>
+
+    <hr>
+    <footer>
+      Made with ❤ at Acme
+    </footer>
+  </div>
+
+  </div>
 </body>
+
+
+
  </template>
 
 <style lang="scss">
@@ -203,27 +220,6 @@
       color: #42b983;
     }
   }
-}
-
-.badge {
-  padding-left: 9px;
-  padding-right: 9px;
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
-  border-radius: 9px;
-}
-
-.label-warning[href],
-.badge-warning[href] {
-  background-color: #c67605;
-}
-#lblCartCount {
-    font-size: 12px;
-    background: #ff0000;
-    color: #fff;
-    padding: 0 5px;
-    vertical-align: top;
-    margin-left: -10px; 
 }
 </style>
 

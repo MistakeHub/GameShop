@@ -113,7 +113,15 @@
 
 
   </b-list-group-item>
+  <b-pagination
+      v-model="currentpage"
+      :total-rows="count"
+      :per-page="pagesize"
+      aria-controls="my-table"
+      @change="handlePageChange"
+    ></b-pagination>
 </b-list-group>
+
 
 </div>
 
@@ -143,6 +151,12 @@ import axios from 'axios'
                selectedseries:[],
                selectedlocalizations:[],
                selectedplatforms:[],
+               currentpage:1,
+               count:9,
+               pagesize:3,
+               isfilted:false,
+               isSorted:false,
+            
               
               
             
@@ -156,7 +170,7 @@ import axios from 'axios'
              axios.get("https://localhost:44303/api/Series").then(Response=> this.series=Response.data)
             axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.manufactures=Response.data)
             axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
-           axios.get('https://localhost:44303/api/Catalog/1').then(Response=>{this.games=Response.data;} )
+           axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3}}).then(Response=>{   this.games=Response.data.item1; this.count=Response.data.item2  } )
           },
           methods:{
     
@@ -174,7 +188,8 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=response.data
+                this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+                 this.isfilted=true
             });
 
           
@@ -193,7 +208,8 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=response.data
+               this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+                 this.isfilted=true
             });
 
              },
@@ -211,7 +227,8 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=response.data
+              this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+                 this.isfilted=true
             });
 
              },
@@ -229,13 +246,14 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=response.data
+              this.games=Response.data.item1; this.count = Response.data.item2/ this.pagesize;
+               this.isfilted=true
             });
 
              },
 
               SortByRating:function(){
-  axios({
+             axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/sortbyrating/',
              
@@ -246,10 +264,29 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=response.data
+             this.games=Response.data.item1; this.count =Response.data.item2 / this.pagesize;
+                 this.isfilted=true
             });
 
              },
+
+             GetGames:function(){
+                    
+
+                  axios({method: 'GET', url:'https://localhost:44303/api/Catalog/'+this.currentpage, params:{pagesize:3}}).then(Response=>{ this.games=Response.data.item1; } )
+
+             },
+
+             handlePageChange(value) {
+             
+               this.currentpage=value
+                     console.log(this.currentpage)
+                   if(this.isfilted == false){ this.GetGames(); }
+                   else this.Filter();
+    
+    },
+
+
 
 
           }

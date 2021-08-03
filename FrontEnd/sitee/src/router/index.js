@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Admin from '../views/Admin.vue'
 import Catalog from "../views/Catalog.vue"
 import GameDetail from "../views/GameDetail.vue"
 import Cart from "../views/Cart.vue"
+import Register from "../views/Register.vue"
+import ApproveRegister from "../views/ApproveRegister.vue"
 
 Vue.use(VueRouter)
 
@@ -11,9 +14,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    
   },
 
+  {
+    path: '/admin-panel',
+    name: 'Admin',
+    component: Admin,
+    meta: {
+      AdminLayout: true,
+    },  
+  },
   {
    path:"/game/:titleofgame",
    name:"Game",
@@ -26,6 +38,19 @@ const routes = [
     name:"Cart",
     component:Cart
  
+   },
+   {
+    path:"/register",
+    name:"Register",
+    component:Register
+
+   },
+
+   {
+    path:"/register/approve/:userkey/:email",
+    name:"ApproveRegister",
+    component:ApproveRegister
+
    },
   {
     path: '/catalog',

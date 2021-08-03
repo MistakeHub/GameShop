@@ -14,6 +14,6 @@ namespace BackEnd.Models
 
         public string TitleofRole { get; set; }
 
-        public  List<User> Users { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

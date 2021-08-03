@@ -57,3 +57,10 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Imgur.A
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Text.Encodings.Web.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Text.Json.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\MailKit.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\MimeKit.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\BouncyCastle.Crypto.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Security.Cryptography.Cng.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Cng.dll
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll

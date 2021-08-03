@@ -43,7 +43,7 @@ namespace BackEnd
      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
  );       services.AddCors();
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddMemoryCache();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>

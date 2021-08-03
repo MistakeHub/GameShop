@@ -30,15 +30,15 @@ namespace BackEnd.Controllers
             _mapper = mapper;
           
         }
-        [HttpGet("{id}")]
-        public IEnumerable Get(int id)
+        [HttpGet("{page}")]
+        public (IEnumerable, int) Get(int page, int pagesize)
         {
-
-            var data = context.GetPublications(id);
+            int total;
+            var data = context.GetPublications(page, out total, pagesize );
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
 
-            return dataViewModel;
+            return (dataViewModel, total);
         }
 
         [Route("filter")]

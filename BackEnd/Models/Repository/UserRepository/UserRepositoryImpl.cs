@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,29 @@ namespace BackEnd.Models.Repository.UserRepository
 
         }
 
-        public void AddElement(string value1, string value2, string value3, DateTime value4, int value5, int value6)
+        public void AddElement(User user)
         {
-            throw new NotImplementedException();
+            Statuse status = _context.Statuses.FirstOrDefault(d => d.Id == user.Idstatus);
+            Role role = _context.Roles.FirstOrDefault(d => d.Id == user.Idrole);
+
+
+         
+            _context.Users.Add(user);
+           
+            status.Users.Add(user);
+            role.Users.Add(user);
+            _context.Statuses.Update(status);
+            _context.Roles.Update(role);
+            _context.SaveChanges();
+
+     
+
+
+
         }
+
+       
+
 
         public void EditElement(int id, string value1, string value2, string value3, string value4)
         {
@@ -37,9 +58,39 @@ namespace BackEnd.Models.Repository.UserRepository
           return  _context.Users.Include(p=>p.Role).Include(d=>d.Status).Include(d=>d.Marks).ToList();
         }
 
+        public User AcceptVerification(ref IMemoryCache cache,string userkey, string email)
+        {
+            User user = null;
+            if (cache.TryGetValue(userkey, out user)) 
+                AddElement(user);
+            else throw new Exception("Ошибка при регистрации");
+        
+
+           
+     
+
+            return user;
+        }
+
         public void RemoveElement(int id)
         {
             throw new NotImplementedException();
+        }
+        // Здесь заносим юзера в кэш, и высылаем на почту подтверждение об регистрации
+        public void RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, int value5, int value6)
+        {
+            value3 = HashHelper.GetHashString(value3);
+            User user = new User() { Login = value1, Email = value2, Password = value3, Dateofregistration = value4, Cart = new Cart(),Idstatus=value5, Idrole=value6 };
+            string key = HashHelper.GetHashString(value2);
+
+            cache.Set(key, user, new MemoryCacheEntryOptions
+            {
+
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+            }) ;
+
+                   EmailService service = new EmailService();
+            service.SendEmailAsync(key, value2);
         }
     }
 }
