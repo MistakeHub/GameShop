@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Platform GetElement(int id)
         {
-            return _context.Platforms.SingleOrDefault(p => p.Id == id);
+            return _context.Platforms.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
         }
 
         public IEnumerable<Platform> GetElements()

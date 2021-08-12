@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BackEnd.Models.Repository.PublicationRepository
 {
@@ -35,6 +36,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public void AddPublication(List<string> filenames,string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price)
         {
+         
             Game game =new Game();
 
             if (game == null) { game = new Game() { }; _context.Games.Add(game); _context.SaveChanges(); };
@@ -45,43 +47,147 @@ namespace BackEnd.Models.Repository.PublicationRepository
             List <Manufacture> Manufactures = _context.Manufactures.Where(p => manufactures.Contains(p.Titleofmanufactures)).ToList();
             List<Country> Country = _context.Countries.Where(p => regionRestrict.Contains(p.Titleofcountry)).ToList();
             Serie Series = _context.Series.SingleOrDefault(p => p.Titleofseries == series);
+          
             if (Series == null)
             {
 
                 Series = new Serie() { Titleofseries = series };
             }
+       
 
-         
+
             game.Titleofgame = titleofgame;
             game.Description = description;
             game.DateRelese = datarealese;
-            game.Manufactures=Manufactures;
-            game.Platforms=Platforms;
-            game.Localizations=Localizations;
-            game.Genres=Genres;
-            game.Series=Series;
-
-
-            _context.Entry(game).State = EntityState.Modified;
-      
             _context.Games.Add(game);
-     
-
-            List<Image> images = new List<Image>();
-            foreach (var item in filenames)
+            _context.SaveChanges();
+            var ent = _context.ChangeTracker.Entries();
+            List<Product> products = new List<Product>();
+            foreach (var item in Genres)
             {
-                images.Add (new Image() { Url = item });
+                ent= Enumerable.Empty<EntityEntry>(); ;
+                Product product = new Product() { idgame= game.Id, Genre=item };
+                _context.ChangeTracker.Clear();
+          
+            
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Entry(product).State = EntityState.Added;
+                game.Genres.Add(item);
+                game.Products.Add(product);
+                _context.SaveChanges();
+                products.Add(product);
+
+
 
 
             }
 
-            game.Products.Add(new Product { Game = game});
-            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images=images });
+            foreach (var item in Country)
+            {
+                ent = Enumerable.Empty<EntityEntry>(); ;
 
-         
+                Product product = new Product() { idgame = game.Id, Idregionrestrict = item.Id };
+                _context.ChangeTracker.Clear();
+
+
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Entry(product).State = EntityState.Added;
+                game.RegionRestricts.Add(item);
+                game.Products.Add(product);
+                _context.SaveChanges();
+
+                products.Add(product);
+
+
+
+
+            }
+
+
+            foreach (var item in Manufactures)
+            {
+                ent = Enumerable.Empty<EntityEntry>(); ;
+
+                Product product = new Product() { idgame = game.Id, Idmanufacture = item.Id };
+                _context.ChangeTracker.Clear();
+              
+              
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Entry(product).State = EntityState.Added;
+                game.Manufactures.Add(item);
+                game.Products.Add(product);
+                _context.SaveChanges();
+
+                products.Add(product);
+
+        
+            }
+
+
+            foreach (var item in Localizations)
+            {
+                ent = Enumerable.Empty<EntityEntry>(); ;
+                Product product = new Product() { idgame = game.Id, Idlocalization = item.Id };
+                _context.ChangeTracker.Clear();
+             
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Entry(product).State = EntityState.Added;
+                game.Localizations.Add(item);
+                 game.Products.Add(product);
+                _context.SaveChanges();
+
+
+                products.Add(product);
+           
+
+            }
+
+
+            foreach (var item in Platforms)
+            {
+                ent = Enumerable.Empty<EntityEntry>(); ;
+
+                Product product = new Product() { idgame = game.Id, Idplatform = item.Id };
+                _context.ChangeTracker.Clear();
+                _context.Entry(item).State = EntityState.Modified;
+
+                _context.Entry(product).State = EntityState.Added;
+                game.Platforms.Add(item);
+
+                game.Products.Add(product);
+                _context.SaveChanges();
+
+
+                products.Add(product);
+            
+
+            }
+           
+
+
+
+
+
+
+
+
+            List<Image> images = new List<Image>();
+            foreach (var item in filenames)
+            {
+
+                images.Add(new Image() { Url = item });
+
+
+            }
+
+
+
+            _context.Entry(game).State = EntityState.Modified;
+            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images = images });
+            
             _context.SaveChanges();
 
-            AverageRating();
+
 
         }
 
@@ -128,6 +234,13 @@ namespace BackEnd.Models.Repository.PublicationRepository
            
 
             totalitems=_context.Publications.Count();
+
+            foreach(var item in GetAll(out totalitems))
+            {
+
+                if (item == null) throw new Exception("Лоих ёбаный еблятьб");
+
+            }
 
             return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }
@@ -207,7 +320,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
         public IEnumerable<Publication> GetAll(out int totalitems)
         {
             totalitems = _context.Publications.Count();
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d=>d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
         }
     }
 }

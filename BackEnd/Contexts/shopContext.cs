@@ -55,7 +55,8 @@ namespace BackEnd
 
            
             optionsBuilder.EnableSensitiveDataLogging();
-            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
+          
          
 
 

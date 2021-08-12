@@ -35,9 +35,6 @@ namespace BackEnd.Models
     
         public Country? RegionRestrict { get; set; }
 
-        public int? Idgamecart { get; set; }
-
-        public Gamecart? Gamecart { get; set; }
 
     
     }

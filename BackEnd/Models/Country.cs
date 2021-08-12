@@ -14,8 +14,10 @@ namespace BackEnd.Models
 
         [Display(Name = "Страна")]
         public string Titleofcountry { get; set; }
-        public List<Game> Games { get; set; }
+
         public List<Product> Products { get; set; }
+
+        public List<Game> Games { get; set; } = new List<Game>();
 
     }
 }

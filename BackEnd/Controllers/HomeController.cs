@@ -38,7 +38,7 @@ namespace BackEnd.Controllers
 
 
             int total;
-            var data = context.GetPublications(1,out total);
+            var data = context.GetAll(out total);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
             
 

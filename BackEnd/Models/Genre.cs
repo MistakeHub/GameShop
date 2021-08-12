@@ -15,6 +15,6 @@ namespace BackEnd.Models
         public string Titleofgenre { get; set; }
 
         public List<Product> Products { get; set; }
-        public List<Game> Games { get; set; }
+        public List<Game> Games { get; set; } = new List<Game>();
     }
 }

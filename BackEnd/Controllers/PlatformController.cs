@@ -35,9 +35,9 @@ namespace BackEnd.Controllers
         }
         // GET: api/<PlatformController>
         [HttpGet]
-        public IEnumerable Get()
+        public Platform Get()
         {
-            return _context.GetTitles();
+            return _context.GetElement(5);
         }
 
         // GET api/<PlatformController>/5
