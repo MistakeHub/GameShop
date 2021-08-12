@@ -40,6 +40,13 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Statuses.ToList();
         }
 
+        public IEnumerable<Statuse> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Statuses.Count();
+
+            return _context.Statuses.Skip((page - 1) * size).Take(size).ToList();
+        }
+
         public IEnumerable GetTitles()
         {
             return _context.Statuses.Select(d => d.Titleofstatuse).ToList();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Comment
     {
         public int Id { get; }
@@ -20,5 +21,7 @@ namespace BackEnd.Models
 
         public int? Iduser { get; set; }
         public User User { get; set; }
+
+        public DateTime DateofAddComment { get; set; }
     }
 }

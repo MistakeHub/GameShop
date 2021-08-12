@@ -14,23 +14,13 @@ import axios from 'axios'
   },
      
           name: 'ApproveRegisterComponent',
-          data(){
-              return{
-      
-            
-            
-              
-              
-            
         
-              }
-          },
           mounted(){
           
   axios({
                 method: 'PUT',
                 url: 'https://localhost:44303/verification',
-                params: { userkey: this.$route.params.userkey, email:this.$route.params.email}
+                params: { userkey: this.$route.params.userkey, }
             }).then((response) => {
              
             });

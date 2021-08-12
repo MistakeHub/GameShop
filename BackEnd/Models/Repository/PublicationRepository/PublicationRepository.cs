@@ -33,30 +33,52 @@ namespace BackEnd.Models.Repository.PublicationRepository
             return publication.Comments.ToList();
         }
 
-        public void AddPublication(string titleofgame, string description, DateTime datarealese, int idplatforms,int idlocalizations, int idgenres, int idmanufactures, int idregionRestrict, int idseries, double price)
+        public void AddPublication(List<string> filenames,string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price)
         {
-            Game game = _context.Games.SingleOrDefault(p=>p.Titleofgame==titleofgame);
-            
-           Platform  platforms= _context.Platforms.SingleOrDefault(p => idplatforms==p.Id);
-           Localization localizations = _context.Localizations.SingleOrDefault(p => idlocalizations == p.Id);
-            Genre genres = _context.Genres.SingleOrDefault(p => idgenres == p.Id);
-            Manufacture manufactures = _context.Manufactures.SingleOrDefault(p => idmanufactures == p.Id);
-            Country country = _context.Countries.SingleOrDefault(p => p.Id == idregionRestrict);
-            Serie series = _context.Series.SingleOrDefault(p => p.Id == idseries);
+            Game game =new Game();
+
+            if (game == null) { game = new Game() { }; _context.Games.Add(game); _context.SaveChanges(); };
+          
+           List<Platform>  Platforms= _context.Platforms.Where(p => platforms.Contains(p.Titleofplatform)).ToList();
+            List<Localization> Localizations = _context.Localizations.Where(p => localizations.Contains(p.Titleoflocalization)).ToList();
+            List<Genre> Genres = _context.Genres.Where(p => genres.Contains(p.Titleofgenre)).ToList();
+            List <Manufacture> Manufactures = _context.Manufactures.Where(p => manufactures.Contains(p.Titleofmanufactures)).ToList();
+            List<Country> Country = _context.Countries.Where(p => regionRestrict.Contains(p.Titleofcountry)).ToList();
+            Serie Series = _context.Series.SingleOrDefault(p => p.Titleofseries == series);
+            if (Series == null)
+            {
+
+                Series = new Serie() { Titleofseries = series };
+            }
+
+         
             game.Titleofgame = titleofgame;
             game.Description = description;
             game.DateRelese = datarealese;
-            game.Manufactures.Add(manufactures);
-            game.Platforms.Add(platforms);
-            game.Localizations.Add(localizations);
-            game.Genres.Add(genres);
-            game.Series=series;
-            _context.Entry(game).State = EntityState.Modified;
-            _context.Games.Add(game);
-            _context.SaveChanges();
-            game.Products.Add(new Product { Game = game, Genre = genres, Localization = localizations, Manufacture=manufactures, Platform=platforms, RegionRestrict=country});
+            game.Manufactures=Manufactures;
+            game.Platforms=Platforms;
+            game.Localizations=Localizations;
+            game.Genres=Genres;
+            game.Series=Series;
 
-            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>() });
+
+            _context.Entry(game).State = EntityState.Modified;
+      
+            _context.Games.Add(game);
+     
+
+            List<Image> images = new List<Image>();
+            foreach (var item in filenames)
+            {
+                images.Add (new Image() { Url = item });
+
+
+            }
+
+            game.Products.Add(new Product { Game = game});
+            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images=images });
+
+         
             _context.SaveChanges();
 
             AverageRating();
@@ -91,7 +113,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         {
             AverageRating();
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Images).Include(p => p.Comments).ThenInclude(d=>d.User).Include(p=>p.Carts).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(d => d.Comments).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p=>p.Images).Include(p => p.Comments).ThenInclude(d=>d.User).ThenInclude(d=>d.Avatar).Include(p=>p.Carts).FirstOrDefault(p=>p.Game.Titleofgame.Equals(Titleofgame));
         }
 
         public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)
@@ -180,6 +202,12 @@ namespace BackEnd.Models.Repository.PublicationRepository
             _context.SaveChanges();
       
 
+        }
+
+        public IEnumerable<Publication> GetAll(out int totalitems)
+        {
+            totalitems = _context.Publications.Count();
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
         }
     }
 }

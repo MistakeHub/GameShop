@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Image
     {
         public int Id { get; set; }
@@ -15,9 +16,9 @@ namespace BackEnd.Models
 
         public Publication Publication { get; set; }
 
-     
 
-        public List<User> Users { get; set; }
+
+        public List<User> Users { get; set; } = new List<User>();
 
     }
 }

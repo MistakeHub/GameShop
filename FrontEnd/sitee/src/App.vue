@@ -1,6 +1,6 @@
 <template :style="Login.bgImg">
 <body  >
-  <div id="app" :style="Login.bgImg" v-if="!$route.meta.AdminLayout"  >
+  <div id="app" :style="Login.bgImg" v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout"  >
    <div>
    <div>
    <b-card title="Card Title" no-body  >
@@ -35,7 +35,7 @@
    </b-dropdown>
   
     <b-nav-item  v-if="Login.local!==null" @click="Logout">выход</b-nav-item>
-       <b-nav-item  v-if="Login.local!==null">Здравствуйте,{{Login.user}}</b-nav-item>
+       <b-nav-item  v-if="Login.local!==null" :href="'/userprofile/'+Login.user">Здравствуйте,{{Login.user}}</b-nav-item>
       </b-nav>
     </b-card-header>
 
@@ -98,10 +98,7 @@
           <h6 class="text-uppercase fw-bold mb-4">
             <i class="fas fa-gem me-3"></i>Company name
           </h6>
-          <p>
-            Here you can use rows and columns to organize your footer content. Lorem ipsum
-            dolor sit amet, consectetur adipisicing elit.
-          </p>
+        
         </div>
         <!-- Grid column -->
 
@@ -180,20 +177,44 @@
   </div>
 
 
-  <div id="app" :style="Login.bgImg" v-if="$route.meta.AdminLayout"  >
+  <div id="app" v-if="$route.meta.AdminLayout"  >
    <div class="basic-layout">
-    <header>[Company logo]</header>
-    <hr>
+    
+   
 
    <router-view></router-view>
 
-    <hr>
-    <footer>
-      Made with ❤ at Acme
-    </footer>
+   
   </div>
 
   </div>
+  <div id="app" v-if="$route.meta.AdminPanelLayout"    >
+   <div class="basic-layout">
+    
+  
+
+ <div class="c-app " >
+    <div class="bg-dark" >
+    <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
+    <b-sidebar id="sidebar-1" title="Sidebar" shadow>
+      <div class="px-3 py-2">
+        <b-nav vertical>
+              <b-nav-item active >Active</b-nav-item>
+              <b-nav-item href="/admin-panel/Tables" >Таблицы</b-nav-item>
+              <b-nav-item href="#link-2" >Another Link</b-nav-item>
+            </b-nav>
+      </div>
+    </b-sidebar>
+  
+              <router-view  class="bg-light" ></router-view>
+    </div>
+  </div>
+
+   
+  </div>
+
+  </div>
+  
 </body>
 
 
@@ -201,6 +222,9 @@
  </template>
 
 <style lang="scss">
+$image-path: '~@/../mdb/mdbvue/img';
+@import '~@/../mdb/mdbvue/scss/mdb-free.scss';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -221,13 +245,19 @@
     }
   }
 }
+
+
+
+
 </style>
+
 
 <script>
 
   
 import axios from 'axios'
 export default {
+ 
   data() {
     return {
       Login: {

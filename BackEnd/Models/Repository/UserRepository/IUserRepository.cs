@@ -1,4 +1,5 @@
 ﻿using BackEnd.Models.Repository.GenericRepository;
+using BackEnd.Models.SaveToFile;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -7,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.UserRepository
 {
-    public interface IUserRepository { 
+    public interface IUserRepository:FileSave<User> { 
 
 
 
         IEnumerable<User> GetElements();
-        User GetElement(string login, string password);
+        User GetElement(string userlogin);
+        User CheckUser(string login, string password);
         void AddElement(User user);
         void EditElement(int id, string value1, string value2, string value3, string value4);
         void RemoveElement(int id);
-        User AcceptVerification(ref IMemoryCache cache,string userkey, string email);
+        User AcceptVerification(ref IMemoryCache cache,string userkey);
         void RequestForVerification(ref IMemoryCache  cache, string value1, string value2, string value3, DateTime value4, int value5=2, int value6=3);
+        User UploadAvatar(string login, string password, string filename);
 
     }
 }

@@ -39,6 +39,13 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Genres.ToList();
         }
 
+        public IEnumerable<Genre> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Genres.Count();
+
+            return _context.Genres.Skip((page - 1) * size).Take(size).ToList();
+        }
+
         public IEnumerable GetTitles()
         {
             return _context.Genres.Select(d=>d.Titleofgenre);

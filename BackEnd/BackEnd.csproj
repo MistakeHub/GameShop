@@ -17,10 +17,30 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.7" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="images\" />
+    <None Include="wwwroot\images\Ahatintime\Ahatintime.jpg" />
+    <None Include="wwwroot\images\Ahatintime\mBZjc70.jpg" />
+    <None Include="wwwroot\images\Ahatintime\NSwitchDS_AHatInTime_02.jpg" />
+    <None Include="wwwroot\images\Ahatintime\ss_eb442a7301b8a0d8e94c4064575ebe68d77deb12.1920x1080.jpg" />
+    <None Include="wwwroot\images\Assasin%27sCreedValhalla\01.jpg" />
+    <None Include="wwwroot\images\Assasin%27sCreedValhalla\74a77c94e029411f961427c9ef3a0f1d.jpg" />
+    <None Include="wwwroot\images\Assasin%27sCreedValhalla\tM01x8y.jpg" />
+    <None Include="wwwroot\images\Assasin%27sCreedValhalla\zahodnik_02.jpg" />
+    <None Include="wwwroot\images\CivilizationVI\a8ba31c136ef5742_1200xH.jpg" />
+    <None Include="wwwroot\images\CivilizationVI\fj7dig7.jpg" />
+    <None Include="wwwroot\images\CivilizationVI\gayd-civilization-6-kak-uvelichit-generaciyu-ochkov-nauki-kak-sdelat-nauchnuyu-pobedu-i-uletet-na-mars-35963.jpg" />
+    <None Include="wwwroot\images\CivilizationVI\iQ6Lfp1.jpg" />
+    <None Include="wwwroot\images\Darksouls1\1530221956_dark-souls-remastered-jumping.jpg" />
+    <None Include="wwwroot\images\Darksouls1\ISptF1M.jpg" />
+    <None Include="wwwroot\images\Darksouls1\ss_3a71463e4ccaf28c5c27f6cf8d32a3a125f45404.1920x1080.jpg" />
+    <None Include="wwwroot\images\Darksouls1\ss_c34cdf130b9ac71c99196007d1e78c05305652b9.1920x1080.jpg" />
+    <None Include="wwwroot\images\MortalKombat11\clvF1NL.jpg" />
+    <None Include="wwwroot\images\MortalKombat11\ded0f359b31c1a0e_1920xH.jpg" />
+    <None Include="wwwroot\images\MortalKombat11\fit_930_519_false_crop_1200_675_0_0_q90_340052_24489468dc.jpg" />
+    <None Include="wwwroot\images\MortalKombat11\T2pZnAg.jpg" />
   </ItemGroup>
 
 

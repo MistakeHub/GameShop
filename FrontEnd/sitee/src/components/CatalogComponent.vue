@@ -188,7 +188,7 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-                this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+                this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                  this.isfilted=true
             });
 
@@ -208,7 +208,7 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-               this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+               this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                  this.isfilted=true
             });
 
@@ -227,8 +227,9 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-              this.games=Response.data.item1; this.count = Response.data.item2 / this.pagesize;
+              this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                  this.isfilted=true
+                 console.log(this.games)
             });
 
              },
@@ -246,7 +247,7 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-              this.games=Response.data.item1; this.count = Response.data.item2/ this.pagesize;
+              this.games=response.data.item1; this.count = response.data.item2/ this.pagesize;
                this.isfilted=true
             });
 
@@ -264,7 +265,7 @@ import axios from 'axios'
                 }
             }).then((response) => {
                  
-             this.games=Response.data.item1; this.count =Response.data.item2 / this.pagesize;
+             this.games=response.data.item1; this.count =response.data.item2 / this.pagesize;
                  this.isfilted=true
             });
 

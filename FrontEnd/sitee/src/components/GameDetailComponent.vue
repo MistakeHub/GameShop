@@ -106,6 +106,7 @@
 <p style="overflow:float;">{{games.description}}</p>
 
 <hr>
+
  
 </div>
 
@@ -114,6 +115,8 @@
 </div>
 </div>
  </div>
+
+ 
   
   
 <div class="container mt-5 mb-5">
@@ -133,7 +136,7 @@
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2"  width="38"><input type="text" class="form-control mr-3" placeholder="Add comment" v-model="comment"> <button class="btn btn-primary" type="button" @click="addComment()">Comment</button></div>
                <div class="card p-3" v-for="item in games.comments">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>2 days ago</small>
+                    <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar==null?'https://localhost:44303/getImage/Avatar/Default.jpg':item.user.avatar.url" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>2 days ago</small>
                 </div>
                 <div class="action d-flex justify-content-between mt-2 align-items-center">
                     <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
@@ -352,7 +355,8 @@ import axios from 'axios'
                selectedimage:"",
                resultcode:0,
                comment:"",
-               username:localStorage.getItem("username")
+               username:localStorage.getItem("username"),
+               
             
               
               
@@ -385,6 +389,9 @@ import axios from 'axios'
               
           },
           methods:{
+       
+             
+             
     
            addToCart:function(){
                  axios({

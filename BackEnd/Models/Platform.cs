@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Platform
     {
         public int Id { get; }

@@ -4,20 +4,18 @@
  <div  >
    <b-carousel 
     id="carousel-fade"
-    style="text-shadow: 0px 0px 2px #000"
+    style="text-shadow: 0px 0px 2px #000;"
     fade
     indicators
-    img-width="1024"
-    img-height="480"
+   
   >
     
-    <b-carousel-slide v-for="elem in games"  >
+    <b-carousel-slide v-for="elem in games"   >
 
      <img
           slot="img"
-         
-          width="1200"
-          height="480"
+
+         style=" max-width:700px;   min-height:500px"
           :src="require(`../assets/${elem.titleofgame.replace(/\s+/g, '')}.jpg`)"
           alt="image slot"
         >

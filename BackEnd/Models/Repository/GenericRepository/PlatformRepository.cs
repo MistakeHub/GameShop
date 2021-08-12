@@ -34,9 +34,16 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Platforms.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable GetElements()
+        public IEnumerable<Platform> GetElements()
         {
             return _context.Platforms.ToList();
+        }
+
+        public IEnumerable<Platform> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Platforms.Count();
+
+            return _context.Platforms.Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
@@ -51,9 +58,6 @@ namespace BackEnd.Models.Repository.GenericRepository
             _context.SaveChanges();
         }
 
-        IEnumerable<Platform> IGenericRepository<Platform>.GetElements()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

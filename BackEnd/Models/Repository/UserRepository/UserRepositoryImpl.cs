@@ -24,17 +24,20 @@ namespace BackEnd.Models.Repository.UserRepository
             Statuse status = _context.Statuses.FirstOrDefault(d => d.Id == user.Idstatus);
             Role role = _context.Roles.FirstOrDefault(d => d.Id == user.Idrole);
 
+            Image image = _context.Images.First();
 
-         
+            user.Status = status;
+            user.Role = role;
+            user.Avatar = image;
+            _context.Entry(status).State = EntityState.Modified;
+            _context.Entry(role).State = EntityState.Modified;
+            _context.Entry(image).State = EntityState.Modified;
             _context.Users.Add(user);
+          
            
-            status.Users.Add(user);
-            role.Users.Add(user);
-            _context.Statuses.Update(status);
-            _context.Roles.Update(role);
             _context.SaveChanges();
 
-     
+              
 
 
 
@@ -48,17 +51,17 @@ namespace BackEnd.Models.Repository.UserRepository
             throw new NotImplementedException();
         }
 
-        public User GetElement(string login, string password)
+        public User CheckUser(string login, string password)
         {
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).FirstOrDefault(d=>d.Login==login && d.Password==password);
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password);
         }
 
         public IEnumerable<User> GetElements()
         {
-          return  _context.Users.Include(p=>p.Role).Include(d=>d.Status).Include(d=>d.Marks).ToList();
+          return  _context.Users.Include(p=>p.Role).Include(d => d.Avatar).Include(d=>d.Status).Include(d=>d.Marks).ToList();
         }
 
-        public User AcceptVerification(ref IMemoryCache cache,string userkey, string email)
+        public User AcceptVerification(ref IMemoryCache cache,string userkey)
         {
             User user = null;
             if (cache.TryGetValue(userkey, out user)) 
@@ -91,6 +94,24 @@ namespace BackEnd.Models.Repository.UserRepository
 
                    EmailService service = new EmailService();
             service.SendEmailAsync(key, value2);
+        }
+
+        public User GetElement(string userlogin)
+        {
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d=>d.Comments).FirstOrDefault(d => d.Login == userlogin);
+        }
+
+        public User UploadAvatar(string login, string password,string filename)
+        {
+            User user = CheckUser(login, password);
+            if (user != null)
+            {
+                user.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{filename}" };
+                _context.Update(user);
+                _context.SaveChanges();
+            }
+
+            return null;
         }
     }
 }

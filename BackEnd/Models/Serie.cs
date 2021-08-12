@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Serie
     {
 

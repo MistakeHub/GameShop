@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Product
     {
 
@@ -31,7 +32,7 @@ namespace BackEnd.Models
         public Genre Genre { get; set; }
 
         public int? Idregionrestrict { get; set; }
-      
+    
         public Country? RegionRestrict { get; set; }
 
         public int? Idgamecart { get; set; }

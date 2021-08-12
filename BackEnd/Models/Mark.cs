@@ -6,7 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace BackEnd.Models
-{  [Table("marks")]
+{
+    [Serializable]
+    [Table("marks")]
     public class Mark
     {
 

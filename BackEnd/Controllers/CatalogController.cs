@@ -4,10 +4,15 @@ using BackEnd.Models.Repository.PublicationRepository;
 using BackEnd.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,16 +25,42 @@ namespace BackEnd.Controllers
 
         private IPublicationRepository context;
         private IMapper _mapper;
-       
+        private IWebHostEnvironment _appEnvironment;
+
         // GET: api/<CatalogController>
 
-        public CatalogController(IPublicationRepository _context, IMapper mapper)
+        public CatalogController(IPublicationRepository _context, IMapper mapper, IWebHostEnvironment appEnvironment)
         {
 
             context = _context;
             _mapper = mapper;
-          
+            _appEnvironment = appEnvironment;
         }
+
+        [Route("getImage/{titleofgame}/{titleimage}")]
+        [HttpGet]
+        public IActionResult getImage(string titleofgame,string titleimage)
+        {
+
+            byte[] b = System.IO.File.ReadAllBytes(@$"wwwroot\images\{titleofgame}\{titleimage}");   // You can use your own method over here.
+                                                                    
+            return File(b, "image/png");
+
+        }
+
+        [Route("getAll")]
+        [HttpGet]
+        public (IEnumerable, int) GetAll()
+        {
+            int total;
+            var data = context.GetAll(out total);
+            var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
+
+
+            return (dataViewModel, total);
+        }
+
+
         [HttpGet("{page}")]
         public (IEnumerable, int) Get(int page, int pagesize)
         {
@@ -43,83 +74,99 @@ namespace BackEnd.Controllers
 
         [Route("filter")]
         [HttpGet]
-        public IEnumerable Filter([FromQuery(Name ="genres[]")]string[] genres, [FromQuery(Name = "manufactures[]")] string[ ] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) Filter([FromQuery(Name ="genres[]")]string[] genres, [FromQuery(Name = "manufactures[]")] string[ ] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
 
             var data = context.GetManyPublication(genres, manufactures, platforms, localizations);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
+            int total=data.Count();
 
-
-            return  dataViewModel;
+            return (dataViewModel, total);
         }
 
 
         [Route("sortbydaterealese")]
         [HttpGet]
-        public IEnumerable SortByDateRealese([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByDateRealese([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
             var data = context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d=>d.Game.DateRelese);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
-            return dataViewModel;
+            int total = data.Count();
+
+            return (dataViewModel, total);
 
         }
 
 
         [Route("sortbytitle")]
         [HttpGet]
-        public IEnumerable SortByTitle([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByTitle([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
             var data = context.GetManyPublication(genres, manufactures, platforms, localizations).OrderBy(d => d.Game.Titleofgame);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
-            return dataViewModel;
+            int total = data.Count();
+
+            return (dataViewModel, total);
 
         }
 
 
         [Route("sortbyprice")]
         [HttpGet]
-        public IEnumerable SortByPrice([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByPrice([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
             var data = context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d => d.Price);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
-            return dataViewModel;
+            int total = data.Count();
+
+            return (dataViewModel, total);
 
         }
 
 
         [Route("sortbyrating")]
         [HttpGet]
-        public IEnumerable SortByRating([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByRating([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
             var data = context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d => d.Rating);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
-            return dataViewModel;
+            int total = data.Count();
+
+            return (dataViewModel, total);
 
         }
 
-        // GET api/<CatalogController>/5
 
 
-        // POST api/<CatalogController>
+        [Route("file")]
         [HttpPost]
-        public void Post([FromBody] string value)
+
+        public StatusCodeResult AddPublications(FormFile images)
         {
+
+            //  context.AddPublication(context.Uploads(images,_appEnvironment,$"/images/{titleofgame}/"), titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
+
+            return Ok();
+
         }
 
-        // PUT api/<CatalogController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Route("addPublication")]
+        [HttpPost]
+
+        public StatusCodeResult AddPublication([FromForm(Name = "images")] IList<IFormFile> images,string titleofgame,string description,DateTime dateRealese,[FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, [FromQuery(Name = "regionrestricts[]")] string[] regionrestricts, string series, double price)
         {
+
+           context.AddPublication(context.Uploads(images,_appEnvironment,$"/images/{titleofgame}/"), titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
+
+            return Ok();
+
         }
 
-        // DELETE api/<CatalogController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+    
         }
-    }
+    
 }

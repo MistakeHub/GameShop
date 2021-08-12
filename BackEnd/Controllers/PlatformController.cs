@@ -22,6 +22,17 @@ namespace BackEnd.Controllers
             _context = context;
 
         }
+
+        [HttpGet("{page}")]
+        public (IEnumerable, int) Get(int page, int pagesize)
+        {
+            int total;
+            var data = _context.GetElementsByPage(page, out total, pagesize);
+
+
+
+            return (data, total);
+        }
         // GET: api/<PlatformController>
         [HttpGet]
         public IEnumerable Get()
@@ -30,11 +41,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<PlatformController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+      
 
         // POST api/<PlatformController>
         [HttpPost]

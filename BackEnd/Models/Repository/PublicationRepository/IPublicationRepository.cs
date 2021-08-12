@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.PublicationRepository
 {
-    public interface IPublicationRepository
+    public interface IPublicationRepository:FileSave<Publication>
     {
-     
+        IEnumerable<Publication> GetAll(out int totalitems);
         IEnumerable<Publication> GetPublications(int page, out int totalitems, int size=3);
         Publication GetPublication(string Titleofgame);
-        void AddPublication(string titleofgame, string description, DateTime datarealese, int idplatforms, int idlocalizations, int idgenres, int idmanufactures, int idregionRestrict, int idseries, double price);
+        void AddPublication(List<string> images,string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price);
         void EditPublication(int id, string titleofgame, string description, DateTime datarealese, int[] platforms, int[] manufactures, int[] localizations, int[] genres, int series, double price);
         void RemovePublication(int id);
         IEnumerable AddComment(string username, int idpublication, string text);

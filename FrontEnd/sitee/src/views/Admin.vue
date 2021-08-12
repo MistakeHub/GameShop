@@ -9,7 +9,7 @@
 
 <script>
 // @ is an alias to /src
-import  AdminComponent from '@/components/AdminComponent.vue'
+import  AdminComponent from '@/components/AdminComponents/AdminComponent.vue'
 
 export default {
   methods: {

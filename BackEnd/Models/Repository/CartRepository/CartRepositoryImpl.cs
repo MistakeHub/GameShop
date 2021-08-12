@@ -48,7 +48,7 @@ namespace BackEnd.Models.Repository.CartRepository
             return _context.Carts.Include(d=>d.Publications).ThenInclude(d=>d.Game).Include(p=>p.Publications).ThenInclude(d=>d.Images).Include(d=>d.User).Single(d=>d.User.Login.Equals(user));
         }
 
-        public async void RemoveFromCart(string user,string gamee)
+        public void RemoveFromCart(string user,string gamee)
         {
             Cart cart = _context.Carts.AsNoTracking().Include(d => d.User).AsNoTracking().Include(d => d.Publications).AsNoTracking().FirstOrDefault(p => p.User.Login.Equals(user));
             Publication game = _context.Publications.AsNoTracking().Include(d => d.Game).AsNoTracking().FirstOrDefault(d => d.Game.Titleofgame.Equals(gamee));

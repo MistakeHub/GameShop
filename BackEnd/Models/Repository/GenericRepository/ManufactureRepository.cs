@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
@@ -32,12 +33,19 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Manufacture GetElement(int id)
         {
-            return _context.Manufactures.SingleOrDefault(p => p.Id == id);
+            return _context.Manufactures.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
         }
 
         public IEnumerable<Manufacture> GetElements()
         {
             return _context.Manufactures.ToList();
+        }
+
+        public IEnumerable<Manufacture> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Manufactures.Count();
+
+            return _context.Manufactures.Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()

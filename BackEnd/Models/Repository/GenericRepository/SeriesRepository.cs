@@ -39,6 +39,13 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Series.ToList();
         }
 
+        public IEnumerable<Serie> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Series.Count();
+
+            return _context.Series.Skip((page - 1) * size).Take(size).ToList();
+        }
+
         public IEnumerable GetTitles()
         {
             return _context.Series.Select(d => d.Titleofseries);

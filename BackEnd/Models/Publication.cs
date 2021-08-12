@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackEnd.Models
 {
+    [Serializable]
     public class Publication
     {
         public int Id { get; }

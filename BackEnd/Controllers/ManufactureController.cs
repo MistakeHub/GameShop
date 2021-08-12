@@ -18,11 +18,12 @@ namespace BackEnd.Controllers
 
         private IGenericRepository<Manufacture> _context;
 
-        public ManufactureController(   IGenericRepository<Manufacture> context)
+        public ManufactureController(IGenericRepository<Manufacture> context)
         {
             _context = context;
 
         }
+
 
         // GET: api/<ManufactureController>
         [HttpGet]
@@ -33,9 +34,9 @@ namespace BackEnd.Controllers
 
         // GET api/<ManufactureController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Manufacture Gett(int id)
         {
-            return "value";
+            return _context.GetElement(id);
         }
 
         // POST api/<ManufactureController>

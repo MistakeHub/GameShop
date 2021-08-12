@@ -39,6 +39,13 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Localizations.ToList();
         }
 
+        public IEnumerable<Localization> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Localizations.Count();
+
+            return _context.Localizations.Skip((page - 1) * size).Take(size).ToList();
+        }
+
         public IEnumerable GetTitles()
         {
                return _context.Localizations.Select(d => d.Titleoflocalization).ToList();

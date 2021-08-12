@@ -39,6 +39,13 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Roles.ToList();
         }
 
+        public IEnumerable<Role> GetElementsByPage(int page, out int totalitems, int size)
+        {
+            totalitems = _context.Roles.Count();
+
+            return _context.Roles.Skip((page - 1) * size).Take(size).ToList();
+        }
+
         public IEnumerable GetTitles()
         {
             return _context.Roles.Select(d => d.TitleofRole).ToList();
