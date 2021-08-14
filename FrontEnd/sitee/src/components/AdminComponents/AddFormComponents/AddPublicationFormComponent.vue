@@ -3,7 +3,7 @@
 
     <b-form class=" bg-white" >
 
-     <h1>Регистрация</h1>
+     <h1>Добавление новой публикации</h1>
       <b-form-group
         id="input-group-1"
         label="Название Игры:"
@@ -45,16 +45,46 @@
       >
       
       <b-form-datepicker id="input-3" v-model="dateRealese" class="mb-2"></b-form-datepicker>
+     
+      
       </b-form-group>
 
-          <b-form-group
+        <b-form-group
         id="input-group-1"
-        label="Дата Выхода:"
-        label-for="input-3"
+        label="Цена:"
+        label-for="input-4"
+      
+      >
+        </b-form-group>
+      
+        <b-form-input
+      id="input-4"
+      type="number"
+      v-model="price"
+      placeholder="Enter something..."
+      rows="3"
+      max-rows="6"
+    ></b-form-input>
+
+
+     <b-form-group
+        id="input-group-1"
+        label="Серия игр"
+        label-for="input-1"
       
       >
       
-      
+        <b-form-input
+          id="input-1"
+         v-model="seriess"
+          type="text"
+          placeholder="Enter Title"
+          required
+        ></b-form-input>
+      </b-form-group>
+    
+
+    
 
     
       
@@ -182,7 +212,8 @@ import axios from 'axios'
               games:[],
               genres:[],
               manufactures:[],
-              series:[],
+              seriess:"",
+              price:0,
               localizations:[],
               platforms:[],
               regionrestricts:[],
@@ -239,7 +270,7 @@ import axios from 'axios'
 
         axios({method:'POST', url:`https://localhost:44303/api/Catalog/addPublication`, data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
-         localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts }  }).then(response => {
+         localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
                 alert(response.data);
             }).catch(error => {
                 console.log(error);

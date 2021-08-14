@@ -34,8 +34,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Roles.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Role> GetElements()
+        public IEnumerable<Role> GetElements(out int total)
         {
+            total = _context.Roles.Count();
             return _context.Roles.ToList();
         }
 

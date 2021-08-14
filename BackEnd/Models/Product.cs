@@ -17,7 +17,7 @@ namespace BackEnd.Models
 
         public int? Idplatform { get; set; }
       
-        public Platform Platform { get; set; }
+        public Platform? Platform { get; set; }
 
         public int? Idmanufacture { get; set; }
       

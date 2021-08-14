@@ -22,11 +22,11 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
-        [HttpGet("{page}")]
-        public (IEnumerable, int) Get(int page, int pagesize)
+        [HttpGet("getAll")]
+        public (IEnumerable, int) Get()
         {
             int total;
-            var data = _context.GetElementsByPage(page, out total, pagesize);
+            var data = _context.GetElements(out total);
 
 
 
@@ -34,7 +34,7 @@ namespace BackEnd.Controllers
         }
         // GET: api/<LocalizationController>
         [HttpGet]
-        public IEnumerable Get()
+        public IEnumerable GetTitles()
         {
             return _context.GetTitles();
         }

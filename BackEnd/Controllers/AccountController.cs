@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -42,9 +43,11 @@ namespace BackEnd.Controllers
         }
         
         [HttpGet("/users")]
-        public IEnumerable<User> Get()
+        public (IEnumerable, int) Get()
         {
-            return _context.GetElements();
+            int total;
+            var data = _context.GetElements(out total);
+            return (data,total);
         }
         [HttpPost("/token")]
         public IActionResult Token(string login, string password)

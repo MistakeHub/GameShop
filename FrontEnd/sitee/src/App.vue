@@ -199,8 +199,23 @@
     <b-sidebar id="sidebar-1" title="Sidebar" shadow>
       <div class="px-3 py-2">
         <b-nav vertical>
-              <b-nav-item active >Active</b-nav-item>
-              <b-nav-item href="/admin-panel/Tables" >Таблицы</b-nav-item>
+            <b-nav-item href="/admin-panel/Home" >Home</b-nav-item>
+              <label   v-b-toggle.my-collapse3>Таблицы &#8595;</label>
+               
+
+<b-collapse id="my-collapse3">
+   
+      <b-nav-item href="/admin-panel/TablesOfPublication"  v-b-toggle.my-collapse3>Публикации</b-nav-item>
+    <b-nav-item href="/admin-panel/TablesOfCountrie"  v-b-toggle.my-collapse3>Страны</b-nav-item>
+     <b-nav-item href="/admin-panel/TablesOfGenre"  v-b-toggle.my-collapse3>Жанры</b-nav-item>
+      <b-nav-item href="/admin-panel/TablesOfLocalization"  v-b-toggle.my-collapse3>Локализации</b-nav-item>
+       <b-nav-item href="/admin-panel/TablesOfManufacture"  v-b-toggle.my-collapse3>Издатели</b-nav-item>
+        <b-nav-item href="/admin-panel/TablesOfPlatform"  v-b-toggle.my-collapse3>Платформы</b-nav-item>
+         <b-nav-item href="/admin-panel/TablesOfRole"  v-b-toggle.my-collapse3>Роли</b-nav-item>
+          <b-nav-item href="/admin-panel/TablesOfSeries"  v-b-toggle.my-collapse3>Серии Игр</b-nav-item>
+           <b-nav-item href="/admin-panel/TablesOfStatuse"  v-b-toggle.my-collapse3>Статусы</b-nav-item>
+            <b-nav-item href="/admin-panel/TablesOfUser"  v-b-toggle.my-collapse3>Пользователи</b-nav-item>
+      </b-collapse>
               <b-nav-item href="#link-2" >Another Link</b-nav-item>
             </b-nav>
       </div>

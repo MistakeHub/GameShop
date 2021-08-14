@@ -56,8 +56,11 @@ namespace BackEnd.Models.Repository.UserRepository
             return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password);
         }
 
-        public IEnumerable<User> GetElements()
+        public IEnumerable<User> GetElements(out int total)
+
         {
+
+            total = _context.Users.Count();
           return  _context.Users.Include(p=>p.Role).Include(d => d.Avatar).Include(d=>d.Status).Include(d=>d.Marks).ToList();
         }
 

@@ -12,7 +12,7 @@ namespace BackEnd.Models.Repository.UserRepository
 
 
 
-        IEnumerable<User> GetElements();
+        IEnumerable<User> GetElements(out int total);
         User GetElement(string userlogin);
         User CheckUser(string login, string password);
         void AddElement(User user);

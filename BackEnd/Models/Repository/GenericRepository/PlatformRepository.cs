@@ -35,8 +35,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Platforms.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Platform> GetElements()
+        public IEnumerable<Platform> GetElements(out int total)
         {
+            total = _context.Platforms.Count();
             return _context.Platforms.ToList();
         }
 

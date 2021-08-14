@@ -34,8 +34,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Localizations.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Localization> GetElements()
+        public IEnumerable<Localization> GetElements(out int total)
         {
+            total = _context.Localizations.Count();
             return _context.Localizations.ToList();
         }
 

@@ -34,8 +34,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Series.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Serie> GetElements()
+        public IEnumerable<Serie> GetElements(out int total)
         {
+            total = _context.Series.Count();
             return _context.Series.ToList();
         }
 

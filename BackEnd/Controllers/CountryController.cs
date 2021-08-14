@@ -25,18 +25,17 @@ namespace BackEnd.Controllers
 
         }
         // GET: api/<CountryController>
-        [HttpGet("{page}")]
-        public (IEnumerable, int) Get(int page, int pagesize)
+        [HttpGet("getAll")]
+        public (IEnumerable, int) Get()
         {
             int total;
-            var data = _context.GetElementsByPage(page, out total, pagesize);
+            var data = _context.GetElements(out total);
 
 
 
             return (data, total);
         }
-
-        // GET api/<CountryController>/5
+        // GET: api/<LocalizationController>
         [HttpGet]
         public IEnumerable GetTitles()
         {

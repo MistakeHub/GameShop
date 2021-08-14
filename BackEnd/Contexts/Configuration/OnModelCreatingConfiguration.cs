@@ -66,7 +66,7 @@ namespace BackEnd.Contexts.Configuration
           j =>
           {
 
-              j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre });
+              j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
               j.ToTable("Products");
           }
       );
@@ -89,7 +89,7 @@ namespace BackEnd.Contexts.Configuration
               j =>
               {
 
-                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre });
+                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
                   j.ToTable("Products");
               }
           );
@@ -113,7 +113,7 @@ namespace BackEnd.Contexts.Configuration
               j =>
               {
 
-                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre });
+                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
                   j.ToTable("Products");
               }
           );
@@ -137,7 +137,7 @@ namespace BackEnd.Contexts.Configuration
                 j =>
                 {
 
-                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre });
+                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
                     j.ToTable("Products");
                 }
             );
@@ -167,7 +167,7 @@ namespace BackEnd.Contexts.Configuration
                 j =>
                 {
 
-                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre });
+                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
                     j.ToTable("Products");
                 }
             );

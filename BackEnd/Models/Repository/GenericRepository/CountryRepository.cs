@@ -34,8 +34,9 @@ namespace BackEnd.Models.Repository.GenericRepository
            return _context.Countries.SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Country> GetElements()
+        public IEnumerable<Country> GetElements(out int total)
         {
+            total = _context.Countries.Count();
            return _context.Countries.ToList();
         }
 

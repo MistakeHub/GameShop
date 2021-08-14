@@ -10,7 +10,7 @@ namespace BackEnd.Models.Repository.GenericRepository
     public interface IGenericRepository<T>:FileSave<T>
     {
         IEnumerable<T> GetElementsByPage(int page, out int totalitems, int size = 3);
-        IEnumerable<T> GetElements();
+        IEnumerable<T> GetElements(out int total);
         T GetElement(int id);
         void AddElement(string value);
         void EditElement(int id, string value);

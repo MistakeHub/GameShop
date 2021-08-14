@@ -28,7 +28,7 @@ namespace BackEnd.Models.SaveToFile
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + directory + filename, FileMode.Create))
                 {
 
-                    item.CopyToAsync(fileStream);
+                    item.CopyTo(fileStream);
 
 
                 }

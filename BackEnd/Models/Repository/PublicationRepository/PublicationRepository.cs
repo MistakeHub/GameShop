@@ -47,7 +47,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
             List <Manufacture> Manufactures = _context.Manufactures.Where(p => manufactures.Contains(p.Titleofmanufactures)).ToList();
             List<Country> Country = _context.Countries.Where(p => regionRestrict.Contains(p.Titleofcountry)).ToList();
             Serie Series = _context.Series.SingleOrDefault(p => p.Titleofseries == series);
-          
+
+           
             if (Series == null)
             {
 
@@ -164,18 +165,11 @@ namespace BackEnd.Models.Repository.PublicationRepository
             }
            
 
-
-
-
-
-
-
-
             List<Image> images = new List<Image>();
             foreach (var item in filenames)
             {
 
-                images.Add(new Image() { Url = item });
+                images.Add(new Image() { Url = $"https://localhost:44303/getImage/{game.Titleofgame}/{item}"  });
 
 
             }
@@ -184,7 +178,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
             _context.Entry(game).State = EntityState.Modified;
             _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images = images });
-            
+    
             _context.SaveChanges();
 
 
@@ -235,14 +229,9 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
             totalitems=_context.Publications.Count();
 
-            foreach(var item in GetAll(out totalitems))
-            {
-
-                if (item == null) throw new Exception("Лоих ёбаный еблятьб");
-
-            }
-
-            return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
+     
+          
+            return _context.Publications.Include(p=>p.Game).Include(p=>p.Marks).Include(d=>d.Images).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p=>p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public void RemoveComment(int id)
@@ -319,8 +308,9 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public IEnumerable<Publication> GetAll(out int totalitems)
         {
+
             totalitems = _context.Publications.Count();
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d=>d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
+            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d=>d.Game.Platforms).Include(d=>d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
         }
     }
 }

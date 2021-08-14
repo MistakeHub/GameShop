@@ -36,8 +36,9 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Manufactures.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Manufacture> GetElements()
+        public IEnumerable<Manufacture> GetElements(out int total)
         {
+            total = _context.Manufactures.Count();
             return _context.Manufactures.ToList();
         }
 

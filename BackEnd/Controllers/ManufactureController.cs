@@ -25,19 +25,23 @@ namespace BackEnd.Controllers
         }
 
 
-        // GET: api/<ManufactureController>
+        [HttpGet("getAll")]
+        public (IEnumerable, int) Get()
+        {
+            int total;
+            var data = _context.GetElements(out total);
+
+
+
+            return (data, total);
+        }
+        // GET: api/<LocalizationController>
         [HttpGet]
-        public IEnumerable Get()
+        public IEnumerable GetTitles()
         {
             return _context.GetTitles();
         }
 
-        // GET api/<ManufactureController>/5
-        [HttpGet("{id}")]
-        public Manufacture Gett(int id)
-        {
-            return _context.GetElement(id);
-        }
 
         // POST api/<ManufactureController>
         [HttpPost]

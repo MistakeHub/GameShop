@@ -15,7 +15,7 @@
     :src="item" alt="" @click="selectimage(item)"/></li>
             </ul>
           </div>
-            <b-form-rating v-model="games.rating" @change="setRating(games.id)" ></b-form-rating>
+            <b-form-rating v-model="games.rating" @change="setRating(games.id)"  v-bind:readonly="username==null"></b-form-rating>
         </div>
         
         <div class="col-md-5 ">

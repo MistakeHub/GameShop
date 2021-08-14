@@ -24,26 +24,21 @@ namespace BackEnd.Controllers
 
         }
 
-        [HttpGet]
-        public IEnumerable Get()
-        {
-          
-            var data = _context.GetElements();
-
-            _context.SaveToXml("genre.xml", data);
-
-            return data;
-        }
-        // GET: api/<RoleController>
-        [HttpGet("{page}")]
-        public (IEnumerable, int) Get(int page, int pagesize)
+        [HttpGet("getAll")]
+        public (IEnumerable, int) Get()
         {
             int total;
-            var data = _context.GetElementsByPage(page, out total, pagesize);
+            var data = _context.GetElements(out total);
 
 
 
             return (data, total);
+        }
+        // GET: api/<LocalizationController>
+        [HttpGet]
+        public IEnumerable GetTitles()
+        {
+            return _context.GetTitles();
         }
 
         // GET api/<RoleController>/5

@@ -166,7 +166,19 @@ namespace BackEnd.Controllers
 
         }
 
-    
+        [Route("removePublication/{id}")]
+        [HttpDelete]
+
+        public StatusCodeResult removePublicatio(int id)
+        {
+
+            context.RemovePublication(id);
+
+            return Ok();
+
         }
+
+
+    }
     
 }

@@ -25,24 +25,24 @@ namespace BackEnd.Controllers
 
         }
         // GET: api/<StatuseController>
-    
 
-        [HttpGet("{page}")]
-        public (IEnumerable, int) Get(int page, int pagesize)
+        [HttpGet("getAll")]
+        public (IEnumerable, int) Get()
         {
             int total;
-            var data = context.GetElementsByPage(page, out total, pagesize);
-            
+            var data = context.GetElements(out total);
+
 
 
             return (data, total);
         }
-        // GET api/<StatuseController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET: api/<LocalizationController>
+        [HttpGet]
+        public IEnumerable GetTitles()
         {
-            return "value";
+            return context.GetTitles();
         }
+
 
         // POST api/<StatuseController>
         [HttpPost]

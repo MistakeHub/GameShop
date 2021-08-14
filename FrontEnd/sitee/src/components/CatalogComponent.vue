@@ -93,7 +93,7 @@
    <div v-for="elem in games" >
  
      <b-card class="d-flex justify-content-center" style="overflow: auto;   float: none;">
-  <b-card-img :src="require(`../assets/${elem.titleofgame.replace(/\s+/g, '')}.jpg`)"    style="max-width: 25rem;" img-center ></b-card-img>
+  <img :src="elem.images[0]" style="max-width: 25rem;" img-center />
       <b-card-title  >
         <p class="text-danger d-flex justify-content-center">{{elem.titleofgame}}</p>
        
@@ -170,7 +170,7 @@ import axios from 'axios'
              axios.get("https://localhost:44303/api/Series").then(Response=> this.series=Response.data)
             axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.manufactures=Response.data)
             axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
-           axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3}}).then(Response=>{   this.games=Response.data.item1; this.count=Response.data.item2  } )
+           axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3}}).then(Response=>{   this.games=Response.data.item1; console.log(this.games);this.count=Response.data.item2  } )
           },
           methods:{
     

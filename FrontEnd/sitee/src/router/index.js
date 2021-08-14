@@ -9,7 +9,7 @@ import Cart from "../views/Cart.vue"
 import Register from "../views/Register.vue"
 import UserProfile from "../views/UserProfile.vue"
 import ApproveRegister from "../views/ApproveRegister.vue"
-import AdminPaneltables from "../views/AdminPanelViews/AdminPaneltables.vue"
+import AdminPanelTablesPublication from "../views/AdminPanelViews/AdminPanelTablesPublication.vue"
 import AddPublicationForm from "../views/AdminPanelViews/AddFormViews/AddPublicationForm.vue"
 
 // Containers
@@ -55,11 +55,102 @@ const routes = [
 
     },
     {
-      path: '/admin-panel/Tables',
-      name:"Tables",
-      component: AdminPaneltables,
+      path: '/admin-panel/TablesOfPublication',
+      name:"Tables1",
+      component: AdminPanelTablesPublication,
       meta: {
         AdminPanelLayout: true,
+        publication:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfCountry',
+      name:"Tables2",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        country:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfGenre',
+      name:"Tables3",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        genre:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfLocalization',
+      name:"Tables4",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        localization:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfManufacture',
+      name:"Tables5",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        manufacture:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfPlatform',
+      name:"Tables6",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        platform:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfRole',
+      name:"Tables7",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        role:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfSeries',
+      name:"Tables8",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        series:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfStatuse',
+      name:"Tables9",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        statuse:true
+      },  
+    },
+
+    {
+      path: '/admin-panel/TablesOfUser',
+      name:"Tables10",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        user:true
       },  
     },
 
