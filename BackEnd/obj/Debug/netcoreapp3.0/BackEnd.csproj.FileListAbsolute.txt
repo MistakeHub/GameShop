@@ -40,7 +40,6 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.ComponentModel.Annotations.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.csproj.AssemblyReference.cache
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.AssemblyInfoInputs.cache
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.AssemblyInfo.cs
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.csproj.CoreCompileInputs.cache
@@ -70,3 +69,5 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbu
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\web.config
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.csproj.AssemblyReference.cache

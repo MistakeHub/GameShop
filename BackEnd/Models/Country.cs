@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BackEnd.Models
 {
@@ -13,11 +14,13 @@ namespace BackEnd.Models
         public int Id { get;  }
 
         [Display(Name = "Страна")]
+        [AllowNull]
         public string Titleofcountry { get; set; }
 
-        public List<Product> Products { get; set; }
-
-        public List<Game> Games { get; set; } = new List<Game>();
+        [AllowNull]
+        public  List<Gameregionrestrict> Gameregionrestricts { get; set; } = new List<Gameregionrestrict>();
+        [AllowNull]
+        public virtual List<Game> Games { get; set; } = new List<Game>();
 
     }
 }

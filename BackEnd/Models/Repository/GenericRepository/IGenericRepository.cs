@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public interface IGenericRepository<T>:FileSave<T>
+    public interface IGenericRepository<T>
     {
         IEnumerable<T> GetElementsByPage(int page, out int totalitems, int size = 3);
         IEnumerable<T> GetElements(out int total);

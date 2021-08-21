@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.CartRepository
 {
-    public interface ICartRepository:FileSave<Cart>
+    public interface ICartRepository
     {
         Cart GetCart(string user);
 

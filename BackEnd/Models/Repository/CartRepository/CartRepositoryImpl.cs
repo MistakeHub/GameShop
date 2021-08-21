@@ -64,7 +64,7 @@ namespace BackEnd.Models.Repository.CartRepository
 
            
          
-            _context.Gamecarts.RemoveRange(_context.Gamecarts.AsNoTracking().Where(d => d.idpublication == idgame));
+            _context.Gamecarts.RemoveRange(_context.Gamecarts.AsNoTracking().Where(d => d.idpublication == idgame && d.idcart==cart.Id));
 
 
 

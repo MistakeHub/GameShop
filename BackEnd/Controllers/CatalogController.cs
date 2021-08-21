@@ -140,6 +140,28 @@ namespace BackEnd.Controllers
 
         }
 
+        [Route("getpublication/{id}")]
+        [HttpGet]
+
+        public Publication GetPublication(int id)
+        {
+
+            return context.GetPublicationbyId(id);
+
+        }
+
+
+        [Route("editpublication/{id}")]
+        [HttpPost]
+        public StatusCodeResult EditPublication(int id, [FromForm(Name = "images")] IList<IFormFile> images, string titleofgame, string description, DateTime dateRealese, [FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, [FromQuery(Name = "regionrestricts[]")] string[] regionrestricts, string series, double price)
+        {
+
+
+            context.EditPublication(id,images,_appEnvironment.WebRootPath, titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
+
+            return Ok();
+
+        }
 
 
         [Route("file")]
@@ -160,7 +182,7 @@ namespace BackEnd.Controllers
         public StatusCodeResult AddPublication([FromForm(Name = "images")] IList<IFormFile> images,string titleofgame,string description,DateTime dateRealese,[FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, [FromQuery(Name = "regionrestricts[]")] string[] regionrestricts, string series, double price)
         {
 
-           context.AddPublication(context.Uploads(images,_appEnvironment,$"/images/{titleofgame}/"), titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
+           context.AddPublication(images,_appEnvironment.WebRootPath, titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
 
             return Ok();
 

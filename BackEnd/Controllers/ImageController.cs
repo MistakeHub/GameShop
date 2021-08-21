@@ -25,7 +25,7 @@ namespace BackEnd.Controllers
         public IActionResult getImage(string titleofgame, string titleimage)
         {
 
-            byte[] b = System.IO.File.ReadAllBytes(@$"wwwroot\images\{titleofgame}\{titleimage}");   // You can use your own method over here.
+            byte[] b = System.IO.File.ReadAllBytes(@$"wwwroot\images\{titleofgame.Replace(" ", "")}\{titleimage}");   // You can use your own method over here.
 
             return File(b, "image/png");
 

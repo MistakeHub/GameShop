@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BackEnd.Models.SaveToFile;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MimeKit;
 using System;
@@ -9,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.UserRepository
 {
-    public class UserRepositoryImpl : IUserRepository
+    public class UserRepositoryImpl :FileSave<User>, IUserRepository
     {
         private shopContext _context;
+
 
         public UserRepositoryImpl(shopContext context)
         {
@@ -104,12 +107,14 @@ namespace BackEnd.Models.Repository.UserRepository
             return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d=>d.Comments).FirstOrDefault(d => d.Login == userlogin);
         }
 
-        public User UploadAvatar(string login, string password,string filename)
+        public User UploadAvatar(string login, string password, IFormFile photo, string path )
         {
             User user = CheckUser(login, password);
+            Upload(photo, path);
+          
             if (user != null)
             {
-                user.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{filename}" };
+                user.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{photo.FileName}", Filename=photo.FileName };
                 _context.Update(user);
                 _context.SaveChanges();
             }

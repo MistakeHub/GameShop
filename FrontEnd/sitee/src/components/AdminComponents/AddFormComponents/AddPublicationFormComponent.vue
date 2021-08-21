@@ -2,7 +2,7 @@
  <div >
 
     <b-form class=" bg-white" >
-
+      <h1 v-if="$route.meta.EditFormPublication">Редактирование Публикации "{{games.titleofgame}}"</h1>
      <h1>Добавление новой публикации</h1>
       <b-form-group
         id="input-group-1"
@@ -165,15 +165,17 @@
      
         <div class="form-group">
           <label for="my-file">Select Image</label>
-          <b-form-file type="file" accept="image/*" multiple="multiple" @change="previewMultiImage" v-model="image_list" class="form-control-file" id="my-file"/>
+          <b-form-file type="file" accept="image/*" multiple="multiple" @change="onFileChange"  class="form-control-file" id="my-file"/>
     
           <div class="border p-2 mt-3">
             <p>Preview Here:</p>
             <template v-if="preview_list.length">
-              <div v-for="item, index in preview_list" :key="index">
+              <div v-for="item, index in preview_list" :key="index" class="container">
                 <img :src="item" class="img-fluid" />
-                <p class="mb-0">file name: {{ image_list[index].name }}</p>
-                <p>size: {{ image_list[index].size/1024 }}KB</p>
+                 <button class="btn" @click="RemoveImage(index)">&#x2715</button>
+                <p class="mb-0">file name: {{image_list[index].name }}</p>
+                <p>size: {{  image_list[index].size/1024 }}KB</p>
+                
               </div>
             </template>
           </div>
@@ -194,6 +196,26 @@
        <b-button type="submit" variant="primary" @click="upload()">Submit</b-button>
   </div>
 </template>
+
+<style >
+
+
+.container .btn {
+    position: absolute;
+    top: 0%;
+    left:100%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+</style>
 
 <script>
 
@@ -224,6 +246,7 @@ import axios from 'axios'
                selectedlocalizations:[],
                selectedplatforms:[],
               selectedregionrestricts:[],
+              publications:[],
                
                
               files:new FormData(),
@@ -236,6 +259,8 @@ import axios from 'axios'
               }
           },
           mounted(){
+
+          
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
              axios.get("https://localhost:44303/api/Platform").then(Response=> this.platforms=Response.data)
                axios.get("https://localhost:44303/api/Localization").then(Response=> this.localizations=Response.data)
@@ -243,6 +268,68 @@ import axios from 'axios'
             axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.manufactures=Response.data)
             axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
             axios.get("https://localhost:44303/api/Country").then(Response=> this.regionrestricts=Response.data)
+
+            if(this.$route.meta.EditFormPublication)     axios.get("https://localhost:44303/api/Catalog/getpublication/"+this.$route.params.id).
+            then(Response=> {
+                 console.log(Response.data);
+            this.selectedseries=Response.data.game.series; 
+            this.price=Response.data.price; 
+            this.games=Response.data.game; 
+            this.dateRealese=Response.data.game.dateRealese;
+            this.titleofgame=this.games.titleofgame;
+            this.seriess=this.games.series.titleofseries
+            this.description=this.games.description
+            this.publications=Response.data
+            
+                        
+              
+           
+               
+           
+         
+             for(var i=0; i<Response.data.game.genres.length;i++){
+            this.selectedgenres.push(Response.data.game.genres[i].titleofgenre)
+            }
+
+             for(var i=0; i<Response.data.game.manufactures.length;i++){
+            this.selectedmanufactures.push(Response.data.game.manufactures[i].titleofmanufactures)
+          
+            }
+
+             for(var i=0; i<Response.data.game.localizations.length;i++){
+            this.selectedlocalizations.push(Response.data.game.localizations[i].titleoflocalization)
+            }
+
+             for(var i=0; i<Response.data.game.platforms.length;i++){
+            this.selectedplatforms.push(Response.data.game.platforms[i].titleofplatform)
+            }
+
+             for(var i=0; i<Response.data.game.regionRestricts.length;i++){
+            this.selectedregionrestricts.push(Response.data.game.regionRestricts[i].titleofcountry)
+            }
+
+              
+ 
+             var reader = new FileReader();
+           
+            for(var i=0; i<this.publications.images.length; i++){
+              const filename= this.publications.images[i].filename;
+               console.log(i)
+                         this.preview_list.push(this.publications.images[i].url)
+               axios.get(this.publications.images[i].url).then(response=>    {
+                 var file=new File([response.data], filename, {type:"image/jpg"}); file.$path=""
+                 this.image_list.push(file); })
+               
+         
+                   
+              
+
+            }
+
+             });
+
+
+          
           
           },
           
@@ -257,7 +344,7 @@ import axios from 'axios'
 
         
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
-  
+  console.log(this.image_list)
       let formData = new FormData()
   for (var i = 0; i < this.image_list.length; i++) {
     let file = this.image_list[i]
@@ -267,37 +354,52 @@ import axios from 'axios'
   console.log(formData)
       
 
+      if(this.$route.meta.EditFormPublication)
+      axios({method:'POST', url:`https://localhost:44303/api/Catalog/editpublication/`+this.publications.id, data:formData,params:{images:formData,titleofgame:this.titleofgame,
+         description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
+         localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
+           alert("Успешно обновлено");
+            }).catch(error => {
+                console.log(error);
+            });
 
+else 
         axios({method:'POST', url:`https://localhost:44303/api/Catalog/addPublication`, data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
          localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
-                alert(response.data);
+               console.log(response.data);
             }).catch(error => {
                 console.log(error);
             });
     },
 
-    previewMultiImage: function(event) {
-      var input = event.target;
-      var count = input.files.length;
-      var index = 0;
-
-          
-      if (input.files) {
-        while(count --) {
-          var reader = new FileReader();
-          reader.onload = (e) => {
-            this.preview_list.push(e.target.result);
-          }
-          this.image_list.push(input.files[index]);
-          console.log(this.image_list);
-          reader.readAsDataURL(input.files[index]);
-          index ++;
+    onFileChange(e) {
+    
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files);
+    },
+    createImage(files) {
+      
+      var vm = this;
+      for (var index = 0; index < files.length; index++) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          const imageUrl = event.target.result;
+           vm.preview_list.push(imageUrl);
+           console.log(vm.image_list)
         }
-          }
+         this.image_list.push(files[index]);
+         console.log(this.image_list)
+        reader.readAsDataURL(files[index]);
+      }
+    },
+  RemoveImage:function(index){
 
-          
-  },
+   this.image_list.splice(index,1);
+   this.preview_list.splice(index,1)
+
+  }
           }
   }
   

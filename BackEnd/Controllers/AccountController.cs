@@ -94,13 +94,9 @@ namespace BackEnd.Controllers
         {
 
            
-           User user= _context.UploadAvatar(username,password, photo.FileName);
+            _context.UploadAvatar(username,password, photo, _appwebhostenvironment.WebRootPath);
 
-            if (user != null)
-            {
-                _context.Upload(photo, _appwebhostenvironment);
-                return Ok();
-            }
+           
 
             return NotFound();
             

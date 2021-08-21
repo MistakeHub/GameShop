@@ -16,7 +16,7 @@ namespace BackEnd.Models
 
         public Publication Publication { get; set; }
 
-
+        public string Filename { get; set; }
 
         public List<User> Users { get; set; } = new List<User>();
 

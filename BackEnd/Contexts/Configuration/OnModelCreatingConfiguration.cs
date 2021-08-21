@@ -12,6 +12,8 @@ namespace BackEnd.Contexts.Configuration
 
         public static void OnModelCreating(this ModelBuilder modelBuilder)
         {
+         
+        
             modelBuilder.Entity<User>()
              .HasOne(a => a.Cart)
              .WithOne(a => a.User)
@@ -31,7 +33,7 @@ namespace BackEnd.Contexts.Configuration
 
             modelBuilder.Entity<Game>().HasOne(p => p.Publication).WithOne(a => a.Game).HasForeignKey<Publication>(d => d.idgame);
 
-            modelBuilder.Entity<Mark>().HasOne(p => p.User).WithMany(d => d.Marks).HasForeignKey(d=>d.idpublication);
+            modelBuilder.Entity<Mark>().HasOne(p => p.User).WithMany(d => d.Marks).HasForeignKey(d => d.idpublication);
 
             modelBuilder.Entity<Publication>().HasMany(p => p.Marks).WithOne(d => d.Publication).HasForeignKey(p => p.idpublication);
 
@@ -48,26 +50,34 @@ namespace BackEnd.Contexts.Configuration
 
             modelBuilder.Entity<Publication>().HasMany(p => p.Comments).WithOne(d => d.Publication).HasForeignKey(p => p.Idpublication);
 
+
+
+
+
+
+
+
+
             modelBuilder
           .Entity<Game>()
-          .HasMany(c => c.Localizations)
+          .HasMany(c => c.RegionRestricts)
           .WithMany(s => s.Games)
-          .UsingEntity<Product>(
+          .UsingEntity<Gameregionrestrict>(
              j =>
-              j.HasOne(pt => pt.Localization)
-              .WithMany(t => t.Products)
-              .HasForeignKey(pt => pt.Idlocalization),
+              j.HasOne(pt => pt.RegionRestrict)
+              .WithMany(t => t.Gameregionrestricts)
+              .HasForeignKey(pt => pt.RegionrestrictId),
           j =>
               j.HasOne(pt => pt.Game)
-              .WithMany(p => p.Products)
-              .HasForeignKey(pt => pt.idgame),
+              .WithMany(p => p.Gameregionrestricts)
+              .HasForeignKey(pt => pt.GameId),
 
 
           j =>
           {
 
-              j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
-              j.ToTable("Products");
+              j.HasKey(t => new { t.GameId,  t.RegionrestrictId  });
+              j.ToTable("Gameregionrestricts");
           }
       );
 
@@ -75,22 +85,22 @@ namespace BackEnd.Contexts.Configuration
               .Entity<Game>()
               .HasMany(c => c.Platforms)
               .WithMany(s => s.Games)
-              .UsingEntity<Product>(
+              .UsingEntity<Gameplatform>(
                  j =>
                   j.HasOne(pt => pt.Platform)
-                  .WithMany(t => t.Products)
-                  .HasForeignKey(pt => pt.Idplatform),
+                  .WithMany(t => t.Gameplatforms)
+                  .HasForeignKey(pt => pt.PlatformId),
               j =>
                   j.HasOne(pt => pt.Game)
-                  .WithMany(p => p.Products)
-                  .HasForeignKey(pt => pt.idgame),
+                  .WithMany(p => p.Gameplatforms)
+                  .HasForeignKey(pt => pt.GameId),
 
 
               j =>
               {
 
-                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
-                  j.ToTable("Products");
+                  j.HasKey(t => new { t.GameId, t.PlatformId, });
+                  j.ToTable("Gameplatforms");
               }
           );
 
@@ -99,46 +109,46 @@ namespace BackEnd.Contexts.Configuration
               .Entity<Game>()
               .HasMany(c => c.Genres)
               .WithMany(s => s.Games)
-              .UsingEntity<Product>(
+              .UsingEntity<Gamegenre>(
                  j =>
                   j.HasOne(pt => pt.Genre)
-                  .WithMany(t => t.Products)
-                  .HasForeignKey(pt => pt.Idgenre),
+                  .WithMany(t => t.Gamegenres)
+                  .HasForeignKey(pt => pt.GenreId),
               j =>
                   j.HasOne(pt => pt.Game)
-                  .WithMany(p => p.Products)
-                  .HasForeignKey(pt => pt.idgame),
+                  .WithMany(p => p.Gamegenres)
+                  .HasForeignKey(pt => pt.GameId),
 
 
               j =>
               {
 
-                  j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
-                  j.ToTable("Products");
+                  j.HasKey(t => new { t.GameId,  t.GenreId });
+                  j.ToTable("Gamegenres");
               }
           );
 
 
             modelBuilder
                 .Entity<Game>()
-                .HasMany(c => c.RegionRestricts)
+                .HasMany(c => c.Localizations)
                 .WithMany(s => s.Games)
-                .UsingEntity<Product>(
+                .UsingEntity<Gamelocalization>(
                    j =>
-                    j.HasOne(pt => pt.RegionRestrict)
-                    .WithMany(t => t.Products)
-                    .HasForeignKey(pt => pt.Idregionrestrict),
+                    j.HasOne(pt => pt.Localization)
+                    .WithMany(t => t.Gamelocalizations)
+                    .HasForeignKey(pt => pt.LocalizationId),
                 j =>
                     j.HasOne(pt => pt.Game)
-                    .WithMany(p => p.Products)
-                    .HasForeignKey(pt => pt.idgame),
+                    .WithMany(p => p.Gamelocalizations)
+                    .HasForeignKey(pt => pt.GameId),
 
 
                 j =>
                 {
 
-                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
-                    j.ToTable("Products");
+                    j.HasKey(t => new { t.GameId, t.LocalizationId});
+                    j.ToTable("Gamelocalizations");
                 }
             );
 
@@ -153,80 +163,59 @@ namespace BackEnd.Contexts.Configuration
                 .Entity<Game>()
                 .HasMany(c => c.Manufactures)
                 .WithMany(s => s.Games)
-                .UsingEntity<Product>(
+                .UsingEntity<Gamemanufacture>(
                    j =>
                     j.HasOne(pt => pt.Manufacture)
-                    .WithMany(t => t.Products)
-                    .HasForeignKey(pt => pt.Idmanufacture),
+                    .WithMany(t => t.Gamemanufactures)
+                    .HasForeignKey(pt => pt.ManufactureId),
                 j =>
                     j.HasOne(pt => pt.Game)
-                    .WithMany(p => p.Products)
-                    .HasForeignKey(pt => pt.idgame),
+                    .WithMany(p => p.Gamemanufactures)
+                    .HasForeignKey(pt => pt.GameId).OnDelete(DeleteBehavior.Cascade),
+
 
 
                 j =>
                 {
 
-                    j.HasKey(t => new { t.idgame, t.Idmanufacture, t.Idgenre, t.Idplatform, t.Idregionrestrict });
-                    j.ToTable("Products");
+                    j.HasKey(t => new { t.GameId, t.ManufactureId });
+                    j.ToTable("Gamemanufactures");
                 }
             );
 
 
-            modelBuilder.Entity<Product>()
-           .HasKey(bc => new { bc.idgame });
-            modelBuilder.Entity<Product>()
-                .HasOne(bc => bc.Game)
-                .WithMany(b => b.Products)
-                .HasForeignKey(bc => bc.idgame);
-            modelBuilder.Entity<Product>()
-                .HasOne(bc => bc.RegionRestrict)
-                .WithMany(b => b.Products)
-                .HasForeignKey(bc => bc.Idregionrestrict);
 
-            modelBuilder.Entity<Product>()
-          .HasOne(bc => bc.Genre)
-          .WithMany(b => b.Products)
-          .HasForeignKey(bc => bc.Idgenre);
 
-            modelBuilder.Entity<Product>()
-          .HasOne(bc => bc.Localization)
-          .WithMany(b => b.Products)
-          .HasForeignKey(bc => bc.Idlocalization);
+           
 
-            modelBuilder.Entity<Product>()
-          .HasOne(bc => bc.Manufacture)
-          .WithMany(b => b.Products)
-          .HasForeignKey(bc => bc.Idmanufacture);
-
-            modelBuilder.Entity<Product>()
-          .HasOne(bc => bc.Platform)
-          .WithMany(b => b.Products)
-          .HasForeignKey(bc => bc.Idplatform);
+           
+            
 
 
 
-        modelBuilder.Entity<Cart>()
-          .HasMany(c => c.Publications)
-          .WithMany(s => s.Carts)
-          .UsingEntity<Gamecart>(
-             j =>
-              j.HasOne(pt => pt.Publication)
-              .WithMany(t => t.GameCarts)
-              .HasForeignKey(pt => pt.idpublication),
-          j =>
-              j.HasOne(pt => pt.Cart)
-              .WithMany(p => p.Gamecart)
-              .HasForeignKey(pt => pt.idcart),
+            modelBuilder.Entity<Cart>()
+              .HasMany(c => c.Publications)
+              .WithMany(s => s.Carts)
+              .UsingEntity<Gamecart>(
+                 j =>
+                  j.HasOne(pt => pt.Publication)
+                  .WithMany(t => t.GameCarts)
+                  .HasForeignKey(pt => pt.idpublication),
+              j =>
+                  j.HasOne(pt => pt.Cart)
+                  .WithMany(p => p.Gamecart)
+                  .HasForeignKey(pt => pt.idcart),
 
 
-          j =>
-          {
+              j =>
+              {
 
-              j.HasKey(t => new { t.idpublication, t.idcart});
-              j.ToTable("Gamecarts");
-          }
-      );
+                  j.HasKey(t => new { t.idpublication, t.idcart });
+                  j.ToTable("Gamecarts");
+              }
+          );
+         
+            
             modelBuilder.Entity<Cart>().HasKey(p => p.Id);
             modelBuilder.Entity<Comment>().HasKey(p => p.Id);
             modelBuilder.Entity<Country>().HasKey(p => p.Id);

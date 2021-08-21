@@ -35,6 +35,8 @@ namespace BackEnd.Models.ViewModels
 
         public string[] Images { get; set; }
 
+        public string[] Filenames { get; set; }
+
         public List<Comment> Comments { get; set; }
     
     }

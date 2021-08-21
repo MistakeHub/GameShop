@@ -1,10 +1,12 @@
 ﻿using BackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Proxies;
+
 using BackEnd.Contexts.Configuration;
 
 namespace BackEnd
@@ -21,7 +23,15 @@ namespace BackEnd
 
         public DbSet<Manufacture> Manufactures { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Gamemanufacture> Gamemanufactures { get; set; }
+
+        public DbSet<Gameplatform> Gameplatforms { get; set; }
+
+        public DbSet<Gameregionrestrict> Gameregionrestricts { get; set; }
+
+        public DbSet<Gamelocalization> Gamelocalizations { get; set; }
+
+        public DbSet<Gamegenre> Gamegenres { get; set; }
 
         public DbSet<Gamecart> Gamecarts { get; set; }
 
@@ -53,9 +63,12 @@ namespace BackEnd
         {
             base.OnConfiguring(optionsBuilder);
 
-           
+        
+
+
+
             optionsBuilder.EnableSensitiveDataLogging();
-            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
           
          
 

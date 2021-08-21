@@ -10,8 +10,8 @@ namespace BackEnd.Models
     public class Serie
     {
 
-        public int Id { get; }
-       
+        public int Id { get; set; }
+
         [Display(Name = "Серия игр")]
         public string Titleofseries { get; set; }
 

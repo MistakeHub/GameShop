@@ -10,22 +10,58 @@ using System.Xml.Serialization;
 
 namespace BackEnd.Models.SaveToFile
 {
-    public interface  FileSave<T>
+    public abstract class  FileSave<T>
     {
 
 
-        public List<string> Uploads(IList<IFormFile> photos, IWebHostEnvironment _appEnvironment, string directory)
+        public void RemoveDirectory(string absolutepath, string directory)
+        {
+
+           string  path = absolutepath + directory;
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            FileInfo[] fi = directoryInfo.GetFiles();
+
+            foreach (FileInfo f in fi)
+            {
+                f.Delete();
+            }
+            if (directoryInfo.Exists)
+                directoryInfo.Delete();
+
+        }
+
+
+        public void RemoveImages(List<string> filenames, string absolutepath, string directory) {
+
+            string path;
+            FileInfo file;
+
+            for(int i=0; i < filenames.Count; i++)
+            {
+                path = absolutepath + directory + filenames[i];
+                file = new FileInfo(path);
+
+                if (file.Exists) 
+                    file.Delete();
+
+            }
+
+
+        }
+
+
+        public List<string> Uploads(IList<IFormFile> photos, string path, string directory)
         {
             string filename;
             List<string> filenames=new List<string>();
 
-            if (!Directory.Exists(_appEnvironment.WebRootPath + directory))
-                Directory.CreateDirectory(_appEnvironment.WebRootPath + directory);
+            if (!Directory.Exists(path + directory))
+                Directory.CreateDirectory(path + directory);
             // сохраняем файл в папку Files в каталоге wwwroot
             foreach (var item in photos)
             {
                 filename = item.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + directory + filename, FileMode.Create))
+                using (var fileStream = new FileStream(path+ directory + filename, FileMode.Create))
                 {
 
                     item.CopyTo(fileStream);
@@ -40,15 +76,15 @@ namespace BackEnd.Models.SaveToFile
 
 
 
-        public async Task<bool> Upload(IFormFile photo, IWebHostEnvironment _appEnvironment, string directory="/images/Avatar/")
+        public async Task<bool> Upload(IFormFile photo, string path, string directory="/images/Avatar/")
         {
             string filename = photo.FileName;
        
 
-            if (!Directory.Exists(_appEnvironment.WebRootPath + directory))
-                Directory.CreateDirectory(_appEnvironment.WebRootPath + directory);
+            if (!Directory.Exists(path + directory))
+                Directory.CreateDirectory(path + directory);
             // сохраняем файл в папку Files в каталоге wwwroot
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + directory + filename, FileMode.Create))
+            using (var fileStream = new FileStream(path + directory + filename, FileMode.Create))
             {
 
                 await photo.CopyToAsync(fileStream);

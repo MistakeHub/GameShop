@@ -162,6 +162,16 @@ const routes = [
         AdminPanelLayout: true,
       },  
     },
+
+    {
+      path: '/admin-panel/EditPublication/:id',
+      name:"EditPublication",
+      component: AddPublicationForm,
+      meta: {
+        EditFormPublication: true,
+        AdminPanelLayout: true,
+      },  
+    },
  
   {
     path: '/userProfile/:userlogin',

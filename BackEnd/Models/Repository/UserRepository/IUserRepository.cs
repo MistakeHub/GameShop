@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models.Repository.GenericRepository;
 using BackEnd.Models.SaveToFile;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.UserRepository
 {
-    public interface IUserRepository:FileSave<User> { 
+    public interface IUserRepository { 
 
 
 
@@ -20,7 +21,8 @@ namespace BackEnd.Models.Repository.UserRepository
         void RemoveElement(int id);
         User AcceptVerification(ref IMemoryCache cache,string userkey);
         void RequestForVerification(ref IMemoryCache  cache, string value1, string value2, string value3, DateTime value4, int value5=2, int value6=3);
-        User UploadAvatar(string login, string password, string filename);
+        User UploadAvatar(string login, string password,IFormFile photo, string path);
+        
 
     }
 }

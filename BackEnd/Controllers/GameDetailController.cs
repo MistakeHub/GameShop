@@ -34,7 +34,7 @@ namespace BackEnd.Controllers
         public PublicationViewModel Get(string titleofgame)
          {
     
-            var data = context.GetPublication(titleofgame);
+            var data = context.GetPublicationbyTitle(titleofgame);
 
             var dataViewModel = _mapper.Map<PublicationViewModel>(data);
 

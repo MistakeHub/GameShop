@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\images\Ahatintime\Ahatintime.jpg" />
-    <None Include="wwwroot\images\Ahatintime\mBZjc70.jpg" />
-    <None Include="wwwroot\images\Ahatintime\NSwitchDS_AHatInTime_02.jpg" />
-    <None Include="wwwroot\images\Ahatintime\ss_eb442a7301b8a0d8e94c4064575ebe68d77deb12.1920x1080.jpg" />
     <None Include="wwwroot\images\Assasin%27sCreedValhalla\01.jpg" />
     <None Include="wwwroot\images\Assasin%27sCreedValhalla\74a77c94e029411f961427c9ef3a0f1d.jpg" />
     <None Include="wwwroot\images\Assasin%27sCreedValhalla\tM01x8y.jpg" />
@@ -37,10 +33,6 @@
     <None Include="wwwroot\images\Darksouls1\ISptF1M.jpg" />
     <None Include="wwwroot\images\Darksouls1\ss_3a71463e4ccaf28c5c27f6cf8d32a3a125f45404.1920x1080.jpg" />
     <None Include="wwwroot\images\Darksouls1\ss_c34cdf130b9ac71c99196007d1e78c05305652b9.1920x1080.jpg" />
-    <None Include="wwwroot\images\MortalKombat11\clvF1NL.jpg" />
-    <None Include="wwwroot\images\MortalKombat11\ded0f359b31c1a0e_1920xH.jpg" />
-    <None Include="wwwroot\images\MortalKombat11\fit_930_519_false_crop_1200_675_0_0_q90_340052_24489468dc.jpg" />
-    <None Include="wwwroot\images\MortalKombat11\T2pZnAg.jpg" />
   </ItemGroup>
 
 
