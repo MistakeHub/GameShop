@@ -19,6 +19,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Serie serie = new Serie();
             serie.Titleofseries = value;
             _context.Series.Add(serie);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

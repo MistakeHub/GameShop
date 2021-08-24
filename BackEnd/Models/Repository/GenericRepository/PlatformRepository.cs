@@ -20,6 +20,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Platform platform = new Platform();
             platform.Titleofplatform = value;
             _context.Platforms.Add(platform);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

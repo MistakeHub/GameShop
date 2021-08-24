@@ -63,7 +63,7 @@ namespace BackEnd
         {
             base.OnConfiguring(optionsBuilder);
 
-        
+            optionsBuilder.LogTo(Console.Write);
 
 
 

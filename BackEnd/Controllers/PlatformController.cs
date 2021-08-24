@@ -42,22 +42,24 @@ namespace BackEnd.Controllers
         // GET api/<PlatformController>/5
 
 
-        // POST api/<PlatformController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST api/<CountryController>
+        [HttpPost("add")]
+        public void Post(string title)
         {
+            _context.AddElement(title);
         }
 
-        // PUT api/<PlatformController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<CountryController>/5
+        [HttpPut("edit/{id}")]
+        public void Put(int id, string title)
         {
+            _context.EditElement(id, title);
         }
-
         // DELETE api/<PlatformController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("removePlatform/{id}")]
         public void Delete(int id)
         {
+            _context.RemoveElement(id);
         }
     }
 }

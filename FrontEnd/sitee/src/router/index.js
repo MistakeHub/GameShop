@@ -11,6 +11,7 @@ import UserProfile from "../views/UserProfile.vue"
 import ApproveRegister from "../views/ApproveRegister.vue"
 import AdminPanelTablesPublication from "../views/AdminPanelViews/AdminPanelTablesPublication.vue"
 import AddPublicationForm from "../views/AdminPanelViews/AddFormViews/AddPublicationForm.vue"
+import AddEditUserForm from "../views/AdminPanelViews/AddFormViews/AddEditUserForm.vue"
 
 // Containers
 
@@ -155,6 +156,16 @@ const routes = [
     },
 
     {
+      path: '/admin-panel/TablesOfCountries',
+      name:"Tables11",
+      component: AdminPanelTablesPublication,
+      meta: {
+        AdminPanelLayout: true,
+        country:true
+      },  
+    },
+
+    {
       path: '/admin-panel/AddPublication',
       name:"AddPublication",
       component: AddPublicationForm,
@@ -169,6 +180,26 @@ const routes = [
       component: AddPublicationForm,
       meta: {
         EditFormPublication: true,
+        AdminPanelLayout: true,
+      },  
+    },
+
+    {
+      path: '/admin-panel/EditUser/:id',
+      name:"EditUser",
+      component: AddEditUserForm,
+      meta: {
+        EditFormUser: true,
+        AdminPanelLayout: true,
+      },  
+    },
+
+    {
+      path: '/admin-panel/AddUser',
+      name:"AddUser",
+      component: AddEditUserForm,
+      meta: {
+       
         AdminPanelLayout: true,
       },  
     },

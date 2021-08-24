@@ -19,6 +19,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Role role = new Role();
             role.TitleofRole = value;
             _context.Roles.Add(role);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

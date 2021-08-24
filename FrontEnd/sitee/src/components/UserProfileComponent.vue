@@ -93,7 +93,11 @@ import axios from 'axios'
 
              upload: function(){
         const photo = this.files;
-        axios.post("https://localhost:44303/uploadavatar/"+this.user.login, photo,
+        var password=localStorage.getItem("password")
+        axios.post("https://localhost:44303/uploadavatar/"+this.user.login, photo ,{ params:{
+              password
+
+        }},
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'

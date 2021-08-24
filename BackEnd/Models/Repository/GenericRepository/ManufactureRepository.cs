@@ -21,6 +21,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Manufacture manufacture = new Manufacture();
             manufacture.Titleofmanufactures = value;
             _context.Manufactures.Add(manufacture);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

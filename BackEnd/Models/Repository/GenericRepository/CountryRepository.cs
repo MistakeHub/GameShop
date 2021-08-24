@@ -19,6 +19,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Country country = new Country();
             country.Titleofcountry =value;
             _context.Countries.Add(country);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

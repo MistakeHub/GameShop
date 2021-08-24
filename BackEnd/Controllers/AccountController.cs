@@ -1,6 +1,8 @@
-﻿using BackEnd.Models;
+﻿using AutoMapper;
+using BackEnd.Models;
 using BackEnd.Models.Authentication;
 using BackEnd.Models.Repository.UserRepository;
+using BackEnd.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,25 +25,48 @@ namespace BackEnd.Controllers
         // GET: AccountController
 
         private IUserRepository _context;
-        IWebHostEnvironment _appwebhostenvironment;
+       private IWebHostEnvironment _appwebhostenvironment;
         private IMemoryCache cache;
-
-        public AccountController(IUserRepository context, IMemoryCache _cache,IWebHostEnvironment appwebhostenvironment)
+        private IMapper _mapper;
+        public AccountController(IUserRepository context, IMemoryCache _cache,IWebHostEnvironment appwebhostenvironment, IMapper mapper)
         {
             _context = context;
             cache = _cache;
             _appwebhostenvironment = appwebhostenvironment;
+            _mapper = mapper;
 
         }
         [HttpGet("/getuser/{userlogin}")]
 
-        public User GetUser(string userlogin)
+        public UserViewModel GetUser(string userlogin)
         {
 
-            return _context.GetElement(userlogin);
+            var data = _context.GetElement(userlogin);
+            var dataviewmodel = _mapper.Map<UserViewModel>(data);
+
+            return dataviewmodel;
 
         }
+
+        [HttpGet("/getfulluser/{id}")]
         
+         public User GetFullUserById(int id)
+        {
+            return _context.GetElementById(id);
+        }
+
+
+        [HttpPut("/edituser/{id}")]
+
+        public StatusCodeResult EditUser(int id, IFormFile avatar, string login, string password, string email, string statuse, string role)
+        {
+
+            _context.EditElement(id, avatar, login, password, email, role, statuse, _appwebhostenvironment.WebRootPath);
+
+            return Ok();
+
+        }
+
         [HttpGet("/users")]
         public (IEnumerable, int) Get()
         {
@@ -98,23 +123,22 @@ namespace BackEnd.Controllers
 
            
 
-            return NotFound();
+            return Ok();
             
            
 
         }
 
         [HttpPost(("/register"))]
-        public async Task Register(string login, string email, string password,IFormFile avatar)
+        public void Register(string login, string email, string password,IFormFile avatar, string status="Онлайн", string role="Пользователь")
         {
             
-            _context.RequestForVerification(ref cache,login, email, password, DateTime.UtcNow);
-            
-
-        
+            _context.RequestForVerification(ref cache,login, email, password, DateTime.UtcNow, status, role);
 
         }
-            
+
+      
+
 
         private ClaimsIdentity GetIdentity(string login, string password)
         {

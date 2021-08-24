@@ -46,17 +46,11 @@ namespace BackEnd.Models.Repository.UserRepository
 
         }
 
-       
-
-
-        public void EditElement(int id, string value1, string value2, string value3, string value4)
-        {
-            throw new NotImplementedException();
-        }
 
         public User CheckUser(string login, string password)
         {
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password);
+            string Password = HashHelper.GetHashString(password);
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==Password);
         }
 
         public IEnumerable<User> GetElements(out int total)
@@ -86,10 +80,15 @@ namespace BackEnd.Models.Repository.UserRepository
             throw new NotImplementedException();
         }
         // Здесь заносим юзера в кэш, и высылаем на почту подтверждение об регистрации
-        public void RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, int value5, int value6)
+        public void RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, string status, string role)
         {
             value3 = HashHelper.GetHashString(value3);
-            User user = new User() { Login = value1, Email = value2, Password = value3, Dateofregistration = value4, Cart = new Cart(),Idstatus=value5, Idrole=value6 };
+
+            Role Role = _context.Roles.FirstOrDefault(d => d.TitleofRole == role); 
+            Statuse Status = _context.Statuses.FirstOrDefault(d => d.Titleofstatuse == status);
+
+
+            User user = new User() { Login = value1, Email = value2, Password = value3, Dateofregistration = value4, Cart = new Cart(),Idstatus=Status.Id,  Idrole=Role.Id };
             string key = HashHelper.GetHashString(value2);
 
             cache.Set(key, user, new MemoryCacheEntryOptions
@@ -98,8 +97,8 @@ namespace BackEnd.Models.Repository.UserRepository
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
             }) ;
 
-                   EmailService service = new EmailService();
-            service.SendEmailAsync(key, value2);
+               
+            EmailService.SendVerifyEmailAsync(key, value2);
         }
 
         public User GetElement(string userlogin)
@@ -111,15 +110,68 @@ namespace BackEnd.Models.Repository.UserRepository
         {
             User user = CheckUser(login, password);
             Upload(photo, path);
+
           
             if (user != null)
             {
+              
                 user.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{photo.FileName}", Filename=photo.FileName };
                 _context.Update(user);
                 _context.SaveChanges();
             }
 
             return null;
+        }
+
+        public void EditElement(int id, IFormFile avatar, string login, string password, string email, string role, string statuse,string path)
+        {
+            User User = _context.Users.Include(d => d.Status).Include(d => d.Role).Include(d=>d.Avatar).FirstOrDefault(d => d.Id == id);
+            Role Role = _context.Roles.FirstOrDefault(d => d.TitleofRole == role);
+            Statuse Statuse = _context.Statuses.FirstOrDefault(d => d.Titleofstatuse == statuse);
+
+
+            User.Email = email;
+            if (User.Login != login)
+            {
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш логин был изменён на {login} </p>");
+                User.Login = login;
+               
+
+            }
+
+            if (User.Password != password)
+            {
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш пароль  был изменён на {password} </p>");
+             
+                User.Password = HashHelper.GetHashString(password); ;
+
+           
+            }
+           
+     
+            _context.Entry(Role).State = EntityState.Modified;
+            _context.Entry(Statuse).State = EntityState.Modified;
+
+           
+
+             
+                User.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{avatar.FileName}", Filename = avatar.FileName };
+                Upload(avatar, path);
+
+           
+            User.Role = Role;
+            User.Status = Statuse;
+            _context.Update(User);
+            _context.SaveChanges();
+
+           
+
+
+        }
+
+        public User GetElementById(int id)
+        {
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d => d.Comments).FirstOrDefault(d => d.Id == id);
         }
     }
 }

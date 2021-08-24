@@ -12,7 +12,7 @@ namespace BackEnd.Models
         public int Id { get; }
         
         [Display(Name = "Роль")]
-
+        
         public string TitleofRole { get; set; }
 
         public List<User> Users { get; set; } = new List<User>();

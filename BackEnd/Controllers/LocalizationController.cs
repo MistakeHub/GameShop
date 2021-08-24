@@ -47,21 +47,25 @@ namespace BackEnd.Controllers
         }
 
         // POST api/<LocalizationController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST api/<CountryController>
+        [HttpPost("add")]
+        public void Post(string title)
         {
+            _context.AddElement(title);
         }
 
-        // PUT api/<LocalizationController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<CountryController>/5
+        [HttpPut("edit/{id}")]
+        public void Put(int id, string title)
         {
+            _context.EditElement(id, title);
         }
 
         // DELETE api/<LocalizationController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("removeLocalization/{id}")]
         public void Delete(int id)
         {
+            _context.RemoveElement(id);
         }
     }
 }

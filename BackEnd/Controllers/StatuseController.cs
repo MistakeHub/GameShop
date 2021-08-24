@@ -16,12 +16,12 @@ namespace BackEnd.Controllers
     public class StatuseController : ControllerBase
     {
 
-        private IGenericRepository<Statuse> context;
+        private IGenericRepository<Statuse> _context;
         
-        public StatuseController(IGenericRepository<Statuse> _context)
+        public StatuseController(IGenericRepository<Statuse> context)
         {
 
-            context = _context;
+            _context = context;
 
         }
         // GET: api/<StatuseController>
@@ -30,7 +30,7 @@ namespace BackEnd.Controllers
         public (IEnumerable, int) Get()
         {
             int total;
-            var data = context.GetElements(out total);
+            var data = _context.GetElements(out total);
 
 
 
@@ -40,26 +40,29 @@ namespace BackEnd.Controllers
         [HttpGet]
         public IEnumerable GetTitles()
         {
-            return context.GetTitles();
+            return _context.GetTitles();
         }
 
 
-        // POST api/<StatuseController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST api/<CountryController>
+        [HttpPost("add")]
+        public void Post(string title)
         {
+            _context.AddElement(title);
         }
 
-        // PUT api/<StatuseController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<CountryController>/5
+        [HttpPut("edit/{id}")]
+        public void Put(int id, string title)
         {
+            _context.EditElement(id, title);
         }
 
         // DELETE api/<StatuseController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("removeStatuse/{id}")]
         public void Delete(int id)
         {
+            _context.RemoveElement(id);
         }
     }
 }

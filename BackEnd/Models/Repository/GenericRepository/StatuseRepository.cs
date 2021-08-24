@@ -20,6 +20,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Statuse statuse = new Statuse();
             statuse.Titleofstatuse = value;
             _context.Statuses.Add(statuse);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

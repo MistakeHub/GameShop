@@ -30,7 +30,9 @@ namespace BackEnd.Models.ViewModels.Mappers
 
             CreateMap<Cart, CartViewModel>().ForMember(p => p.Publication, opt => opt.MapFrom(d => d.Publications)).ForMember(p => p.Countof, opt => opt.MapFrom(d => d.Countof)).ForMember(p => p.Sumof, opt => opt.MapFrom(d => d.Sum)).
                 ForMember(p=>p.Image, opt=>opt.MapFrom(d=>d.Publications.Select(d=>d.Images).Select(a=>a.Select(d=>d.Url))));
-        
+
+            CreateMap<User, UserViewModel>().ForMember(p => p.Login, opt => opt.MapFrom(d => d.Login)).ForMember(p => p.CountofComments, opt => opt.MapFrom(d => d.Comments.Count())).ForMember(d => d.Avatar, opt => opt.MapFrom(d => d.Avatar.Url)).
+                ForMember(p=>p.Role, opt=> opt.MapFrom(d=>d.Role.TitleofRole)).ForMember(p=>p.Statuse, opt=>opt.MapFrom(d=>d.Status.Titleofstatuse));
         }
     }
 }

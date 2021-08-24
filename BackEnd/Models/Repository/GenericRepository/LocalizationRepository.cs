@@ -19,6 +19,7 @@ namespace BackEnd.Models.Repository.GenericRepository
             Genre genre = new Genre();
             genre.Titleofgenre = value;
             _context.Genres.Add(genre);
+            _context.SaveChanges();
         }
 
         public void EditElement(int id, string value)

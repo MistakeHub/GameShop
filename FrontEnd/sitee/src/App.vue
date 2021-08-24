@@ -206,7 +206,7 @@
 <b-collapse id="my-collapse3">
    
       <b-nav-item href="/admin-panel/TablesOfPublication"  v-b-toggle.my-collapse3>Публикации</b-nav-item>
-    <b-nav-item href="/admin-panel/TablesOfCountrie"  v-b-toggle.my-collapse3>Страны</b-nav-item>
+    <b-nav-item href="/admin-panel/TablesOfCountries"  v-b-toggle.my-collapse3>Страны</b-nav-item>
      <b-nav-item href="/admin-panel/TablesOfGenre"  v-b-toggle.my-collapse3>Жанры</b-nav-item>
       <b-nav-item href="/admin-panel/TablesOfLocalization"  v-b-toggle.my-collapse3>Локализации</b-nav-item>
        <b-nav-item href="/admin-panel/TablesOfManufacture"  v-b-toggle.my-collapse3>Издатели</b-nav-item>
@@ -293,6 +293,7 @@ export default {
 
       await localStorage.removeItem("user");
       await localStorage.removeItem("username")
+       await localStorage.removeItem("password")
       window.location.reload();
 
     },
@@ -305,6 +306,7 @@ export default {
             }).then((response) => {
                 localStorage.setItem("user",response.data.access_token);
                 localStorage.setItem("username",this.Login.login)
+                localStorage.setItem("password", this.Login.password)
                 window.location.reload();
             });
      
