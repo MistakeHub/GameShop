@@ -29,6 +29,8 @@ namespace BackEnd
 
         public DbSet<Gameregionrestrict> Gameregionrestricts { get; set; }
 
+        public DbSet<Transaction> Transactions { get; set; }
+
         public DbSet<Gamelocalization> Gamelocalizations { get; set; }
 
         public DbSet<Gamegenre> Gamegenres { get; set; }
@@ -54,6 +56,8 @@ namespace BackEnd
         public DbSet<Statuse> Statuses { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Visitor> Visitors { get; set; }
 
         public shopContext(DbContextOptions<shopContext> options):base(options)
         {

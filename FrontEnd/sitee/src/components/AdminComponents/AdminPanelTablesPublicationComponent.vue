@@ -48,6 +48,8 @@
 
 <b-button v-if="!isHaveModal" variant="succes" @click="$bvModal.show('bv-modal-example')"  :href=AddRef > New</b-button>
 <b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"  @click="$bvModal.show('bv-modal-example')"  > New</b-button>
+<b-button @click="SaveToJson()" variant="warning">SaveToJson</b-button>
+<b-button @click="LoadFromJson()" variant="warning">LoadFromJson</b-button>
   <b-modal id="bv-modal-example" hide-footer>
     <template #modal-title>
     <h1>Добавление нового элемента</h1>
@@ -195,6 +197,17 @@ import axios from 'axios'
            
 
       },
+
+      SaveToJson:function(){
+
+         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+
+      },
+        LoadFromJson:function(){
+
+         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/loadfromjson', }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+
+      }
           
    
           }

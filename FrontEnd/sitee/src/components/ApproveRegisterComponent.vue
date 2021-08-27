@@ -1,5 +1,15 @@
 <template>
- <h1>Урааа</h1>
+<div class="card text-center">
+  
+  <div class="card-body">
+    <h5 class="card-title">Регистрация прошла успешно</h5>
+    <p class="card-text">Теперь вы можете вернуться на главную страницу</p>
+    <a href="/" class="btn">Вернуться обратно</a>
+  </div>
+  <div class="card-footer text-muted">
+   
+  </div>
+</div>
 </template>
 
 

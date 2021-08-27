@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class SeriesRepository:IGenericRepository<Serie>
+    public class SeriesRepository:FileSave<Serie>,IGenericRepository<Serie>
     {
 
         private readonly shopContext _context;
@@ -53,11 +54,21 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Series.Select(d => d.Titleofseries);
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Serie> series = LoadFromJson("Series.json");
+        }
+
         public void RemoveElement(int id)
         {
             Serie serie = _context.Series.SingleOrDefault(p => p.Id == id);
             _context.Series.Remove(serie);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Series.json", _context.Series);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace BackEnd.Models
         public List<Image> Images { get; set; }
         [Display(Name = "Комментарии")]
         public List<Comment> Comments { get; set; }
-        
-        
+        public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
+
     }
 }

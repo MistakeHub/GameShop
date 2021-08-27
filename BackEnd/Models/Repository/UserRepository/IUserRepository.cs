@@ -23,6 +23,8 @@ namespace BackEnd.Models.Repository.UserRepository
         User AcceptVerification(ref IMemoryCache cache,string userkey);
         void RequestForVerification(ref IMemoryCache  cache, string value1, string value2, string value3, DateTime value4, string status="Онлайн", string role="Пользователь");
         User UploadAvatar(string login, string password,IFormFile photo, string path);
+        void SaveToJson();
+        void LoadfromJson();
         
 
     }

@@ -175,8 +175,6 @@
    <!-- Footer -->
 
   </div>
-
-
   <div id="app" v-if="$route.meta.AdminLayout"  >
    <div class="basic-layout">
     
@@ -284,10 +282,19 @@ export default {
         login: "",
         password: "",
         local:localStorage.getItem("user"),
-        user:localStorage.getItem("username")
+        user:localStorage.getItem("username"),
+        session:  document.cookie
       }
     };
   },
+   mounted(){
+                  
+               if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
+          },
+
   methods: {
     async Logout(){
 

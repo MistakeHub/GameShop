@@ -214,8 +214,14 @@ namespace BackEnd.Contexts.Configuration
                   j.ToTable("Gamecarts");
               }
           );
-         
-            
+
+
+            modelBuilder.Entity<Transaction>().HasOne(d => d.User).WithMany(d => d.Transactions).HasForeignKey(d=>d.UserId);
+            modelBuilder.Entity<User>().HasMany(d => d.Transactions).WithOne(d => d.User).HasForeignKey(d=>d.UserId);
+
+            modelBuilder.Entity<Transaction>().HasOne(d => d.Publication).WithMany(d => d.Transactions).HasForeignKey(d => d.PublicationId);
+            modelBuilder.Entity<Publication>().HasMany(d => d.Transactions).WithOne(d => d.Publication).HasForeignKey(d => d.PublicationId);
+
             modelBuilder.Entity<Cart>().HasKey(p => p.Id);
             modelBuilder.Entity<Comment>().HasKey(p => p.Id);
             modelBuilder.Entity<Country>().HasKey(p => p.Id);
@@ -223,13 +229,14 @@ namespace BackEnd.Contexts.Configuration
             modelBuilder.Entity<Genre>().HasKey(p => p.Id);
             modelBuilder.Entity<Localization>().HasKey(p => p.Id);
             modelBuilder.Entity<Manufacture>().HasKey(p => p.Id);
-
+            modelBuilder.Entity<Visitor>().HasKey(p => p.Id);
             modelBuilder.Entity<Platform>().HasKey(p => p.Id);
             modelBuilder.Entity<Role>().HasKey(p => p.Id);
             modelBuilder.Entity<Publication>().HasKey(p => p.Id);
             modelBuilder.Entity<Serie>().HasKey(p => p.Id);
             modelBuilder.Entity<Statuse>().HasKey(p => p.Id);
             modelBuilder.Entity<User>().HasKey(p => p.Id);
+            modelBuilder.Entity<Transaction>().HasKey(p => p.Id);
 
         }
     }

@@ -14,5 +14,7 @@ namespace BackEnd.Models.Repository.CartRepository
       
         void RemoveFromCart(string username,string game);
 
+        void Purchase( int userid);
+
     }
 }

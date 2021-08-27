@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class CountryRepository : IGenericRepository<Country>
+    public class CountryRepository : FileSave<Country>, IGenericRepository<Country>
     {
 
         private readonly shopContext _context;
@@ -53,11 +54,21 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Countries.Select(d=>d.Titleofcountry);
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Country> countries = LoadFromJson("Countries.json");
+        }
+
         public void RemoveElement(int id)
         {
             Country country = _context.Countries.SingleOrDefault(p => p.Id == id);
             _context.Countries.Remove(country);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Country.json", _context.Countries);
         }
     }
 }

@@ -71,5 +71,14 @@ namespace BackEnd.Controllers
             _context.RemoveFromCart(user,game);
 
         }
+
+        [HttpDelete("purchase/{id}")]
+
+        public StatusCodeResult Purchase(int id)
+        {
+
+            _context.Purchase(id);
+            return Ok();
+        }
     }
 }

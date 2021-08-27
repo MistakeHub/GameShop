@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BackEnd.Models.Repository.PublicationRepository
 {
-    public class PublicationRepository : FileSave<Publication>, IPublicationRepository
+    public class PublicationRepository : FileSave<Game>, IPublicationRepository
     {
 
 
@@ -524,5 +524,18 @@ namespace BackEnd.Models.Repository.PublicationRepository
         {
            return  _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d => d.Game.Platforms).Include(d => d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Include(d=>d.Images).FirstOrDefault(d=>d.Id==id) ;
         }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Games.json", _context.Games);
+           
+        }
+
+        public void LoadfromJson()
+        {
+            IEnumerable<Game> Game = LoadFromJson("Games.json");
+        }
+
+    
     }
 }

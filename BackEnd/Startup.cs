@@ -19,6 +19,9 @@ using Microsoft.IdentityModel.Tokens;
 using BackEnd.Models.Authentication;
 using BackEnd.Models.Repository.UserRepository;
 using BackEnd.Models.Repository.CartRepository;
+using BackEnd.Models.Repository.VisitorRepository;
+using BackEnd.Middlewares;
+using BackEnd.Models.Repository.Record;
 
 namespace BackEnd
 {
@@ -44,6 +47,8 @@ namespace BackEnd
  );       services.AddCors();
             services.AddAutoMapper(typeof(Startup));
             services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
@@ -79,6 +84,8 @@ namespace BackEnd
             services.AddScoped<IGenericRepository<Serie>, SeriesRepository>();
             services.AddScoped<IGenericRepository<Statuse>, StatuseRepository>();
             services.AddTransient<IUserRepository,UserRepositoryImpl>();
+            services.AddScoped<IVisitorRepository,VisitorRepositoryImpl>();
+            services.AddScoped<IRecordRepository, RecordRepositoryImpl>();
             services.AddSwaggerGen();
         }
 
@@ -91,6 +98,9 @@ namespace BackEnd
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSession();
+
+            app.UseMiddleware<RoutingMiddleware>();
 
             app.UseSwagger();
 
@@ -103,22 +113,18 @@ namespace BackEnd
 
             app.UseHttpsRedirection();
 
-          
-         
-            app.UseCors(builder =>
-            {
 
-              
-                builder.AllowAnyOrigin();
-                builder.AllowAnyHeader();
-                builder.AllowAnyMethod();
-               
 
-            });
+            app.UseCors(x => x
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(origin => true) // allow any origin
+            .AllowCredentials()); // allow credentials
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+      
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

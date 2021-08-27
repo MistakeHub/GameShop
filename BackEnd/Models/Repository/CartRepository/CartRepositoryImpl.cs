@@ -84,11 +84,28 @@ namespace BackEnd.Models.Repository.CartRepository
                     
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
-                
 
+        }
 
-            
+        public void Purchase( int id)
+        {
+          
 
-        } 
+           Cart Cart = _context.Carts.Include(d=>d.User).Include(d=>d.Publications).ThenInclude(d=>d.Game).FirstOrDefault(d => d.Id == id);
+
+            List<Transaction> transactions = new List<Transaction>();
+
+            foreach (var item in Cart.Publications)
+            {
+
+                _context.Transactions.Add(new Transaction() { PublicationId = item.Id, UserId = Cart.User.Id });
+                _context.SaveChanges();
+                _context.ChangeTracker.Clear();
+                RemoveFromCart(Cart.User.Login, item.Game.Titleofgame);
+             
+            }
+           
+           
+        }
     }
 }

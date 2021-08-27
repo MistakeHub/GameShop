@@ -7,6 +7,8 @@ namespace BackEnd.Models.ViewModels
 {
     public class CartViewModel
     {
+        public int Id { get; set; }
+        
         public List<Publication> Publication{ get; set; }
 
         public int Countof { get; set; }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class GenreRepository:IGenericRepository<Genre>
+    public class GenreRepository: FileSave<Genre>, IGenericRepository<Genre>
     {
 
         private readonly shopContext _context;
@@ -53,11 +55,21 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Genres.Select(d=>d.Titleofgenre);
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Genre> genres = LoadFromJson("Genres.json");
+        }
+
         public void RemoveElement(int id)
         {
             Genre genre = _context.Genres.SingleOrDefault(p => p.Id == id);
             _context.Genres.Remove(genre);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Genres.json", _context.Genres);
         }
     }
 }

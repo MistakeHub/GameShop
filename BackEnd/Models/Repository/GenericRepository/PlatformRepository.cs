@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BackEnd.Models.SaveToFile;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class PlatformRepository:IGenericRepository<Platform>
+    public class PlatformRepository: FileSave<Platform>, IGenericRepository<Platform>
     {
 
         private readonly shopContext _context;
@@ -54,6 +55,11 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Platforms.Select(d => d.Titleofplatform).ToList();
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Platform> platforms = LoadFromJson("Platforms.json");
+        }
+
         public void RemoveElement(int id)
         {
             Platform platform = _context.Platforms.SingleOrDefault(p => p.Id == id);
@@ -61,6 +67,11 @@ namespace BackEnd.Models.Repository.GenericRepository
             _context.SaveChanges();
         }
 
-       
+        public async void SaveToJson()
+        {
+            await SaveToJson("Platforms.json", _context.Platforms);
+        }
+
+
     }
 }

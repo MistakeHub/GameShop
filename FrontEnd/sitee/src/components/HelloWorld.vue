@@ -15,7 +15,7 @@
      <img
           slot="img"
 
-         style=" max-width:700px;   min-height:500px"
+         style=" max-width:800px;   min-height:600px"
           :src="require(`../assets/${elem.titleofgame.replace(/\s+/g, '')}.jpg`)"
           alt="image slot"
         >
@@ -76,7 +76,8 @@ import axios from 'axios'
 
            axios.get('https://localhost:44303/api/Home',{headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("user")  // передача токена в заголовке
+                    "Authorization": "Bearer " + localStorage.getItem("user") ,
+                    'set-cookie':document.cookie // передача токена в заголовке
                 }}).then(Response =>this.games=Response.data );
                 console.log(localStorage.getItem("user"));
           },

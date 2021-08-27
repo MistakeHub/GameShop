@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class StatuseRepository:IGenericRepository<Statuse>
+    public class StatuseRepository:FileSave<Statuse>,IGenericRepository<Statuse>
     {
 
 
@@ -54,11 +55,21 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Statuses.Select(d => d.Titleofstatuse).ToList();
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Statuse> statuses = LoadFromJson("Statuses.json");
+        }
+
         public void RemoveElement(int id)
         {
             Statuse statuse = _context.Statuses.SingleOrDefault(p => p.Id == id);
             _context.Statuses.Remove(statuse);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Statuses.json", _context.Statuses);
         }
     }
 }

@@ -22,5 +22,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
         IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations);
         void RemoveComment(int id);
          void AverageRating();
+        void SaveToJson();
+        void LoadfromJson();
+       
     }
 }

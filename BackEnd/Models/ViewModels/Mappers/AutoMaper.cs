@@ -28,7 +28,7 @@ namespace BackEnd.Models.ViewModels.Mappers
                  ForMember(p => p.Comments, opt => opt.MapFrom(d => d.Comments)
                  ).ForMember(p=>p.Filenames, opt=> opt.MapFrom(d=>d.Images.Select(p=>p.Filename)));
 
-            CreateMap<Cart, CartViewModel>().ForMember(p => p.Publication, opt => opt.MapFrom(d => d.Publications)).ForMember(p => p.Countof, opt => opt.MapFrom(d => d.Countof)).ForMember(p => p.Sumof, opt => opt.MapFrom(d => d.Sum)).
+            CreateMap<Cart, CartViewModel>().ForMember(d=> d.Id, opt=>opt.MapFrom(p=>p.Id)).ForMember(p => p.Publication, opt => opt.MapFrom(d => d.Publications)).ForMember(p => p.Countof, opt => opt.MapFrom(d => d.Countof)).ForMember(p => p.Sumof, opt => opt.MapFrom(d => d.Sum)).
                 ForMember(p=>p.Image, opt=>opt.MapFrom(d=>d.Publications.Select(d=>d.Images).Select(a=>a.Select(d=>d.Url))));
 
             CreateMap<User, UserViewModel>().ForMember(p => p.Login, opt => opt.MapFrom(d => d.Login)).ForMember(p => p.CountofComments, opt => opt.MapFrom(d => d.Comments.Count())).ForMember(d => d.Avatar, opt => opt.MapFrom(d => d.Avatar.Url)).

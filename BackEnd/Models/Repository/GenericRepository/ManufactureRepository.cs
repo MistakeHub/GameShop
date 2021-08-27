@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackEnd.Models.SaveToFile;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class ManufactureRepository:IGenericRepository<Manufacture>
+    public class ManufactureRepository: FileSave<Manufacture>, IGenericRepository<Manufacture>
     {
 
 
@@ -55,6 +56,11 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Manufactures.Select(d => d.Titleofmanufactures).ToList(); ;
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Manufacture> manufactures = LoadFromJson("Manufactures.json");
+        }
+
         public void RemoveElement(int id)
         {
             Manufacture manufacture = _context.Manufactures.SingleOrDefault(p => p.Id == id);
@@ -62,6 +68,11 @@ namespace BackEnd.Models.Repository.GenericRepository
             _context.SaveChanges();
         }
 
-      
+        public async void SaveToJson()
+        {
+            await SaveToJson("Manufactures.json", _context.Manufactures);
+        }
+
+
     }
 }

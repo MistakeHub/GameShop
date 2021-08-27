@@ -49,8 +49,8 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public User CheckUser(string login, string password)
         {
-            string Password = HashHelper.GetHashString(password);
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==Password);
+            
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password);
         }
 
         public IEnumerable<User> GetElements(out int total)
@@ -172,6 +172,16 @@ namespace BackEnd.Models.Repository.UserRepository
         public User GetElementById(int id)
         {
             return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d => d.Comments).FirstOrDefault(d => d.Id == id);
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Users.json", _context.Users);
+        }
+
+        public void LoadfromJson()
+        {
+            IEnumerable<User> users = LoadFromJson("Users.json");
         }
     }
 }

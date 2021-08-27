@@ -67,6 +67,27 @@ namespace BackEnd.Controllers
 
         }
 
+
+        [Route("savetojson")]
+        [HttpPost]
+        public StatusCodeResult SaveToJson()
+        {
+            _context.SaveToJson();
+
+            return Ok();
+
+        }
+
+        [Route("loadfromjson")]
+        [HttpPost]
+        public StatusCodeResult LoadFromJson()
+        {
+            _context.LoadfromJson();
+
+            return Ok();
+
+        }
+
         [HttpGet("/users")]
         public (IEnumerable, int) Get()
         {

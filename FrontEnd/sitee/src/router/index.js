@@ -12,6 +12,7 @@ import ApproveRegister from "../views/ApproveRegister.vue"
 import AdminPanelTablesPublication from "../views/AdminPanelViews/AdminPanelTablesPublication.vue"
 import AddPublicationForm from "../views/AdminPanelViews/AddFormViews/AddPublicationForm.vue"
 import AddEditUserForm from "../views/AdminPanelViews/AddFormViews/AddEditUserForm.vue"
+import AcceptPurchase from "../views/AcceptPurchase.vue"
 
 // Containers
 
@@ -224,6 +225,14 @@ const routes = [
     path:"/cart/:user",
     name:"Cart",
     component:Cart
+ 
+   },
+
+   
+  {
+    path:"/cart/AcceptPurchase/:id",
+    name:"AcceptPurchase",
+    component:AcceptPurchase
  
    },
    {

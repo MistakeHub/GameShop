@@ -42,5 +42,7 @@ namespace BackEnd.Models
         public List<Mark>? Marks { get; set; } = new List<Mark>();
 
         public List<Comment>? Comments { get; set; } = new List<Comment>();
+
+        public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
     }
 }

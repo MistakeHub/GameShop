@@ -3,7 +3,7 @@
 
     <b-form class=" bg-white" >
       <h1 v-if="$route.meta.EditFormPublication">Редактирование Публикации "{{games.titleofgame}}"</h1>
-     <h1>Добавление новой публикации</h1>
+     <h1 v-if="!$route.meta.EditFormPublication">Добавление новой публикации</h1>
       <b-form-group
         id="input-group-1"
         label="Название Игры:"

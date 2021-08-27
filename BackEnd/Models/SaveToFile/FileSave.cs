@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -101,7 +102,7 @@ namespace BackEnd.Models.SaveToFile
             using (FileStream fs=new FileStream(filename, FileMode.OpenOrCreate))
             {
 
-                await JsonSerializer.SerializeAsync(fs, collection);
+                await System.Text.Json.JsonSerializer.SerializeAsync(fs, collection);
 
             }
 
@@ -117,15 +118,21 @@ namespace BackEnd.Models.SaveToFile
             }
         }
 
-        public async Task LoadFromJson(string filename,  IEnumerable<T> collection)
+        public IEnumerable<T> LoadFromJson(string filename)
         {
-          
-            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))
+
+            IEnumerable<T> collection = null;
+
+            using (Stream Stream = new FileStream(filename, FileMode.Open))
+            using (StreamReader SR = new StreamReader(Stream))
+            using (JsonReader Reader = new JsonTextReader(SR))
             {
-               collection = await JsonSerializer.DeserializeAsync<IEnumerable<T>>(fs);
-             
+                Newtonsoft.Json.JsonSerializer Serializer = new Newtonsoft.Json.JsonSerializer();
+                collection = Serializer.Deserialize<IEnumerable<T>>(Reader);
             }
-          
+
+
+            return collection;
         }
 
         public async Task LoadFromXml(string filename, IEnumerable<T> collection)

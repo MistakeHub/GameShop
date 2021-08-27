@@ -63,7 +63,6 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Cng.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Role.json
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Microsoft.OpenApi.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -71,3 +70,5 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Swashbu
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\web.config
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.csproj.AssemblyReference.cache
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Publications.json
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Games.json

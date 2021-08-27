@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class RoleRepository:IGenericRepository<Role>
+    public class RoleRepository: FileSave<Role>, IGenericRepository<Role>
     {
 
         private readonly shopContext _context;
@@ -53,11 +54,21 @@ namespace BackEnd.Models.Repository.GenericRepository
             return _context.Roles.Select(d => d.TitleofRole).ToList();
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Role> roles = LoadFromJson("Roles.json");
+        }
+
         public void RemoveElement(int id)
         {
             Role role = _context.Roles.SingleOrDefault(p => p.Id == id);
             _context.Roles.Remove(role);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Roles.json", _context.Roles);
         }
 
     }

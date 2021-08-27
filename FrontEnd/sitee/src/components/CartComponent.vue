@@ -61,8 +61,8 @@
                                         </div>
                                     </div>
                                     <div class="cart-footer text-right">
-                                        <button type="button" class="btn btn-info my-1"><i class="ri-save-line mr-2"></i>Update Cart</button>
-                                        <a href="page-checkout.html" class="btn btn-success my-1">Proceed to Checkout<i class="ri-arrow-right-line ml-2"></i></a>
+                                      
+                                        <a :href="'/cart/AcceptPurchase/'+cart.id" class="btn btn-success my-1" >Оплатить<i class="ri-arrow-right-line ml-2"></i></a>
                                     </div>
                                 </div>
                             </div>

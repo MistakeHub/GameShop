@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd.Models.SaveToFile;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class LocalizationRepository:IGenericRepository<Localization>
+    public class LocalizationRepository: FileSave<Localization>, IGenericRepository<Localization>
     {
 
         private readonly shopContext _context;
@@ -53,11 +54,21 @@ namespace BackEnd.Models.Repository.GenericRepository
                return _context.Localizations.Select(d => d.Titleoflocalization).ToList();
         }
 
+        public void LoadfromJson()
+        {
+            IEnumerable<Localization> localizations = LoadFromJson("Localizations.json");
+        }
+
         public void RemoveElement(int id)
         {
             Localization localization = _context.Localizations.SingleOrDefault(p => p.Id == id);
             _context.Localizations.Remove(localization);
             _context.SaveChanges();
+        }
+
+        public async void SaveToJson()
+        {
+            await SaveToJson("Localizations.json", _context.Localizations);
         }
 
     }

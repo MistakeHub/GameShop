@@ -48,10 +48,10 @@ namespace BackEnd.Models
         public virtual List<Platform> Platforms { get; set; } = new List<Platform>();
 
 
+   
 
 
 
-     
         public virtual List<Localization> Localizations { get; set; } = new List<Localization>();
 
 

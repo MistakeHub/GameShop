@@ -68,5 +68,26 @@ namespace BackEnd.Controllers
         {
             _context.RemoveElement(id);
         }
+
+
+        [Route("savetojson")]
+        [HttpPost]
+        public StatusCodeResult SaveToJson()
+        {
+            _context.SaveToJson();
+
+            return Ok();
+
+        }
+
+        [Route("loadfromjson")]
+        [HttpPost]
+        public StatusCodeResult LoadFromJson()
+        {
+            _context.LoadfromJson();
+
+            return Ok();
+
+        }
     }
 }
