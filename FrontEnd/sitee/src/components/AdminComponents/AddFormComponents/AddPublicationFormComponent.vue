@@ -259,6 +259,10 @@ import axios from 'axios'
               }
           },
           mounted(){
+              if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
 
           
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -280,6 +284,7 @@ import axios from 'axios'
             this.seriess=this.games.series.titleofseries
             this.description=this.games.description
             this.publications=Response.data
+            console.log(this.publications.id)
             
                         
               
@@ -353,10 +358,13 @@ import axios from 'axios'
   }
   console.log(formData)
       
-
+     console.log(this.publications.id)
       if(this.$route.meta.EditFormPublication)
-      axios({method:'POST', url:`https://localhost:44303/api/Catalog/editpublication/`+this.publications.id, data:formData,params:{images:formData,titleofgame:this.titleofgame,
-         description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
+      
+      axios({method:'POST', url:`https://localhost:44303/api/Catalog/editpublication/`+this.publications.id, headers:{
+                    "Accept": "application/json",
+                 "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{images:formData,titleofgame:this.titleofgame,
+         description:this.description, dateRealese:this.dateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
          localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
            alert("Успешно обновлено");
             }).catch(error => {
@@ -364,7 +372,9 @@ import axios from 'axios'
             });
 
 else 
-        axios({method:'POST', url:`https://localhost:44303/api/Catalog/addPublication`, data:formData,params:{images:formData,titleofgame:this.titleofgame,
+        axios({method:'POST', url:`https://localhost:44303/api/Catalog/addPublication`, headers:{
+                    "Accept": "application/json",
+                 "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
          localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
                console.log(response.data);

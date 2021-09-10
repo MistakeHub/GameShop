@@ -2,6 +2,7 @@
 using BackEnd.Models;
 using BackEnd.Models.Repository.PublicationRepository;
 using BackEnd.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting.Internal;
 using System;
@@ -54,6 +55,7 @@ namespace BackEnd.Controllers
 
         // PUT api/<GameDetailController>/5
         [HttpPut]
+        [Authorize]
         public StatusCodeResult Put(string username, int idpublication, double numberofmark)
         {
 
@@ -63,6 +65,7 @@ namespace BackEnd.Controllers
 
         [HttpPut]
         [Route("addComment")]
+        [Authorize]
         public IEnumerable AddComment(string username, int idpublication,string text)
         {
 
@@ -70,9 +73,11 @@ namespace BackEnd.Controllers
         }
 
         // DELETE api/<GameDetailController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("removeComment/{id}")]
+        public IEnumerable Delete(int id,int idpublication)
         {
+
+            return context.RemoveComment(id, idpublication);
         }
     }
 }

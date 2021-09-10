@@ -174,13 +174,19 @@ import axios from 'axios'
           },
           mounted(){
 
+  if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
           
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
              axios.get("https://localhost:44303/api/Statuse").then(Response=> this.statuse=Response.data)
                axios.get("https://localhost:44303/api/Role").then(Response=> this.roles=Response.data)
              
 
-            if(this.$route.meta.EditFormUser)     axios.get("https://localhost:44303/getfulluser/"+this.$route.params.id).
+            if(this.$route.meta.EditFormUser)     axios.get("https://localhost:44303/getfulluser/"+this.$route.params.id, {headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}},).
             then(Response=> {
                  console.log(Response.data);
                  this.id=Response.data.id
@@ -245,7 +251,9 @@ import axios from 'axios'
     let file = this.image
 
    formData.append('avatar', file, file.name)
-      axios({method:'PUT', url:`https://localhost:44303/edituser/`+this.id, data:formData,params:{ login:this.Login, password:this.Password, email:this.Email, statuse:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
+      axios({method:'PUT', url:`https://localhost:44303/edituser/`+this.id, headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")},data:formData,params:{ login:this.Login, password:this.Password, email:this.Email, statuse:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
            alert("Успешно обновлено");
             }).catch(error => {
                 console.log(error);
@@ -253,7 +261,9 @@ import axios from 'axios'
       }
 
 else 
-          axios({method:'POST', url:`https://localhost:44303/register`, params:{ login:this.Login, password:this.Password, email:this.Email, status:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
+          axios({method:'POST', url:`https://localhost:44303/register`,headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")}, params:{ login:this.Login, password:this.Password, email:this.Email, status:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
            alert("Успешно Добавлено");
             }).catch(error => {
                 console.log(error);

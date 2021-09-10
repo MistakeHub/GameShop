@@ -153,6 +153,7 @@ namespace BackEnd.Controllers
 
         [Route("savetojson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult SaveToJson()
         {
             _context.SaveToJson();
@@ -163,6 +164,7 @@ namespace BackEnd.Controllers
 
         [Route("loadfromjson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult LoadFromJson()
         {
             _context.LoadfromJson();
@@ -174,6 +176,7 @@ namespace BackEnd.Controllers
 
         [Route("editpublication/{id}")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult EditPublication(int id, [FromForm(Name = "images")] IList<IFormFile> images, string titleofgame, string description, DateTime dateRealese, [FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, [FromQuery(Name = "regionrestricts[]")] string[] regionrestricts, string series, double price)
         {
 
@@ -185,21 +188,11 @@ namespace BackEnd.Controllers
         }
 
 
-        [Route("file")]
-        [HttpPost]
-
-        public StatusCodeResult AddPublications(FormFile images)
-        {
-
-            //  _context.AddPublication(_context.Uploads(images,_appEnvironment,$"/images/{titleofgame}/"), titleofgame, description, dateRealese, platforms, localizations, genres, manufactures, regionrestricts, series, price);
-
-            return Ok();
-
-        }
+       
 
         [Route("addPublication")]
         [HttpPost]
-
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult AddPublication([FromForm(Name = "images")] IList<IFormFile> images,string titleofgame,string description,DateTime dateRealese,[FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, [FromQuery(Name = "regionrestricts[]")] string[] regionrestricts, string series, double price)
         {
 
@@ -211,7 +204,7 @@ namespace BackEnd.Controllers
 
         [Route("removePublication/{id}")]
         [HttpDelete]
-
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult removePublicatio(int id)
         {
 

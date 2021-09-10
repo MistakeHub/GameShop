@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,6 +48,7 @@ namespace BackEnd.Controllers
         // POST api/<GenresController>
         // POST api/<CountryController>
         [HttpPost("add")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public void Post(string title)
         {
             _context.AddElement(title);
@@ -54,6 +56,8 @@ namespace BackEnd.Controllers
 
         // PUT api/<CountryController>/5
         [HttpPut("edit/{id}")]
+        [Authorize(Roles = "Редактор,Администратор")]
+
         public void Put(int id, string title)
         {
             _context.EditElement(id, title);
@@ -61,6 +65,7 @@ namespace BackEnd.Controllers
 
         // DELETE api/<GenresController>/5
         [HttpDelete("removeGenre/{id}")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public void Delete(int id)
         {
             _context.RemoveElement(id);
@@ -68,6 +73,7 @@ namespace BackEnd.Controllers
 
         [Route("savetojson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult SaveToJson()
         {
             _context.SaveToJson();
@@ -78,6 +84,7 @@ namespace BackEnd.Controllers
 
         [Route("loadfromjson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult LoadFromJson()
         {
             _context.LoadfromJson();

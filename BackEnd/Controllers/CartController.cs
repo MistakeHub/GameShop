@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BackEnd.Models.Repository.CartRepository;
 using BackEnd.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace BackEnd.Controllers
 
         // GET: api/<CartController>
         [HttpGet("{user}")]
+        [Authorize]
         public CartViewModel Get(string user)
 
         {
@@ -40,6 +42,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("count")]
+        [Authorize]
         public int Countof(string user)
 
         {
@@ -54,6 +57,7 @@ namespace BackEnd.Controllers
 
         // POST api/<CartController>
         [HttpPost]
+        [Authorize]
         public StatusCodeResult Post([FromQuery] string username,[FromQuery] string game )
         {
 
@@ -66,6 +70,7 @@ namespace BackEnd.Controllers
        
         // DELETE api/<CartController>/5
         [HttpDelete("{user}")]
+        [Authorize]
         public void Delete(string user,string game)
         {
             _context.RemoveFromCart(user,game);
@@ -73,7 +78,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpDelete("purchase/{id}")]
-
+        [Authorize]
         public StatusCodeResult Purchase(int id)
         {
 

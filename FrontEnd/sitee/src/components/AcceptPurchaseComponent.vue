@@ -28,11 +28,17 @@ import axios from 'axios'
           name: 'AcceptPurchaseComponent',
         
           mounted(){
+              if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
           
   axios({
                 method: 'DELETE',
                 url: 'https://localhost:44303/api/Cart/purchase/'+this.$route.params.id,
-                
+                headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")}
             }).then((response) => {
              
             });

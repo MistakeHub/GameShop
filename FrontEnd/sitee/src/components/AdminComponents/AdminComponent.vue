@@ -2,20 +2,19 @@
   <!-- Material form contact -->
 <div class="container">
   <section id="content">
-    <form action="">
+
       <h1>Админ-Панель</h1>
       <div>
-        <input type="text" placeholder="Username" required="" id="username" />
+        <input type="text" placeholder="Username" required="" v-model="Login" id="username" />
       </div>
       <div>
-        <input type="password" placeholder="Password" required="" id="password" />
+        <input type="password" placeholder="Password" v-model="Password" required="" id="password" />
       </div>
       <div>
-        <input type="submit" value="Log in" />
-        <a href="#">Lost your password?</a>
-        <a href="#">Register</a>
+        <input type="submit" value="Log in" @click="loginUser()"/>
+  
       </div>
-    </form><!-- form -->
+ <!-- form -->
     
   </section><!-- content -->
 </div><!-- container -->
@@ -287,29 +286,60 @@ form:after {
 <script>
 
 import axios from 'axios'
+import store from '../../store/index'
   export default{
     
   props: {
   },
      
           name: 'AdminComponent',
+          store:store,
           data(){
               return{
       
             
             
-              
-              
+              Login:"",
+              Password:"",
+                self : this
             
         
               }
+              
           },
+          methods:{
+
+             async loginUser() {
+      
+         await axios({
+                method: 'POST',
+                url: 'https://localhost:44303/token',
+                params: { login: this.Login, password:this.Password, optionalrole:1 }
+            }).then((response) => {
+
+             
+                localStorage.setItem("admin",response.data.access_token);
+                localStorage.setItem("adminname",this.Login.login)
+                localStorage.setItem("password", this.Login.password)
+                
+              this.$store.state.isAdmin=true
+               alert( this.$store.state.isAdmin)
+             this.$router.replace({ name: "Visitors" });
+            
+             
+               
+             
+               
+            });
+            
+          }
      
 
           
            
         
           
+  }
   }
 
 </script>

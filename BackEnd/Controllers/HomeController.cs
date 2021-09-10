@@ -48,13 +48,7 @@ namespace BackEnd.Controllers
 
         
 
-        [HttpPost("{id}")]
-       public void Remove(int id)
-        {
-
-            context.RemovePublication(id);
-
-        }
+  
 
         // GET api/<CountryController>/5
      

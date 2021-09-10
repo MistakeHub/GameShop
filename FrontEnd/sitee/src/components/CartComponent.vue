@@ -1,5 +1,5 @@
 <template>
-   <div class="container">                
+   <div class="container" style="    padding-top: 10%" >                
 <div class="contentbar">                
         <!-- Start row -->
         <div class="row">
@@ -116,12 +116,20 @@ import axios from 'axios'
               }
           },
           mounted(){
+                if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
                            
          axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Cart/'+this.$route.params.user ,
-             
+                headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")
+                    ,
+                    'set-cookie':document.cookie}
               
             }).then((response) => {
                  
@@ -143,7 +151,10 @@ import axios from 'axios'
            axios({
                 method: 'DELETE',
                 url: 'https://localhost:44303/api/Cart/'+this.$route.params.user ,
-                params:{ game:elem.game.titleofgame}
+                params:{ game:elem.game.titleofgame},
+                headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")}
              
               
             }).then((response) => {

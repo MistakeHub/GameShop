@@ -9,16 +9,27 @@ import Cart from "../views/Cart.vue"
 import Register from "../views/Register.vue"
 import UserProfile from "../views/UserProfile.vue"
 import ApproveRegister from "../views/ApproveRegister.vue"
-import AdminPanelTablesPublication from "../views/AdminPanelViews/AdminPanelTablesPublication.vue"
+import CountryTable from "../views/AdminPanelViews/AdminTables/CountryTable.vue"
+import GameTable from "../views/AdminPanelViews/AdminTables/GameTable.vue"
+import GenreTable from "../views/AdminPanelViews/AdminTables/GenreTable.vue"
+import LocalizationTable from "../views/AdminPanelViews/AdminTables/LocalizationTable.vue"
+import ManufactureTable from "../views/AdminPanelViews/AdminTables/ManufactureTable.vue"
+import PlatformTable from "../views/AdminPanelViews/AdminTables/PlatformTable.vue"
+import RoleTable from "../views/AdminPanelViews/AdminTables/RoleTable.vue"
+import SeriesTable from "../views/AdminPanelViews/AdminTables/SeriesTable.vue"
+import StatuseTable from "../views/AdminPanelViews/AdminTables/StatuseTable.vue"
+import UserTable from "../views/AdminPanelViews/AdminTables/UserTable.vue"
 import AddPublicationForm from "../views/AdminPanelViews/AddFormViews/AddPublicationForm.vue"
 import AddEditUserForm from "../views/AdminPanelViews/AddFormViews/AddEditUserForm.vue"
 import AcceptPurchase from "../views/AcceptPurchase.vue"
+import MostPurcheasable from "../views/AdminPanelViews/MostPurcheasable.vue"
+import MostProfitable from "../views/AdminPanelViews/MostProfitable.vue"
 
 // Containers
 
 
 // Views
-const Dashboard = () => import('@/views/AdminPanelViews/Dashboard')
+const VisitorsGraph = () => import('@/views/AdminPanelViews/VisitorsGraph')
 
 
 
@@ -44,10 +55,10 @@ const routes = [
   },
 
   {
-    path: '/admin-panel/Home',
-    name:"HomeAdmin",
+    path: '/admin-panel/dashboards/Visitors',
+    name:"Visitors",
   
-    component: Dashboard,
+    component: VisitorsGraph,
      
  
 
@@ -56,10 +67,38 @@ const routes = [
     }, 
 
     },
+
+    {
+      path: '/admin-panel/dashboards/MostPurcheasable',
+      name:"Mostpurcheasable",
+    
+      component: MostPurcheasable,
+       
+   
+  
+      meta: {
+        AdminPanelLayout: true,
+      }, 
+  
+      },
+
+      {
+        path: '/admin-panel/dashboards/MostProfitable',
+        name:"MostProfitable",
+      
+        component: MostProfitable,
+         
+     
+    
+        meta: {
+          AdminPanelLayout: true,
+        }, 
+    
+        },
     {
       path: '/admin-panel/TablesOfPublication',
       name:"Tables1",
-      component: AdminPanelTablesPublication,
+      component: GameTable,
       meta: {
         AdminPanelLayout: true,
         publication:true
@@ -69,7 +108,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfCountry',
       name:"Tables2",
-      component: AdminPanelTablesPublication,
+      component: CountryTable,
       meta: {
         AdminPanelLayout: true,
         country:true
@@ -79,7 +118,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfGenre',
       name:"Tables3",
-      component: AdminPanelTablesPublication,
+      component: GenreTable,
       meta: {
         AdminPanelLayout: true,
         genre:true
@@ -89,7 +128,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfLocalization',
       name:"Tables4",
-      component: AdminPanelTablesPublication,
+      component: LocalizationTable,
       meta: {
         AdminPanelLayout: true,
         localization:true
@@ -99,7 +138,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfManufacture',
       name:"Tables5",
-      component: AdminPanelTablesPublication,
+      component: ManufactureTable,
       meta: {
         AdminPanelLayout: true,
         manufacture:true
@@ -109,7 +148,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfPlatform',
       name:"Tables6",
-      component: AdminPanelTablesPublication,
+      component:PlatformTable,
       meta: {
         AdminPanelLayout: true,
         platform:true
@@ -119,7 +158,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfRole',
       name:"Tables7",
-      component: AdminPanelTablesPublication,
+      component: RoleTable,
       meta: {
         AdminPanelLayout: true,
         role:true
@@ -129,7 +168,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfSeries',
       name:"Tables8",
-      component: AdminPanelTablesPublication,
+      component: SeriesTable,
       meta: {
         AdminPanelLayout: true,
         series:true
@@ -139,7 +178,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfStatuse',
       name:"Tables9",
-      component: AdminPanelTablesPublication,
+      component: StatuseTable,
       meta: {
         AdminPanelLayout: true,
         statuse:true
@@ -149,7 +188,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfUser',
       name:"Tables10",
-      component: AdminPanelTablesPublication,
+      component: UserTable,
       meta: {
         AdminPanelLayout: true,
         user:true
@@ -159,7 +198,7 @@ const routes = [
     {
       path: '/admin-panel/TablesOfCountries',
       name:"Tables11",
-      component: AdminPanelTablesPublication,
+      component: CountryTable,
       meta: {
         AdminPanelLayout: true,
         country:true

@@ -5,7 +5,7 @@
     <line-chart :chart-data="datacollection" :chart-options="options"></line-chart>
     </div>
     <div>
-   <ReportTablesComponent></ReportTablesComponent>
+   
     </div>
        <button @click="fillData()">Randomize</button>
   </div>
@@ -15,11 +15,11 @@
 
 <script>
 import LineChart from '@/components/LineChart'
-import ReportTablesComponent from '@/components/AdminComponents/ReportTablesComponent.vue'
+
 import axios from 'axios'
  export default {
     components: {
-      LineChart,ReportTablesComponent
+      LineChart
     },
     data () {
       return {
@@ -29,12 +29,16 @@ import axios from 'axios'
       }
     },
     mounted () {
-      this.fillData()
+      setInterval( this.fillData,100)
     },
     methods: {
       fillData () {
 
-          axios.get('https://localhost:44303/api/Record/visitorcount').then(Response=>{   this.Count = Response.data;console.log(this.Count)})
+          axios.get('https://localhost:44303/api/Record/visitorcount',{headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("admin")
+                    ,
+                    'set-cookie':document.cookie}}).then(Response=>{   this.Count = Response.data;console.log(this.Count)})
         this.datacollection = {
           labels: ["Январь","Февраль", "Март", "Апрель","Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
           datasets: [

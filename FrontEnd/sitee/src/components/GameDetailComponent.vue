@@ -1,8 +1,11 @@
 <template>
-<div class="  d-flex justify-content-center">
-<body>
+
+<div style="padding-top:10%" class="bg-dark">
+  
+<div class="bg-white" >
+
  
-  <div id="app">
+  <div>
     <div class="container container-space">
       <div class="row">
         <div class="col-md-6" >
@@ -52,15 +55,13 @@
 
            
            <div class="description"><b> Дата Выпуска:</b><div  class="d-flex align-items-start">  <p>{{games.dateRealese}}</p></div></div>
- <div>
+ <div class="">
   
-   
+       <h3>Цена :{{games.price}}руб</h3>
+        
+   <button v-b-modal.modal-1 type="button" class="btn btn-success" @click="addToCart()" > В корзину </button>
   </div>
-          <h3>Цена :{{games.price}}руб</h3>
-          <b-button v-b-modal.modal-1 type="button" class="  btn-outline-primary btn-lg btn-block btn-custom-color" @click="addToCart()" > 
-            В корзину
-          </b-button>
- 
+      
 
   <b-modal id="modal-1" v-bind:title="resultcode===200?'Товар Успешно Добавлен' : 'Ошибка!' " ref="cart-modal">
     <div v-if="resultcode===200">
@@ -113,7 +114,9 @@
 
   </div>
 </div>
+
 </div>
+
  </div>
 
  
@@ -136,10 +139,11 @@
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2"  width="38"><input type="text" class="form-control mr-3" placeholder="Add comment" v-model="comment"> <button class="btn btn-primary" type="button" @click="addComment()">Comment</button></div>
                <div class="card p-3" v-for="item in games.comments">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar==null?'https://localhost:44303/getImage/Avatar/Default.jpg':item.user.avatar.url" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>2 days ago</small>
+                 
+                    <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar.url " width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>2 days ago</small>
                 </div>
                 <div class="action d-flex justify-content-between mt-2 align-items-center">
-                    <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
+                    <div class="reply px-4" v-if="username==item.user.login || role=='Редактор'"> <a  @click="RemoveComment(item.id)">Remove</a>  </div>
                     <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
                 </div>
             </div>
@@ -152,183 +156,16 @@
     
  
 
-</body>
 
 
+
+</div>
 </div>
 </template>
 
 
 
-<style clas>
 
-*{
-    padding: 0;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-}
-
-#demo{
-    margin: 20px 0 0 0;
-}
-
-.comment-form{
-    display: block;
-    width: 80%;
-    margin: auto;
-}
-
-textarea{
-    width: 100%;
-    border: 2px solid #ccc;
-    border-radius: 7px;
-    height: 70px;
-    font-family: Verdana, Helvetica, sans-serif;
-    padding: 5px;
-}
-
-input{
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-button{
-    background: #333;
-    color: #ccc;
-    border: 0;
-    padding: 5px;
-    cursor: pointer;
-}
-
-/*Comment Box*/
-
-.comments-box{
-    width: 40%;
-    margin: auto;
-    padding: 20px 0;
-    border-bottom: 1px solid #000;
-}
-
-.delete{
-    background: red;
-    color: #fff;
-    font-size: 12px;
-    cursor: pointer;
-    display: inline;
-    padding: 3px;
-}
-
-.author{
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.product-detail-columns-container {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    margin-top: 20px;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-}
-.product-detail-desc {
-    width: 732px;
-    background-color: #fafafa;
-}
-
-.img{ min-height:50px; max-height:50px; margin-left: 10px; margin-top:10px;}
-.product-detail-tabs{position:relative;box-sizing:border-box;width:100%;min-height:100px;padding:20px 20px 20px 125px;color:#434343;background:#fff}
-.selected{
-   box-shadow:0px 12px 22px 1px #333;
-   min-height:50px; max-height:50px; margin-left: 10px; margin-top:10px;
-}
-
-body {
-  font-family: "Nunito", sans-serif;
-  background-color: #eeeeee;
-}
-#container-space {
-  margin-top: 2rem;
-}
-#product-thumbnails {
-  display: flex;
-  margin-top: 2rem;
-}
-.product-thumbnails > ul {
-  display: flex;
-  list-style: none;
-  padding-left: 0;
-}
-.product-thumbnails > li {
-  margin-right: 10px;
-}
-.product-thumbnails > ul > li > img {
-  width: 100px;
-  cursor: pointer;
-}
-.thumbnail-active {
-  border: 2px solid #000;
-}
-.nav-link > img {
-  width: 40px;
-  border-radius: 8px;
-  margin-right: 10px;
-}
-body {
-    background-color: #eee
-}
-
-.bdge {
-    height: 21px;
-    background-color: orange;
-    color: #fff;
-    font-size: 11px;
-    padding: 8px;
-    border-radius: 4px;
-    line-height: 3px
-}
-
-.comments {
-    text-decoration: underline;
-    text-underline-position: under;
-    cursor: pointer
-}
-
-.dot {
-    height: 7px;
-    width: 7px;
-    margin-top: 3px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block
-}
-
-.hit-voting:hover {
-    color: blue
-}
-
-.hit-voting {
-    cursor: pointer
-}
-
-.btn-custom-color {
-  border: 2px solid #4fc08d;
-  color: #4fc08d;
-}
-.btn-custom-color:hover {
-  border: 2px solid #4fc08d;
-  background-color: #4fc08d;
-  color: #ffffff;
-}
-.desctiption{line-height:32px;position:relative;margin-bottom:30px;padding-bottom:25px}
-
-
-</style>
 <script>
 import axios from 'axios'
   export default{
@@ -356,6 +193,7 @@ import axios from 'axios'
                resultcode:0,
                comment:"",
                username:localStorage.getItem("username"),
+                 role:localStorage.getItem("role")
                
             
               
@@ -365,6 +203,10 @@ import axios from 'axios'
               }
           },
           mounted(){
+              if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
              axios.get("https://localhost:44303/api/Platform").then(Response=> this.platforms=Response.data)
                axios.get("https://localhost:44303/api/Localization").then(Response=> this.localizations=Response.data)
@@ -397,7 +239,9 @@ import axios from 'axios'
                  axios({
                 method: 'POST',
                 url: 'https://localhost:44303/api/Cart/',
-             
+                headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")},
                 params: { username:localStorage.getItem("username"), game:this.games.titleofgame
                 }
             }).then((response) => {
@@ -436,7 +280,10 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
                  axios({
                 method: 'PUT',
                 url: 'https://localhost:44303/api/GameDetail/',
-             
+                headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user"),
+                    'set-cookie':document.cookie},
                 params: { username:this.username, idpublication:id, numberofmark:this.games.rating
                 }
             }).then((response) => {
@@ -446,12 +293,33 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
 
 
            },
-           addComment:function(){
+           RemoveComment:function(id){
+
+             axios({
+                method: 'DELETE',
+                url: 'https://localhost:44303/api/GameDetail/removeComment/'+id,
+               headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")},
+                params: { username:localStorage.getItem("username"),idpublication:this.games.id
+                }
+            }).then((response) => {
+                 
+               this.games.comments=response.data;
+               console.log(this.games.comments)
+            });
+
+
+           },
+
+              addComment:function(){
 
              axios({
                 method: 'PUT',
                 url: 'https://localhost:44303/api/GameDetail/addComment',
-             
+               headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")},
                 params: { username:localStorage.getItem("username"), idpublication:this.games.id, text:this.comment
                 }
             }).then((response) => {
@@ -461,7 +329,8 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
             });
 
 
-           }
+           },
+
         
     
   }

@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models.Repository.Record;
 using BackEnd.Models.Repository.VisitorRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
@@ -25,40 +26,27 @@ namespace BackEnd.Controllers
         }
         // GET: api/<RecordController>
         [HttpGet("profitableproducts")]
-        public IEnumerable Profitable()
+        [Authorize(Roles = "Редактор,Администратор")]
+        public IEnumerable Profitable(DateTime? from, DateTime? to, [FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
-            return _context.MostProfitableProduct();
+            return _context.MostProfitableProduct(from,to, genres, manufactures, platforms, localizations);
         }
 
         [HttpGet("purcheasableproducts")]
-        public IEnumerable Purcheasable()
+        [Authorize(Roles = "Редактор,Администратор")]
+        public IEnumerable Purcheasable(DateTime? from, DateTime? to, [FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
         {
-            return _context.MostPurcheasableProduct();
+            return _context.MostPurcheasableProduct(from,to, genres, manufactures, platforms, localizations);
         }
 
         // GET api/<RecordController>/5
         [HttpGet("visitorcount")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public int[] VisitorsCount()
         {
             return _contextvisitor.GetVisitor().Select(d => d.Count).ToArray();
         }
 
-        // POST api/<RecordController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<RecordController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RecordController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+      
     }
 }

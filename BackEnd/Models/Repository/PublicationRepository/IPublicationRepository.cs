@@ -20,7 +20,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
         IEnumerable AddComment(string username, int idpublication, string text);
         void AddMark(int idpublication, string username, double numberofmark);
         IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations);
-        void RemoveComment(int id);
+        IEnumerable RemoveComment(int id, int idpublication);
          void AverageRating();
         void SaveToJson();
         void LoadfromJson();

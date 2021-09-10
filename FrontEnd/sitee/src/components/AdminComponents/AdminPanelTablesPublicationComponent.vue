@@ -18,8 +18,8 @@
         <b-button v-if="row.item.titleofcountry!=undefined" size="sm" bv-modal-example2 @click="ShowEditModal(row.item.id, row.item.titleofcountry)" class="mr-1"> Редактирование</b-button>
         <b-button v-if="row.item.titleofRole!=undefined" size="sm" bv-modal-example2 @click="ShowEditModal(row.item.id, row.item.titleofRole)" class="mr-1"> Редактирование</b-button>
         <b-button v-if="row.item.titleofseries!=undefined" size="sm" bv-modal-example2 @click="ShowEditModal(row.item.id, row.item.titleofseries)" class="mr-1"> Редактирование</b-button>
-        <b-button v-if="row.item.titleofgame!=undefined" size="sm" bv-modal-example2 :href="AddRef" class="mr-1"> Редактирование</b-button>
-        <b-button v-if="row.item.login!=undefined" size="sm" bv-modal-example2 :href="AddRef" class="mr-1"> Редактирование</b-button>
+        <b-button v-if="row.item.titleofgame!=undefined" size="sm" bv-modal-example2 :href="AddRef+'/'+row.item.id" class="mr-1"> Редактирование</b-button>
+        <b-button v-if="row.item.login!=undefined" size="sm" bv-modal-example2 :href="AddRef+'/'+row.item.id" class="mr-1"> Редактирование</b-button>
       
       
       </template>
@@ -118,50 +118,64 @@ import axios from 'axios'
               }
           },
           mounted(){
+              if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
           
                              if(this.$route.meta.publication)
-                           axios.get('https://localhost:44303/api/Catalog/getAll').then(Response=>
-                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2;   ;this.Type="Catalog"; this.AddRef="/admin-panel/AddPublication"; console.log(this.publications); this.fileds=['id','titleofgame', 'localizations', 'manufactures', 'genres','regionRestricts', 'platforms', 'series', 'rating', 'dateRealese',  { key: 'actions', label: 'Actions' }]  } )
+                           axios.get('https://localhost:44303/api/Catalog/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
+                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2;   ;this.Type="Catalog"; this.AddRef="/admin-panel/EditPublication"; console.log(this.publications); this.fileds=['id','titleofgame', 'localizations', 'manufactures', 'genres','regionRestricts', 'platforms', 'series', 'rating', 'dateRealese',  { key: 'actions', label: 'Actions' }]  } )
 
                             if(this.$route.meta.user)
-                           axios.get('https://localhost:44303/users').then(Response=>
-                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2; ;this.Type="User"; this.AddRef="/admin-panel/AddUser";  console.log(this.publications); this.fileds=['id', 'avatar','login', 'password', 'dateofregistration','statuse','role', { key: 'actions', label: 'Actions' }]  } )
+                           axios.get('https://localhost:44303/users', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
+                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2; ;this.Type="User"; this.AddRef="/admin-panel/EditUser";  console.log(this.publications); this.fileds=['id', 'avatar','login', 'password', 'dateofregistration','statuse','role', { key: 'actions', label: 'Actions' }]  } )
 
                             if(this.$route.meta.country)
-                           axios.get('https://localhost:44303/api/Country/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Country/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
                            this.isHaveModal=true;this.Type="Country";   console.log(this.publications); this.fileds=['id', 'titlecountry', { key: 'actions', label: 'Actions' }]  } )
 
                             if(this.$route.meta.genre)
-                           axios.get('https://localhost:44303/api/Genre/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Genre/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2;  
                            this.isHaveModal=true;this.Type="Genre";  console.log(this.publications); this.fileds=['id', 'titleofgenre', { key: 'actions', label: 'Actions' }]  } )
 
                             if(this.$route.meta.localization)
-                           axios.get('https://localhost:44303/api/Localization/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Localization/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
                            this.isHaveModal=true;this.Type="Localization";   console.log(this.publications) ; this.fileds=['id', 'titlelocalization', { key: 'actions', label: 'Actions' }] } )
 
                             if(this.$route.meta.manufacture)
-                           axios.get('https://localhost:44303/api/Manufacture/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Manufacture/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { 
                              this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
                              this.isHaveModal=true;this.Type="Manufacture";   console.log(this.publications) ; this.fileds=['id', 'titleofmanufacture', { key: 'actions', label: 'Actions' }] } )
 
                             if(this.$route.meta.platform)
-                           axios.get('https://localhost:44303/api/Platform/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Platform/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Platform";   console.log(this.publications)  ;this.fileds=['id', 'titleofplatform', { key: 'actions', label: 'Actions' }]} )
 
                             if(this.$route.meta.role)
-                           axios.get('https://localhost:44303/api/Role/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Role/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Role";   console.log(this.publications) ; this.fileds=['id', 'titleofRole', { key: 'actions', label: 'Actions' }] } )
 
                             if(this.$route.meta.series)
-                           axios.get('https://localhost:44303/api/Series/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Series/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Series";   console.log(this.publications) ; this.fileds=['id', 'titleofseries', { key: 'actions', label: 'Actions' }] } )
 
                             if(this.$route.meta.statuse)
-                           axios.get('https://localhost:44303/api/Statuse/getAll').then(Response=>
+                           axios.get('https://localhost:44303/api/Statuse/getAll', {headers:{
+                    'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Status";  this.publications.titleofstatuse=this.publications.title;  console.log(this.publications) ; this.fileds=['id', 'titleofstatuse', { key: 'actions', label: 'Actions' }] } )
 
                           
@@ -171,7 +185,9 @@ import axios from 'axios'
          
         Remove:function(index){
 
- axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index).then(Response=>{  window.location.reload(); alert("Удалён")  } )
+ axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); alert("Удалён")  } )
          
         },
 
@@ -180,12 +196,16 @@ import axios from 'axios'
           axios.get('https://localhost:44303/api/Catalog/getAll').then(Response=>{ this.publications=Response.data.item1;this.countPublication=Response.data.item2;   console.log(this.publications)  } )
       },
       Add:function(){
-           axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+           axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', headers: {
+                    "Accept": "application/json",
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
 
       },
 
         EditElement:function(){
-           axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+           axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, headers:{
+                    "Accept": "application/json",
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
 
       },
 
@@ -200,12 +220,16 @@ import axios from 'axios'
 
       SaveToJson:function(){
 
-         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', headers:{
+                    "Accept": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("admin")},}).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
 
       },
         LoadFromJson:function(){
 
-         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/loadfromjson', }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+         axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/loadfromjson', headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}, }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
 
       }
           

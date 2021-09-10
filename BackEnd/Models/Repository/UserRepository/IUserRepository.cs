@@ -16,7 +16,7 @@ namespace BackEnd.Models.Repository.UserRepository
         IEnumerable<User> GetElements(out int total);
         User GetElement(string userlogin);
         User GetElementById(int id);
-        User CheckUser(string login, string password);
+        User CheckUser(string login, string password, int? optionRole=null);
         void AddElement(User user);
         void EditElement(int id, IFormFile avatar, string login, string password, string email, string role, string statuse,string path);
         void RemoveElement(int id);

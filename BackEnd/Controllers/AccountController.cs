@@ -3,6 +3,7 @@ using BackEnd.Models;
 using BackEnd.Models.Authentication;
 using BackEnd.Models.Repository.UserRepository;
 using BackEnd.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,7 @@ namespace BackEnd.Controllers
         }
         [HttpGet("/getuser/{userlogin}")]
 
+        
         public UserViewModel GetUser(string userlogin)
         {
 
@@ -49,7 +51,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("/getfulluser/{id}")]
-        
+        [Authorize]
          public User GetFullUserById(int id)
         {
             return _context.GetElementById(id);
@@ -57,7 +59,7 @@ namespace BackEnd.Controllers
 
 
         [HttpPut("/edituser/{id}")]
-
+        [Authorize( Roles="Редактор,Администратор")]
         public StatusCodeResult EditUser(int id, IFormFile avatar, string login, string password, string email, string statuse, string role)
         {
 
@@ -70,6 +72,7 @@ namespace BackEnd.Controllers
 
         [Route("savetojson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult SaveToJson()
         {
             _context.SaveToJson();
@@ -79,7 +82,7 @@ namespace BackEnd.Controllers
         }
 
         [Route("loadfromjson")]
-        [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult LoadFromJson()
         {
             _context.LoadfromJson();
@@ -89,17 +92,19 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("/users")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public (IEnumerable, int) Get()
         {
             int total;
             var data = _context.GetElements(out total);
             return (data,total);
         }
+        
         [HttpPost("/token")]
-        public IActionResult Token(string login, string password)
+        public IActionResult Token(string login, string password,int? optionalrole=null)
         {
 
-            var user = GetIdentity(login, password);
+            var user = GetIdentity(login, password,optionalrole);
 
             if (user == null) return BadRequest(new { error = "Неверный логин или пароль" });
             var now = DateTime.UtcNow;
@@ -116,7 +121,8 @@ namespace BackEnd.Controllers
             var response = new
             {
                 access_token = encodedJwt,
-                username = user.Name
+                username = user.Name,
+                role = user.Claims.ToArray()[1].Value
             };
 
             return Json(response);
@@ -135,7 +141,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("/uploadavatar/{username}")]
-
+        [Authorize]
         public StatusCodeResult UploadAvatar(IFormFile photo,string username, string password)
         {
 
@@ -161,10 +167,10 @@ namespace BackEnd.Controllers
       
 
 
-        private ClaimsIdentity GetIdentity(string login, string password)
+        private ClaimsIdentity GetIdentity(string login, string password,int? optionalrole)
         {
             var pass = HashHelper.GetHashString(password);
-            User user = _context.CheckUser(login,pass);
+            User user = _context.CheckUser(login,pass,optionalrole);
             if (user != null)
             {
                 var claims = new List<Claim>
@@ -181,5 +187,9 @@ namespace BackEnd.Controllers
             // если пользователя не найдено
             return null;
         }
+      
+       
+
+        
     }
 }

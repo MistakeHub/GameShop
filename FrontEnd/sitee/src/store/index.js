@@ -12,6 +12,7 @@ Vue.use(VueCharts);
 
 export default new Vuex.Store({
   state: {
+    isAdmin:false
   },
   mutations: {
   },

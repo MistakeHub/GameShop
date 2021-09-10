@@ -12,11 +12,11 @@ namespace BackEnd.Models
 
         public int? PublicationId { get; set; }
 
-        public Publication Publication { get; set; }
+        public Publication? Publication { get; set; }
 
         public int? UserId { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public DateTime DateOfOperation { get; set; }
     }

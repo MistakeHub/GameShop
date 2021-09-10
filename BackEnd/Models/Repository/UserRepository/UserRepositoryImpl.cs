@@ -47,10 +47,12 @@ namespace BackEnd.Models.Repository.UserRepository
         }
 
 
-        public User CheckUser(string login, string password)
+        public User CheckUser(string login, string password, int? optionalrole)
         {
             
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password);
+            if(optionalrole!=null)
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password && d.Idrole==optionalrole);
+            else return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == password );
         }
 
         public IEnumerable<User> GetElements(out int total)
@@ -108,7 +110,7 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public User UploadAvatar(string login, string password, IFormFile photo, string path )
         {
-            User user = CheckUser(login, password);
+            User user = CheckUser(login, password,null);
             Upload(photo, path);
 
           

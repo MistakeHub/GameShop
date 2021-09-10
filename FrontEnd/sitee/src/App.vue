@@ -1,14 +1,24 @@
-<template :style="Login.bgImg">
+<template >
 <body  >
-  <div id="app" :style="Login.bgImg" v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout"  >
+  <div id="app"  v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout"  >
    <div>
    <div>
-   <b-card title="Card Title" no-body  >
-    <b-card-header header-tag="nav" variant="dark">
-      <b-nav>
-        <b-navbar-brand active href="/" variant="dark">GameShop</b-navbar-brand>
-        <b-nav-item active href="/catalog">Каталог</b-nav-item>
-         <b-nav-item active :href="'/cart/'+Login.user" v-if="Login.local !==null">Корзина</b-nav-item>
+  <header class="header trans_300">
+  <!-- Top Navigation -->
+  
+  <!-- Main Navigation -->
+  <div class="main_nav_container">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-right">
+          <div class="logo_container">
+            <a href="#">Game<span>Shop</span></a>
+          </div>
+          <nav class="navbar">
+            <ul class="navbar_menu">
+              <li><a href="/">Главная</a></li>
+              <li><a href="/catalog">каталог</a></li>
+                <b-nav-item active :href="'/cart/'+Login.user" v-if="Login.local !==null">Корзина</b-nav-item>
 
 
         <b-dropdown v-if="Login.local==null" text="вход" variant="success" class="m-2">
@@ -36,13 +46,28 @@
   
     <b-nav-item  v-if="Login.local!==null" @click="Logout">выход</b-nav-item>
        <b-nav-item  v-if="Login.local!==null" :href="'/userprofile/'+Login.user">Здравствуйте,{{Login.user}}</b-nav-item>
-      </b-nav>
-    </b-card-header>
-
     
-    
-    
-   </b-card>
+            </ul>
+            <ul class="navbar_user">
+              <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+              <li class="checkout">
+                <a :href="'/cart/'+Login.user" v-if="Login.local !==null">
+                  <i class="fa fa-shopping-cart" aria-hidden="true" ></i>
+                  
+                </a>
+              </li>
+            </ul>
+            <div class="hamburger_container">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+ 
 
     
    </div>
@@ -175,7 +200,7 @@
    <!-- Footer -->
 
   </div>
-  <div id="app" v-if="$route.meta.AdminLayout"  >
+  <div id="app" v-if="$route.meta.AdminLayout && this.$store.state.isAdmin"  >
    <div class="basic-layout">
     
    
@@ -214,7 +239,16 @@
            <b-nav-item href="/admin-panel/TablesOfStatuse"  v-b-toggle.my-collapse3>Статусы</b-nav-item>
             <b-nav-item href="/admin-panel/TablesOfUser"  v-b-toggle.my-collapse3>Пользователи</b-nav-item>
       </b-collapse>
-              <b-nav-item href="#link-2" >Another Link</b-nav-item>
+         
+               
+     <label   v-b-toggle.my-collapse4>Отчёты &#8595;</label>
+<b-collapse id="my-collapse4">
+   
+      <b-nav-item href="/admin-panel/dashboards/Visitors"  v-b-toggle.my-collapse3>Глафик Посещения </b-nav-item>
+    <b-nav-item href="/admin-panel/dashboards/MostProfitable"  v-b-toggle.my-collapse3>Самые Прибыльные Продукты</b-nav-item>
+     <b-nav-item href="/admin-panel/dashboards/MostPurcheasable"  v-b-toggle.my-collapse3>Самые Продаваемые Продукты</b-nav-item>
+    
+      </b-collapse>
             </b-nav>
       </div>
     </b-sidebar>
@@ -269,6 +303,7 @@ $image-path: '~@/../mdb/mdbvue/img';
 
   
 import axios from 'axios'
+import store from './store/index'
 export default {
  
   data() {
@@ -283,12 +318,15 @@ export default {
         password: "",
         local:localStorage.getItem("user"),
         user:localStorage.getItem("username"),
+        admin:localStorage.getItem("admin"),
+        
         session:  document.cookie
       }
     };
   },
    mounted(){
                   
+                
                if(this.session ==undefined){
                  this.$cookie.set('usersession', 'usersession', { expires: '1h' });
 
@@ -301,6 +339,7 @@ export default {
       await localStorage.removeItem("user");
       await localStorage.removeItem("username")
        await localStorage.removeItem("password")
+          await localStorage.removeItem("role")
       window.location.reload();
 
     },
@@ -311,9 +350,11 @@ export default {
                 url: 'https://localhost:44303/token',
                 params: { login: this.Login.login, password:this.Login.password }
             }).then((response) => {
-                localStorage.setItem("user",response.data.access_token);
+              var data=response.data;
+                localStorage.setItem("user",data.access_token);
                 localStorage.setItem("username",this.Login.login)
                 localStorage.setItem("password", this.Login.password)
+                localStorage.setItem("role",data.role )
                 window.location.reload();
             });
      

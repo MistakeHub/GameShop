@@ -1,4 +1,5 @@
 <template>
+<div style="    padding-top: 10%">
 <div class="d-flex justify-content-center">
 <b-card bg-variant="dark" class="d-flex align-items-start" text-variant="white" title="Фильтры">
  <div >
@@ -90,7 +91,16 @@
          
     </div>
     <div >
-   <div v-for="elem in games" >
+    </div>
+     <div>
+          <b-col sm="3">
+        <label for="title">Название Игры</label>
+      </b-col>
+      <b-col sm="9">
+        <b-form-input id="title" type="text" v-model="search"></b-form-input>
+      </b-col>
+    
+   <div v-for="elem in filteredItems" >
  
      <b-card class="d-flex justify-content-center" style="overflow: auto;   float: none;">
   <img :src="elem.images[0]" style="max-width: 25rem;" img-center />
@@ -124,6 +134,7 @@
 
 
 </div>
+</div>
 
 </template>
 
@@ -138,7 +149,7 @@ import axios from 'axios'
           name: 'Catalog',
           data(){
               return{
-      
+      search:'',
               games:[],
               genres:[],
               manufactures:[],
@@ -164,6 +175,10 @@ import axios from 'axios'
               }
           },
           mounted(){
+              if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
              axios.get("https://localhost:44303/api/Platform").then(Response=> this.platforms=Response.data)
                axios.get("https://localhost:44303/api/Localization").then(Response=> this.localizations=Response.data)
@@ -172,6 +187,17 @@ import axios from 'axios'
             axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
            axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3}}).then(Response=>{   this.games=Response.data.item1; console.log(this.games);this.count=Response.data.item2  } )
           },
+                  computed: {
+    filteredItems () {
+      return this.games.filter(item => {
+         return item.titleofgame.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+      })
+    }
+    
+              
+            
+        
+              },
           methods:{
     
              Filter:function(){
@@ -189,6 +215,7 @@ import axios from 'axios'
             }).then((response) => {
                  
                 this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
+                console.log(this.games)
                  this.isfilted=true
             });
 
@@ -274,7 +301,8 @@ import axios from 'axios'
              GetGames:function(){
                     
 
-                  axios({method: 'GET', url:'https://localhost:44303/api/Catalog/'+this.currentpage, params:{pagesize:3}}).then(Response=>{ this.games=Response.data.item1; } )
+                  axios({method: 'GET', url:'https://localhost:44303/api/Catalog/'+this.currentpage, headers:{
+                    'set-cookie':document.cookie},params:{pagesize:3}}).then(Response=>{ this.games=Response.data.item1; } )
 
              },
 

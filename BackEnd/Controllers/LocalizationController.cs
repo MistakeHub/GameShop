@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models;
 using BackEnd.Models.Repository.GenericRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
@@ -49,6 +50,7 @@ namespace BackEnd.Controllers
         // POST api/<LocalizationController>
         // POST api/<CountryController>
         [HttpPost("add")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public void Post(string title)
         {
             _context.AddElement(title);
@@ -56,6 +58,7 @@ namespace BackEnd.Controllers
 
         // PUT api/<CountryController>/5
         [HttpPut("edit/{id}")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public void Put(int id, string title)
         {
             _context.EditElement(id, title);
@@ -63,6 +66,7 @@ namespace BackEnd.Controllers
 
         // DELETE api/<LocalizationController>/5
         [HttpDelete("removeLocalization/{id}")]
+        [Authorize(Roles = "Редактор,Администратор")]
         public void Delete(int id)
         {
             _context.RemoveElement(id);
@@ -71,6 +75,7 @@ namespace BackEnd.Controllers
 
         [Route("savetojson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult SaveToJson()
         {
             _context.SaveToJson();
@@ -81,6 +86,7 @@ namespace BackEnd.Controllers
 
         [Route("loadfromjson")]
         [HttpPost]
+        [Authorize(Roles = "Редактор,Администратор")]
         public StatusCodeResult LoadFromJson()
         {
             _context.LoadfromJson();

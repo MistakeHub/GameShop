@@ -22,14 +22,14 @@ namespace BackEnd.Models.Repository.PublicationRepository
         }
         public IEnumerable AddComment(string username, int idpublication, string text)
         {
-            User user = _context.Users.FirstOrDefault(d => d.Login == username);
+            User user = _context.Users.Include(d => d.Avatar).FirstOrDefault(d => d.Login == username);
             Comment comment = new Comment();
             comment.Text = text;
             comment.Countoflikes = 0;
             user.Comments.Add(comment);
             _context.Users.Update(user);
             _context.SaveChanges();
-            Publication publication=_context.Publications.Include(d=>d.Comments).SingleOrDefault(p => p.Id == idpublication);
+            Publication publication=_context.Publications.Include(d=>d.Comments).ThenInclude(d=>d.User).SingleOrDefault(p => p.Id == idpublication);
             publication.Comments.Add(comment);
             _context.Publications.Update(publication);
             _context.SaveChanges();
@@ -441,11 +441,14 @@ namespace BackEnd.Models.Repository.PublicationRepository
             return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(d => d.Images).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }
 
-        public void RemoveComment(int id)
+        public IEnumerable RemoveComment(int id,int idpublication)
         {
             var remove = _context.Comments.SingleOrDefault(p => p.Id == id);
+            
             _context.Remove(remove);
             _context.SaveChanges();
+            Publication publication = _context.Publications.Include(d => d.Comments).ThenInclude(d => d.User).ThenInclude(d => d.Avatar).SingleOrDefault(p => p.Id == idpublication);
+            return publication.Comments;
         }
 
         public void RemovePublication(int id)

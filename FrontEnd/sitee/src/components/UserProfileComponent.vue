@@ -81,6 +81,10 @@ import axios from 'axios'
               }
           },
           mounted(){
+                if(this.session ==undefined){
+                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
+
+               }
             axios.get("https://localhost:44303/getuser/"+this.$route.params.userlogin).then((response)=> {this.user=response.data; console.log(this.user)});
 
           },
