@@ -217,7 +217,32 @@ import axios from 'axios'
                 this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                 console.log(this.games)
                  this.isfilted=true
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
           
 
@@ -237,7 +262,32 @@ import axios from 'axios'
                  
                this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                  this.isfilted=true
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
              },
 
@@ -257,7 +307,32 @@ import axios from 'axios'
               this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                  this.isfilted=true
                  console.log(this.games)
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
              },
 
@@ -276,7 +351,32 @@ import axios from 'axios'
                  
               this.games=response.data.item1; this.count = response.data.item2/ this.pagesize;
                this.isfilted=true
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
              },
 
@@ -294,7 +394,32 @@ import axios from 'axios'
                  
              this.games=response.data.item1; this.count =response.data.item2 / this.pagesize;
                  this.isfilted=true
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
              },
 

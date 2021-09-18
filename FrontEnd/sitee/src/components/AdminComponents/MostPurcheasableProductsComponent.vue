@@ -130,11 +130,101 @@ import axios from 'axios'
                }
           
            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data)
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data)
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data)
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data)
-            axios.get("https://localhost:44303/api/Genre").then(Response=> this.Genres=Response.data)
+             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+            axios.get("https://localhost:44303/api/Genre").then(Response=> this.Genres=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
                      axios.get('https://localhost:44303/api/Record/purcheasableproducts',{headers:{
                     "Accept": "application/json",
                      "Authorization": "Bearer " + localStorage.getItem("admin")
@@ -144,7 +234,25 @@ import axios from 'axios'
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
                   localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, }}).then(Response=>
                            {  this.PurcheasableProducts=Response.data;this.countPublication=this.PurcheasableProducts.length; ;
-              console.log(this.selectedmanufactures); 
+              console.log(this.selectedmanufactures).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});; 
                 } )   
     
                         
@@ -165,7 +273,25 @@ axios({method:'GET',url:'https://localhost:44303/api/Record/purcheasableproducts
                   localizations:this.selectedlocalization.length==0? this.Localizations:[this.selectedlocalization], }}).then(Response=>
                            { this.PurcheasableProducts=Response.data;this.countPublication=this.PurcheasableProducts.length; ;
               console.log(Response.data); 
-                } )  
+                } ) .catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+}); 
 },
 Reset:function(){
 

@@ -51,8 +51,8 @@ namespace BackEnd.Models.Repository.UserRepository
         {
             
             if(optionalrole!=null)
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==password && d.Idrole==optionalrole);
-            else return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == password );
+            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==HashHelper.GetHashString(password) && d.Idrole==optionalrole);
+            else return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == HashHelper.GetHashString(password));
         }
 
         public IEnumerable<User> GetElements(out int total)
@@ -184,6 +184,22 @@ namespace BackEnd.Models.Repository.UserRepository
         public void LoadfromJson()
         {
             IEnumerable<User> users = LoadFromJson("Users.json");
+        }
+
+        public User GetUserByEmail(string Email)
+        {
+            return _context.Users.FirstOrDefault(d => d.Email == Email);
+        }
+
+        public void EditPassword(User userr, string password)
+        {
+            User user = userr;
+
+            user.Password = HashHelper.GetHashString(password);
+
+            _context.Users.Update(user);
+
+            _context.SaveChanges();
         }
     }
 }

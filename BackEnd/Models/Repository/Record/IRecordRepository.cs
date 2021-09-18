@@ -12,6 +12,8 @@ namespace BackEnd.Models.Repository.Record
 
         IEnumerable MostProfitableProduct(DateTime? from, DateTime? to, string[] genres, string[] manufactures, string[] platforms, string[] localizations);
 
-        
+        IEnumerable MostProfitableRatingProduct( string[] genres, string[] manufactures, string[] platforms, string[] localizations);
+
+
     }
 }

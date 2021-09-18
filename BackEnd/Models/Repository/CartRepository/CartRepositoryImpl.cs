@@ -94,10 +94,11 @@ namespace BackEnd.Models.Repository.CartRepository
            Cart Cart = _context.Carts.Include(d=>d.User).Include(d=>d.Publications).ThenInclude(d=>d.Game).FirstOrDefault(d => d.Id == id);
 
             List<Transaction> transactions = new List<Transaction>();
-
+           
             foreach (var item in Cart.Publications)
             {
-
+                Cart.User.NumberOfPurchases++;
+                _context.Entry(Cart.User).State = EntityState.Modified;
                 _context.Transactions.Add(new Transaction() { PublicationId = item.Id, UserId = Cart.User.Id });
                 _context.SaveChanges();
                 _context.ChangeTracker.Clear();

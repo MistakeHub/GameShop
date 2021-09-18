@@ -32,7 +32,7 @@ namespace BackEnd.Models.ViewModels.Mappers
                 ForMember(p=>p.Image, opt=>opt.MapFrom(d=>d.Publications.Select(d=>d.Images).Select(a=>a.Select(d=>d.Url))));
 
             CreateMap<User, UserViewModel>().ForMember(p => p.Login, opt => opt.MapFrom(d => d.Login)).ForMember(p => p.CountofComments, opt => opt.MapFrom(d => d.Comments.Count())).ForMember(d => d.Avatar, opt => opt.MapFrom(d => d.Avatar.Url)).
-                ForMember(p=>p.Role, opt=> opt.MapFrom(d=>d.Role.TitleofRole)).ForMember(p=>p.Statuse, opt=>opt.MapFrom(d=>d.Status.Titleofstatuse));
+                ForMember(p=>p.Role, opt=> opt.MapFrom(d=>d.Role.TitleofRole)).ForMember(p=>p.Statuse, opt=>opt.MapFrom(d=>d.Status.Titleofstatuse)).ForMember(d=>d.NumberOfPurchases, opt=> opt.MapFrom(d=>d.NumberOfPurchases));
         }
     }
 }

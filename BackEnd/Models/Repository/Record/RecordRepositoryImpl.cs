@@ -29,6 +29,13 @@ namespace BackEnd.Models.Repository.Record
                 Include(p => p.Publication.Game.Genres).Include(p => p.Publication.Game.Series).AsEnumerable().Where(d=> d.Publication.Game.Localizations.Any(p => localizations.Contains(p.Titleoflocalization)) && d.Publication.Game.Genres.Any(p => genres.Contains(p.Titleofgenre)) && d.Publication.Game.Platforms.Any(p => platforms.Contains(p.Titleofplatform)) && d.Publication.Game.Manufactures.Any(p => manufactures.Contains(p.Titleofmanufactures)) && d.DateOfOperation >= from && d.DateOfOperation <= to).GroupBy(d => d.Publication.Game.Titleofgame).Select(d => new { Game = d.Key, Total = d.Sum(p => p.Publication.Price) }).OrderByDescending(d=>d.Total);
         }
 
+        public IEnumerable MostProfitableRatingProduct( string[] genres, string[] manufactures, string[] platforms, string[] localizations)
+        {
+
+
+            return _context.Publications.Include(d => d.Game).Include(d => d.Game.Platforms).Include(d => d.Game.Localizations).Include(d => d.Game.Genres).Include(d => d.Game.Manufactures).Include(d => d.Game.Series).Where(d => d.Game.Localizations.Any(p => localizations.Contains(p.Titleoflocalization)) && d.Game.Genres.Any(p => genres.Contains(p.Titleofgenre)) && d.Game.Platforms.Any(p => platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p => manufactures.Contains(p.Titleofmanufactures))).GroupBy(d => d.Game.Titleofgame).Select(d => new { Game = d.Key, Rating=(double?)d.Select(p=>p.Rating).First().Value }).ToList();
+        }
+
         public IEnumerable MostPurcheasableProduct(DateTime? from, DateTime? to, string[] genres, string[] manufactures, string[] platforms, string[] localizations)
         {
             if (from == null)

@@ -24,6 +24,10 @@ import AddEditUserForm from "../views/AdminPanelViews/AddFormViews/AddEditUserFo
 import AcceptPurchase from "../views/AcceptPurchase.vue"
 import MostPurcheasable from "../views/AdminPanelViews/MostPurcheasable.vue"
 import MostProfitable from "../views/AdminPanelViews/MostProfitable.vue"
+import MostRatingProducts from "../views/AdminPanelViews/MostRatingProducts.vue"
+import NotFound from "../views/NotFound.vue"
+import RestoreAccountRequest from "../views/RestoreAccountRequest.vue"
+import RestoreAccountForm from "../views/RestoreAccountForm.vue"
 
 // Containers
 
@@ -40,6 +44,20 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    
+  },
+
+  {
+    path: '/requestrestore',
+    name: 'RequestRestore',
+    component: RestoreAccountRequest,
+    
+  },
+
+  {
+    path: '/requestform/:restoreid',
+    name: 'Requestform',
+    component: RestoreAccountForm,
     
   },
 
@@ -81,6 +99,20 @@ const routes = [
       }, 
   
       },
+
+      {
+        path: '/admin-panel/dashboards/MostRating',
+        name:"MostRating",
+      
+        component: MostRatingProducts,
+         
+     
+    
+        meta: {
+          AdminPanelLayout: true,
+        }, 
+    
+        },
 
       {
         path: '/admin-panel/dashboards/MostProfitable',
@@ -214,6 +246,11 @@ const routes = [
       },  
     },
 
+    
+
+
+    
+
     {
       path: '/admin-panel/EditPublication/:id',
       name:"EditPublication",
@@ -295,7 +332,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     
-  }
+  },
+
+  { path: "*", component: NotFound }
 ]
 
 const router = new VueRouter({

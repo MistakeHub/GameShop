@@ -47,6 +47,13 @@ namespace BackEnd.Controllers
             return _contextvisitor.GetVisitor().Select(d => d.Count).ToArray();
         }
 
-      
+        [HttpGet("ratingproducts")]
+        [Authorize(Roles = "Редактор,Администратор")]
+        public IEnumerable RatingProducts( [FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        {
+            return _context.MostProfitableRatingProduct( genres, manufactures, platforms, localizations);
+        }
+
+
     }
 }

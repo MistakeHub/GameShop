@@ -133,11 +133,101 @@ import axios from 'axios'
 
                }
            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data)
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data)
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data)
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data)
-            axios.get("https://localhost:44303/api/Genre").then(Response=> {this.Genres=Response.data; console.log(this.Genres)})
+             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+            axios.get("https://localhost:44303/api/Genre").then(Response=> {this.Genres=Response.data; console.log(this.Genres)}).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
                      
      axios({
                 method: 'GET',
@@ -158,7 +248,25 @@ import axios from 'axios'
                 this.games=response.data.item1; this.count = response.data.item2 / this.pagesize;
                 console.log(this.games)
                  this.isfilted=true
-            });
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});;
           },
              methods:{
 
@@ -174,7 +282,25 @@ axios({method:'GET',url:'https://localhost:44303/api/Record/profitableproducts/'
                   localizations:this.selectedlocalization.length==0? this.Localizations:[this.selectedlocalizations] }}).then(Response=>
                            { this.ProfitableProducts=Response.data;this.countPublication=this.ProfitableProducts.length; ;
               console.log(Response.data); 
-                } )  
+                } ).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+}); 
 },
 Reset:function(){
 

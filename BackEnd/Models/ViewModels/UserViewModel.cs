@@ -17,5 +17,7 @@ namespace BackEnd.Models.ViewModels
         public string Statuse { get; set; }
 
         public string Role { get; set; }
+
+        public int NumberOfPurchases { get; set; }
     }
 }

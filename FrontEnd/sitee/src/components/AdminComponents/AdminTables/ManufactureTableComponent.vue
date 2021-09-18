@@ -44,7 +44,7 @@
     <template #modal-title>
     <h1>Добавление нового элемента</h1>
     </template>
-    
+         <notifications group="foo" />
     <div class="d-block text-center">
       <label>навзание</label>
       <b-input v-model="title"></b-input>
@@ -119,7 +119,25 @@ import axios from 'axios'
                     'set-cookie':document.cookie}}).then(Response=>
                            { 
                              this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
-                             this.isHaveModal=true;this.Type="Manufacture";   console.log(this.publications) ; this.fileds=['id', 'titleofmanufactures', { key: 'actions', label: 'Actions' }] } )
+                             this.isHaveModal=true;this.Type="Manufacture";   console.log(this.publications) ; this.fileds=['id', 'titleofmanufactures', { key: 'actions', label: 'Actions' }] } ).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
                             
                           
@@ -131,25 +149,97 @@ import axios from 'axios'
 
  axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); alert("Удалён")  } )
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно Удален"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
          
         },
 
-      getPublication:function(){
-
-          axios.get('https://localhost:44303/api/Catalog/getAll').then(Response=>{ this.publications=Response.data.item1;this.countPublication=Response.data.item2;   console.log(this.publications)  } )
-      },
+    
       Add:function(){
            axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', headers: {
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно добавлен"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       },
 
         EditElement:function(){
            axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, headers:{
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно изменён"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       },
 
@@ -166,14 +256,64 @@ import axios from 'axios'
 
          axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', headers:{
                     "Accept": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("admin")},}).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+                "Authorization": "Bearer " + localStorage.getItem("admin")},}).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно Сохранён"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       },
         LoadFromJson:function(){
 
          axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/loadfromjson', headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}, }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}, }).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно загружен"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       }
           

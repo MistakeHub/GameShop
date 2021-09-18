@@ -374,14 +374,14 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
                 _context.SaveChanges();
             }
-           
+            List<IFormFile> addedfiles = new List<IFormFile>();
             List<Image> images = new List<Image>();
             foreach (var item in filenames)
             {
-                if (publication.Images.Any(d => d.Filename == item.FileName)) continue;
+                if (publication.Images.Any(d => d.Filename == item.FileName)) { continue; }
 
                 images.Add(new Image() { Url = $"https://localhost:44303/getImage/{titleofgame.Replace(" ", "")}/{item.FileName}", Filename = item.FileName, Publication=publication });
-                
+                addedfiles.Add(item);
                 _context.SaveChanges();
 
             }
@@ -407,7 +407,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
         
        
             _context.Entry(publication.Game).State = EntityState.Modified;
-            Uploads(filenames, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
+            Uploads(addedfiles, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
             _context.Publications.Update(publication);
             _context.SaveChanges();
             _context.ChangeTracker.Clear();

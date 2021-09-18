@@ -1,11 +1,10 @@
 <template>
-
-<div style="padding-top:10%" class="bg-dark">
+<div style="padding-top:5%" class="bg-dark">
   
 <div class="bg-white" >
 
  
-  <div>
+  <div id="app">
     <div class="container container-space">
       <div class="row">
         <div class="col-md-6" >
@@ -55,13 +54,13 @@
 
            
            <div class="description"><b> Дата Выпуска:</b><div  class="d-flex align-items-start">  <p>{{games.dateRealese}}</p></div></div>
- <div class="">
+ <div>
   
-       <h3>Цена :{{games.price}}руб</h3>
-        
-   <button v-b-modal.modal-1 type="button" class="btn btn-success" @click="addToCart()" > В корзину </button>
+   
   </div>
-      
+          <h3>Цена :{{games.price}}руб</h3>
+       
+ 
 
   <b-modal id="modal-1" v-bind:title="resultcode===200?'Товар Успешно Добавлен' : 'Ошибка!' " ref="cart-modal">
     <div v-if="resultcode===200">
@@ -94,9 +93,11 @@
     </div>
   </b-modal>
         </div>
+        
       </div>
 <hr>
       <div class="product-detail-columns-container">
+            <button v-b-modal.modal-1 type="button" class="btn btn-success" @click="addToCart()" > В корзину </button>
 <div >
 <div >
 
@@ -114,9 +115,7 @@
 
   </div>
 </div>
-
 </div>
-
  </div>
 
  
@@ -147,25 +146,169 @@
                     <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
                 </div>
             </div>
-              
+                    <notifications group="foo" />
             </div>
         </div>
     </div>
 </div>
   
-    
- 
-
-
-
-
 </div>
+
+
+
 </div>
 </template>
 
 
 
-
+<style clas>
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+#demo{
+    margin: 20px 0 0 0;
+}
+.comment-form{
+    display: block;
+    width: 80%;
+    margin: auto;
+}
+textarea{
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 7px;
+    height: 70px;
+    font-family: Verdana, Helvetica, sans-serif;
+    padding: 5px;
+}
+input{
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+button{
+    background: #333;
+    color: #ccc;
+    border: 0;
+    padding: 5px;
+    cursor: pointer;
+}
+/*Comment Box*/
+.comments-box{
+    width: 40%;
+    margin: auto;
+    padding: 20px 0;
+    border-bottom: 1px solid #000;
+}
+.delete{
+    background: red;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline;
+    padding: 3px;
+}
+.author{
+    margin: 10px 0;
+    font-weight: bold;
+}
+.product-detail-columns-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 20px;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.product-detail-desc {
+    width: 732px;
+    background-color: #fafafa;
+}
+.img{ min-height:50px; max-height:50px; margin-left: 10px; margin-top:10px;}
+.product-detail-tabs{position:relative;box-sizing:border-box;width:100%;min-height:100px;padding:20px 20px 20px 125px;color:#434343;background:#fff}
+.selected{
+   box-shadow:0px 12px 22px 1px #333;
+   min-height:50px; max-height:50px; margin-left: 10px; margin-top:10px;
+}
+body {
+  font-family: "Nunito", sans-serif;
+  background-color: #eeeeee;
+}
+#container-space {
+  margin-top: 2rem;
+}
+#product-thumbnails {
+  display: flex;
+  margin-top: 2rem;
+}
+.product-thumbnails > ul {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+.product-thumbnails > li {
+  margin-right: 10px;
+}
+.product-thumbnails > ul > li > img {
+  width: 100px;
+  cursor: pointer;
+}
+.thumbnail-active {
+  border: 2px solid #000;
+}
+.nav-link > img {
+  width: 40px;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+body {
+    background-color: #eee
+}
+.bdge {
+    height: 21px;
+    background-color: orange;
+    color: #fff;
+    font-size: 11px;
+    padding: 8px;
+    border-radius: 4px;
+    line-height: 3px
+}
+.comments {
+    text-decoration: underline;
+    text-underline-position: under;
+    cursor: pointer
+}
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-top: 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block
+}
+.hit-voting:hover {
+    color: blue
+}
+.hit-voting {
+    cursor: pointer
+}
+.btn-custom-color {
+  border: 2px solid #4fc08d;
+  color: #4fc08d;
+}
+.btn-custom-color:hover {
+  border: 2px solid #4fc08d;
+  background-color: #4fc08d;
+  color: #ffffff;
+}
+.desctiption{line-height:32px;position:relative;margin-bottom:30px;padding-bottom:25px}
+</style>
 <script>
 import axios from 'axios'
   export default{
@@ -307,7 +450,34 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
                  
                this.games.comments=response.data;
                console.log(this.games.comments)
-            });
+               
+                      this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Комментарий успешно удалён!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+
 
 
            },
@@ -326,7 +496,34 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
                  
                this.games.comments=response.data;
                console.log(this.games.comments)
-            });
+
+                    this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Комментарий Успешно Добавлен!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+
 
 
            },

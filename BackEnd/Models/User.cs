@@ -27,6 +27,8 @@ namespace BackEnd.Models
         [Required]
         public DateTime Dateofregistration { get; set; }
 
+
+        public int? NumberOfPurchases { get; set; }
         public int? Idstatus { get; set; }
         public Statuse Status { get; set; }
 

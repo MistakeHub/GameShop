@@ -194,6 +194,7 @@
     
     </b-form>
        <b-button type="submit" variant="primary" @click="upload()">Submit</b-button>
+        <notifications group="foo" />
   </div>
 </template>
 
@@ -366,10 +367,35 @@ import axios from 'axios'
                  "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.dateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
          localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
-           alert("Успешно обновлено");
-            }).catch(error => {
-                console.log(error);
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+  duration:10000,
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+   duration:10000,
+  text: d.message
+  
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+   duration:10000,
+  text:d.message
+});
+  }
+});
 
 else 
         axios({method:'POST', url:`https://localhost:44303/api/Catalog/addPublication`, headers:{
@@ -377,10 +403,32 @@ else
                  "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.sedateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 
          localizations:this.selectedlocalizations, regionrestricts:this.selectedregionrestricts, series:this.seriess, price:this.price }  }).then(response => {
-               console.log(response.data);
-            }).catch(error => {
-                console.log(error);
-            });
+             this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
     },
 
     onFileChange(e) {

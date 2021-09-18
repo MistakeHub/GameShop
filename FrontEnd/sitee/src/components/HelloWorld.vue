@@ -84,7 +84,7 @@
             <div class="col mb-5 bg-white">
                 <div class="card h-100">
                     <!-- Product image-->
-                    <img class="card-img-top" :src="item.images[0].url" alt="...">
+                    <img class="card-img-top" :src="item.images[0]" alt="...">
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
@@ -163,7 +163,7 @@ import axios from 'axios'
                     "Accept": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("user") ,
                     'set-cookie':document.cookie // передача токена в заголовке
-                }}).then(Response =>{this.games=Response.data;       console.log(this.games); });
+                }}).then(Response =>{this.games=Response.data;       console.log(this.games[0].images[0]); });
                 console.log(this.games);
           },
           methods: {

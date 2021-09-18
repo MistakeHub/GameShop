@@ -2,6 +2,7 @@
 <body  >
   <div id="app"  v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout"  >
    <div>
+<notifications group="foo" />
    <div>
   <header class="header trans_300">
   <!-- Top Navigation -->
@@ -18,31 +19,37 @@
             <ul class="navbar_menu">
               <li><a href="/">Главная</a></li>
               <li><a href="/catalog">каталог</a></li>
-                <b-nav-item active :href="'/cart/'+Login.user" v-if="Login.local !==null">Корзина</b-nav-item>
+               
 
 
-        <b-dropdown v-if="Login.local==null" text="вход" variant="success" class="m-2">
+        <b-nav-item-dropdown v-if="Login.local==null" text="вход" variant="success" >
     <!-- Default form login -->
-   <form @submit.prevent="loginUser">
-    <p class="h4 text-center mb-4">Sign in</p>
-    <label for="defaultFormLoginEmailEx" class="grey-text">Your Login</label>
-    <input type="text" id="defaultFormLoginEmailEx" class="form-control" v-model="Login.login"/>
-    <br/>
-    <label for="defaultFormLoginPasswordEx" class="grey-text">Your password</label>
-    <input type="password" id="defaultFormLoginPasswordEx" class="form-control" v-model="Login.password"/>
-    <div class="text-center mt-4">
-      <b-button class="btn btn-indigo" type="submit" variant="success">Login</b-button>
-    </div>
-    <div class="modal-footer">
+  
+   <div class="wrapper">
+  <form class="login" @submit.prevent="loginUser">
+    <p class="title">Log in</p>
+    <input type="text" placeholder="Username" autofocus v-model="Login.login"/>
+    <i class="fa fa-user"></i>
+    <input type="password" placeholder="Password"  v-model="Login.password"/>
+    <i class="fa fa-key"></i>
+     <div class="modal-footer">
                     <div class="options font-weight-light">
-                        <p>Ещё не зарегистрированны? <a href="/register">Sign Up</a></p>
-                        <p>Забыли пароль? <a href="#">Password?</a></p>
+                        <p>Ещё не зарегистрированны? <a href="/register">Зарегистрироваться</a></p>
+                        <p>Забыли пароль? <a href="#">Восстановить пароль</a></p>
                     </div>
                 </div>
-   </form>
+    <button type="submit">
+      <i class="spinner"></i>
+      <span  class="state">Log in</span>
+    </button>
+  </form>
+ 
+  
+</div>
+
  
   <!-- Default form login -->
-   </b-dropdown>
+   </b-nav-item-dropdown>
   
     <b-nav-item  v-if="Login.local!==null" @click="Logout">выход</b-nav-item>
        <b-nav-item  v-if="Login.local!==null" :href="'/userprofile/'+Login.user">Здравствуйте,{{Login.user}}</b-nav-item>
@@ -247,6 +254,7 @@
       <b-nav-item href="/admin-panel/dashboards/Visitors"  v-b-toggle.my-collapse3>Глафик Посещения </b-nav-item>
     <b-nav-item href="/admin-panel/dashboards/MostProfitable"  v-b-toggle.my-collapse3>Самые Прибыльные Продукты</b-nav-item>
      <b-nav-item href="/admin-panel/dashboards/MostPurcheasable"  v-b-toggle.my-collapse3>Самые Продаваемые Продукты</b-nav-item>
+       <b-nav-item href="/admin-panel/dashboards/MostRating"  v-b-toggle.my-collapse3>Самые Рейтинговые Продукты</b-nav-item>
     
       </b-collapse>
             </b-nav>
@@ -280,6 +288,168 @@ $image-path: '~@/../mdb/mdbvue/img';
   color: #2c3e50;
 }
 
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  background: rgba(darken($primary,40%), 0.85);
+}
+
+
+.login {
+  
+  border-radius: 2px 2px 5px 5px;
+  padding: 10px 20px 20px 20px;
+  width: 90%;
+  max-width: 320px;
+  background: #ffffff;
+  position: relative;
+  padding-bottom: 80px;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.3);
+  
+  &.loading {
+    button {
+      max-height: 100%;
+      padding-top: 50px;
+      .spinner {
+        opacity: 1;
+        top: 40%;
+      }
+    }  
+  }
+  
+  &.ok {
+    button {
+      background-color: #8bc34a;
+      .spinner{
+        border-radius: 0;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        height: 20px;
+        animation: none;
+        transform: rotateZ(-45deg);
+      }
+    }
+  }
+  
+  input {
+    display: block;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    transition: border-width 0.2s ease;
+    border-radius: 2px;
+    color: #ccc;
+    
+    &+ i.fa {
+        color: #fff;
+      font-size: 1em;
+      position: absolute;
+      margin-top: -47px;
+      opacity: 0;
+      left: 0;
+      transition: all 0.1s ease-in;
+    }
+    
+    &:focus {
+      &+ i.fa {
+        opacity: 1;
+        left: 30px;
+      transition: all 0.25s ease-out;
+      }
+      outline: none;
+      color: #444;
+      border-color: $primary;
+      border-left-width: 35px;
+    }
+    
+  }
+  
+  a {
+   font-size: 0.8em;   
+    color: $primary;
+    text-decoration: none;
+  }
+  
+  .title {
+    color: #444;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0 30px 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+  }
+  
+  button {
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px;
+    background: $primary;
+    color: #fff;
+    display: block;
+    border: none;
+    margin-top: 20px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-height: 60px;
+    border: 0px solid rgba(0,0,0,0.1);
+  border-radius: 0 0 2px 2px;
+    transform: rotateZ(0deg);
+    
+    transition: all 0.1s ease-out;
+      border-bottom-width: 7px;
+    
+    .spinner {
+      display: block;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      border: 4px solid #ffffff;
+      border-top-color: rgba(255,255,255,0.3);
+      border-radius: 100%;
+      left: 50%;
+      top: 0;
+      opacity: 0;
+      margin-left: -20px;
+      margin-top: -20px;
+      animation: spinner 0.6s infinite linear;
+      transition: top 0.3s 0.3s ease,
+                opacity 0.3s 0.3s ease,
+                border-radius 0.3s ease;
+      box-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+    }
+    
+  }
+  
+    &:not(.loading) button:hover {
+      box-shadow: 0px 1px 3px $primary;
+    }
+    &:not(.loading) button:focus {
+      border-bottom-width: 4px;
+    }
+    
+  
+}
+
+footer {
+  display: block;
+  padding-top: 50px;
+  text-align: center;
+  color: #ddd;
+  font-weight: normal;
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.2);
+  font-size: 0.8em;
+  a, a:link {
+    color: #fff;
+    text-decoration: none;
+  }
+}
 #nav {
   padding: 30px;
 
@@ -305,7 +475,7 @@ $image-path: '~@/../mdb/mdbvue/img';
 import axios from 'axios'
 import store from './store/index'
 export default {
- 
+
   data() {
     return {
       Login: {
@@ -331,6 +501,23 @@ export default {
                  this.$cookie.set('usersession', 'usersession', { expires: '1h' });
 
                }
+               console.log(localStorage.getItem('user'))
+             if(localStorage.getItem('user')!=null && localStorage.getItem("username")!=null)
+               axios({
+                method: 'GET',
+                url: 'https://localhost:44303/checkuser',
+                params: { username: localStorage.getItem('username'), password:localStorage.getItem("password") },
+                  headers:{
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")}
+            }).catch(d=>{
+           localStorage.removeItem("user");
+      localStorage.removeItem("username")
+     localStorage.removeItem("password")
+
+});
+
+              
           },
 
   methods: {
@@ -344,7 +531,7 @@ export default {
 
     },
     async loginUser() {
-      
+     
          await axios({
                 method: 'POST',
                 url: 'https://localhost:44303/token',
@@ -356,7 +543,21 @@ export default {
                 localStorage.setItem("password", this.Login.password)
                 localStorage.setItem("role",data.role )
                 window.location.reload();
-            });
+ 
+             
+            }).catch(d=>{
+              if(d.response)
+              console.log(d.response)
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+   duration:10000,
+  text: d.response.data.error
+});
+
+});
+         
      
      
         // navigate to a protected resource 

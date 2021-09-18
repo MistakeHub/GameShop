@@ -13,16 +13,20 @@
       
         <b-form-input
           id="input-1"
+          name="login"
+           v-validate="{required:true,min:3,max:20,regex:/^[a-zA-Z](.[a-zA-Z0-9_-]*)$/}"
+            :state="validateState('login')"
          v-model="Login"
           type="text"
           placeholder="Enter Title"
           required
         ></b-form-input>
+         <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('login') }}</b-form-invalid-feedback>
       </b-form-group>
 
         <b-form-group
         id="input-group-1"
-        label="Пароль:"
+        label="Пароль(Хэширован):"
         label-for="input-2"
       
       >
@@ -30,11 +34,14 @@
       
         <b-form-input
       id="input-2"
+        name="password"
+
       v-model="Password"
       placeholder="Enter something..."
       rows="3"
       max-rows="6"
     ></b-form-input>
+     <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('password') }}</b-form-invalid-feedback>
     
 
       <b-form-group
@@ -46,11 +53,15 @@
       
  <b-form-input
       id="input-3"
+             name="input-2"
+               v-validate="'required|email'"
+               :state="validateState('input-2')"
       v-model="Email"
       placeholder="Enter something..."
       rows="3"
       max-rows="6"
     ></b-form-input>
+     <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('input-2') }}</b-form-invalid-feedback>
      
       
    
@@ -81,7 +92,7 @@
    
         name="flavour-3"
       >
-        <b-form-radio :value=elem class="d-flex justify-content-start"  v-model="selectedrole">{{elem}}</b-form-radio>
+        <b-form-radio :value=elem class="d-flex"  v-model="selectedrole">{{elem}}</b-form-radio>
      
       </b-form-radio-group>
    
@@ -108,7 +119,7 @@
       </form>
     </div>
     </b-form-group> 
-        </b-form-group>
+  
         
         
 
@@ -119,6 +130,7 @@
     
     </b-form>
        <b-button type="submit" variant="primary" @click="upload()">Submit</b-button>
+        <notifications group="foo" />
   </div>
 </template>
 
@@ -230,6 +242,15 @@ import axios from 'axios'
         this.files.append("file", fileList[0], fileList[0].name);
     },
           
+             validateState(ref) {
+      if (
+        this.veeFields[ref] &&
+        (this.veeFields[ref].dirty || this.veeFields[ref].validated)
+      ) {
+        return !this.veeErrors.has(ref);
+      }
+      return null;
+    },
           
       
 
@@ -251,23 +272,81 @@ import axios from 'axios'
     let file = this.image
 
    formData.append('avatar', file, file.name)
-      axios({method:'PUT', url:`https://localhost:44303/edituser/`+this.id, headers:{
+       this.$validator.validate().then(valid => {
+        if (valid) {
+          axios({method:'PUT', url:`https://localhost:44303/edituser/`+this.id, headers:{
                     "Accept": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("user")},data:formData,params:{ login:this.Login, password:this.Password, email:this.Email, statuse:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
-           alert("Успешно обновлено");
-            }).catch(error => {
-                console.log(error);
-            });
+         this.$notify({
+  group: 'foo',
+  type:'success',
+ duration:10000,
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+   duration:10000,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+   duration:10000,
+  text:d.message
+});
+  }
+});
+        }
+      });
+    
       }
 
 else 
-          axios({method:'POST', url:`https://localhost:44303/register`,headers:{
+
+this.$validator.validate().then(valid => {
+        if (valid) {
+            axios({method:'POST', url:`https://localhost:44303/register`,headers:{
                     "Accept": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("user")}, params:{ login:this.Login, password:this.Password, email:this.Email, status:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
-           alert("Успешно Добавлено");
-            }).catch(error => {
-                console.log(error);
-            });
+
+          this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+        }
+      });
+      
 
     },
 

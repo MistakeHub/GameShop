@@ -54,7 +54,7 @@
 </div>
 
 <div>
-
+     <notifications group="foo" />
 
   <b-modal ref="bv-modal-example2" hide-footer>
     <template #modal-title>
@@ -116,7 +116,25 @@ import axios from 'axios'
                             if(this.$route.meta.platform)
                            axios.get('https://localhost:44303/api/Platform/getAll', {headers:{
                     'set-cookie':document.cookie}}).then(Response=>
-                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Platform";   console.log(this.publications)  ;this.fileds=['id', 'titleofplatform', { key: 'actions', label: 'Actions' }]} )
+                           { this.publications=Response.data.item1;this.countPublication=Response.data.item2; this.isHaveModal=true;this.Type="Platform";   console.log(this.publications)  ;this.fileds=['id', 'titleofplatform', { key: 'actions', label: 'Actions' }]} ).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
 
                           
@@ -128,7 +146,32 @@ import axios from 'axios'
 
  axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); alert("Удалён")  } )
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно Удален"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
          
         },
 
@@ -136,14 +179,65 @@ import axios from 'axios'
       Add:function(){
            axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', headers: {
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}) .then(response=>{  window.location.reload();  this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно добавлен"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+
 
       },
 
         EditElement:function(){
            axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, headers:{
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload();  alert("Элемент успешно добавлен")})
+                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно изменён"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       },
 
@@ -160,14 +254,64 @@ import axios from 'axios'
 
          axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', headers:{
                     "Accept": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("admin")},}).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+                "Authorization": "Bearer " + localStorage.getItem("admin")},}).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно Сохранён"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       },
         LoadFromJson:function(){
 
          axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/loadfromjson', headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}, }).then(response=>{  window.location.reload();  alert("Успешно Сохранено")})
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}, }).then(response=>{  window.location.reload(); this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно загружен"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
       }
           

@@ -1,12 +1,12 @@
 <template>
 
-<div class="row py-5 px-4">
+<div class="row py-5 px-4" style="padding-top:30%">
     <div class="col-md-5 mx-auto">
         <!-- Profile widget -->
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 cover">
                 <div class="media align-items-end profile-head">
-                    <div class="profile mr-3"><img :src="user.avatar==null?'https://localhost:44303/getImage/Avatar/Default.jpg':user.avatar.url" alt="..." style="max-widht:180px; max-height:220px" class="rounded mb-2 img-thumbnail">
+                    <div class="profile mr-3"><img :src="user.avatar==null?'https://localhost:44303/getImage/Avatar/Default.jpg':user.avatar" alt="..." style="max-widht:180px; max-height:220px" class="rounded mb-2 img-thumbnail">
                            <h4 class="mt-0 mb-0">{{user.login}}</h4>
                                 <form enctype="multipart/form-data">
         <input type="file" name="photo"  v-on:change="fileChange($event.target.files)"/>
@@ -22,7 +22,10 @@
             <div class="bg-light p-4 d-flex justify-content-end text-center">
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">{{user.countofComments}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Comments</small>
+                        <h5 class="font-weight-bold mb-0 d-block">{{user.countofComments}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Комментарии</small>
+                    </li>
+                       <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{user.numberOfPurchases}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Покупки</small>
                     </li>
                  
                 </ul>
@@ -98,19 +101,45 @@ import axios from 'axios'
              upload: function(){
         const photo = this.files;
         var password=localStorage.getItem("password")
-        axios.post("https://localhost:44303/uploadavatar/"+this.user.login, photo ,{ params:{
-              password
+        axios({method:'POST', url:"https://localhost:44303/uploadavatar/"+this.user.login, headers:{
+                
+                    'Content-Type': 'multipart/form-data',
+                        "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")
 
-        }},
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(response => {
+                
+            }, data:photo ,params:{
+             password: password
+
+        },
+           }).then(response => {
                 window.location.reload();
-            }).catch(error => {
-                console.log(error);
-            })},
+            this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});},
 
       
    

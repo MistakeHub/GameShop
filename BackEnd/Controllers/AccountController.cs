@@ -156,6 +156,46 @@ namespace BackEnd.Controllers
 
         }
 
+        [HttpPost("/restorerequest")]
+        public IActionResult RestoreRequest(string email)
+        {
+
+            User user = _context.GetUserByEmail(email);
+            string key = HashHelper.GetHashString(email);
+            if (user != null)
+            {
+                cache.Set(key, user, new MemoryCacheEntryOptions
+                {
+
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                });
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1>Изменение пароля<h1><p> http://yourprojectname:8080/requestform/{key}");
+                return Ok(new { key = key });
+
+            }
+            else
+                return BadRequest(new { error = "Аккаунта с такой почтой не существует!" });
+
+
+           
+
+
+
+        }
+        [HttpPost("/restore")]
+        public IActionResult Restore(string restoreid, string password)
+        {
+            User user = null;
+
+            cache.TryGetValue(restoreid,out user);
+
+         
+            _context.EditPassword(user, password);
+
+            return Ok();
+
+        }
+
         [HttpPost(("/register"))]
         public void Register(string login, string email, string password,IFormFile avatar, string status="Онлайн", string role="Пользователь")
         {
@@ -163,14 +203,40 @@ namespace BackEnd.Controllers
             _context.RequestForVerification(ref cache,login, email, password, DateTime.UtcNow, status, role);
 
         }
+        [HttpPost(("/checkuserforrestore/{restoreid}"))]
+        public IActionResult GetRestore(string restoreid)
+        {
+            User user = null;
 
+           if(cache.TryGetValue(restoreid, out user)) return Ok();
+
+            return BadRequest(new { error = "Ошибка" });
+
+        }
       
+        [Authorize]
+        [HttpGet("/checkuser")]
+
+        public IActionResult Check(string username, string password)
+        {
+
+            User user = _context.CheckUser(username, password);
+            if (user == null)
+            {
+
+                return NotFound();
+
+            }
+
+            return Ok();
+
+        }
 
 
         private ClaimsIdentity GetIdentity(string login, string password,int? optionalrole)
         {
-            var pass = HashHelper.GetHashString(password);
-            User user = _context.CheckUser(login,pass,optionalrole);
+           
+            User user = _context.CheckUser(login,password,optionalrole);
             if (user != null)
             {
                 var claims = new List<Claim>
