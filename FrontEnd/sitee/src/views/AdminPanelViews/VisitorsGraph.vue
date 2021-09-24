@@ -7,7 +7,7 @@
     <div>
    
     </div>
-       <button @click="fillData()">Randomize</button>
+       <button @click="fillData()">Получить Текущие</button>
   </div>
 
   
@@ -29,7 +29,8 @@ import axios from 'axios'
       }
     },
     mounted () {
-      setInterval( this.fillData,100)
+      this.fillData()
+      setInterval( this.fillData,60000)
     },
     methods: {
       fillData () {

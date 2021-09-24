@@ -214,6 +214,17 @@ namespace BackEnd.Controllers
 
         }
 
+        [Route("removePublicationAll")]
+        [HttpDelete]
+        [Authorize(Roles = "Редактор,Администратор")]
+        public StatusCodeResult removePublicationALl(int id)
+        {
+
+            _context.RemovePublication(id);
+
+            return Ok();
+
+        }
 
     }
     

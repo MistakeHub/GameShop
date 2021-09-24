@@ -107,6 +107,8 @@ namespace BackEnd.Controllers
             var user = GetIdentity(login, password,optionalrole);
 
             if (user == null) return BadRequest(new { error = "Неверный логин или пароль" });
+
+            
             var now = DateTime.UtcNow;
 
             var jwt= new JwtSecurityToken(
@@ -169,7 +171,7 @@ namespace BackEnd.Controllers
 
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
                 });
-                EmailService.SendChangesInfoEmailAsync(email, $"<h1>Изменение пароля<h1><p> http://yourprojectname:8080/requestform/{key}");
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1>Изменение пароля<h1><a> http://yourprojectname:8080/requestform/{key} </a>", "Изменение Данных Аккаунта");
                 return Ok(new { key = key });
 
             }
@@ -191,7 +193,7 @@ namespace BackEnd.Controllers
 
          
             _context.EditPassword(user, password);
-
+           
             return Ok();
 
         }
@@ -237,12 +239,12 @@ namespace BackEnd.Controllers
         {
            
             User user = _context.CheckUser(login,password,optionalrole);
-            if (user != null)
+            if (user != null && user.Status.Titleofstatuse!="Заблокирован")
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.TitleofRole)
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role==null? " ":user.Role.TitleofRole)
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -253,9 +255,51 @@ namespace BackEnd.Controllers
             // если пользователя не найдено
             return null;
         }
-      
-       
 
-        
+
+        [Route("removeall")]
+        [HttpDelete]
+        [Authorize(Roles = "Редактор,Администратор")]
+        public StatusCodeResult RemoveAll()
+        {
+            _context.RemoveAll();
+
+            return Ok();
+
+        }
+
+        [Route("remove/{id}")]
+        [HttpDelete]
+        [Authorize(Roles = "Редактор,Администратор")]
+        public StatusCodeResult Remove(int id)
+        {
+            _context.RemoveElement(id);
+
+            return Ok();
+
+        }
+
+        [Route("banuser/{username}")]
+        [HttpPost]
+        [Authorize(Roles = "Редактор")]
+        public StatusCodeResult ToBan(string username,string reason)
+        {
+            _context.ToBanUser(username, reason);
+
+            return Ok();
+
+        }
+
+        [Route("unbanuser/{username}")]
+        [HttpPost]
+        [Authorize(Roles = "Редактор")]
+        public StatusCodeResult ToUnBan(string username)
+        {
+            _context.ToUnBanUser(username);
+
+            return Ok();
+
+        }
+
     }
 }

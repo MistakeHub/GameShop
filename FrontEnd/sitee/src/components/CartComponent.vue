@@ -74,7 +74,8 @@
         </div>
         <!-- End row -->
     </div>
-    </div>
+  
+    
 </template>
 
 <style>

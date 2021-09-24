@@ -22,10 +22,13 @@ namespace BackEnd.Models.Repository.UserRepository
         void EditElement(int id, IFormFile avatar, string login, string password, string email, string role, string statuse,string path);
         void RemoveElement(int id);
         void EditPassword(User user, string password);
+        void RemoveAll();
         User AcceptVerification(ref IMemoryCache cache,string userkey);
         void RequestForVerification(ref IMemoryCache  cache, string value1, string value2, string value3, DateTime value4, string status="Онлайн", string role="Пользователь");
         User UploadAvatar(string login, string password,IFormFile photo, string path);
         void SaveToJson();
+        void ToBanUser(string username,string reason);
+        void ToUnBanUser(string username);
         void LoadfromJson();
         
 

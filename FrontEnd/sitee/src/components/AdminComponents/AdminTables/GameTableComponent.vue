@@ -39,13 +39,14 @@
 <b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"  @click="$bvModal.show('bv-modal-example')"  > New</b-button>
 <b-button @click="SaveToJson()" variant="warning">SaveToJson</b-button>
 <b-button @click="LoadFromJson()" variant="warning">LoadFromJson</b-button>
+<b-button @click="RemoveAll()" variant="danger">RemoveAll</b-button>
   <b-modal id="bv-modal-example" hide-footer>
     <template #modal-title>
     <h1>Добавление нового элемента</h1>
     </template>
     
     <div class="d-block text-center">
-      <label>навзание</label>
+        <label>название</label>
       <b-input v-model="title"></b-input>
     </div>
     <b-button class="mt-3" block @click="Add()">Подтвердить </b-button>
@@ -67,6 +68,7 @@
     <b-button class="mt-3" block @click="EditElement()">Подтвердить </b-button>
   </b-modal>
 </div>
+<notifications group="foo"></notifications>
    <router-view></router-view>
   
 </div>
@@ -140,15 +142,40 @@ import axios from 'axios'
                           
           },
           methods:{
-     getPublication:function(){
 
-          axios.get('https://localhost:44303/api/Catalog/getAll').then(Response=>{ this.publications=Response.data.item1;this.countPublication=Response.data.item2;   console.log(this.publications)  } ).catch(d=>{
+                RemoveAll:function(){
+        this.$bvModal.msgBoxConfirm('Удалить все записи?', {
+          title: 'Пожалуйста,подтвердите',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }) .then(value => {
+          console.log(value)
+            if(value){
+
+ axios({method:'DELETE',url:'https://localhost:44303/api/'+this.Type+'/removeall', headers:{
+                    "Accept": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("admin")},})
+                .then(response=>{   this.$notify({
+  group: 'foo',
+  type:'success',
+  duration:10000,
+  text: "Успешно Сохранён"
+});
+             
+            }).catch(d=>{
               if(d.response)
          
               this.$notify({
   group: 'foo',
   type:'error',
   title: d.response.status,
+   duration:10000,
   text: d.message
 });
   if(d.request){
@@ -157,17 +184,40 @@ import axios from 'axios'
   group: 'foo',
   type:'error',
   title: 'Ошибка',
+   duration:10000,
   text:d.message
 });
   }
 });
+
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+        
       },
+    
          
         Remove:function(index){
 
- axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
+this.$bvModal.msgBoxConfirm('Удалить запись?', {
+          title: 'Пожалуйста, подтвердите действие',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          okTitle: 'YES',
+          cancelVariant:'danger',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if(value){
+            axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); alert("Удалён")  } ).then(Response=>{  window.location.reload(); this.$notify({
+                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); this.$notify({
   group: 'foo',
   type:'success',
  
@@ -193,9 +243,40 @@ import axios from 'axios'
 });
   }
 });
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+
+ 
          
         },
 
+     getPublication:function(){
+
+          axios.get('https://localhost:44303/api/Catalog/getAll').then(Response=>{ this.publications=Response.data.item1;this.countPublication=Response.data.item2;   console.log(this.publications)  } ).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
+      },
+         
+       
   
       Add:function(){
            axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', headers: {
@@ -228,6 +309,8 @@ import axios from 'axios'
 });
 
       },
+
+      
 
         EditElement:function(){
            axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, headers:{

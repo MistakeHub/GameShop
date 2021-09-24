@@ -58,6 +58,16 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Statuse> statuses = LoadFromJson("Statuses.json");
+
+            _context.Statuses.AddRange(statuses);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            IEnumerable<Statuse> remove = _context.Statuses.Where(d => d.Id != 0 && d.Titleofstatuse !="Администратор");
+            _context.Statuses.RemoveRange(remove);
+            _context.SaveChanges();
         }
 
         public void RemoveElement(int id)

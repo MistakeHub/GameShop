@@ -88,5 +88,16 @@ namespace BackEnd.Controllers
             return Ok();
 
         }
+
+        [Route("removeall")]
+        [HttpDelete]
+        [Authorize(Roles = "Редактор,Администратор")]
+        public StatusCodeResult RemoveAll()
+        {
+            _context.RemoveAll();
+
+            return Ok();
+
+        }
     }
 }

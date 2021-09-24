@@ -72,3 +72,4 @@ C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\web.con
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\obj\Debug\netcoreapp3.0\BackEnd.csproj.AssemblyReference.cache
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Publications.json
 C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Games.json
+C:\Users\Mistake22\source\repos\GameShop\BackEnd\bin\Debug\netcoreapp3.0\Roles.json

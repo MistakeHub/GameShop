@@ -116,7 +116,7 @@
    
     </b-form-group>
  
-    <b-form-group label="Палтформа:" v-b-toggle.my-collapse3  >
+    <b-form-group label="Платформы:" v-b-toggle.my-collapse3  >
 
    
       <b-form-checkbox-group
@@ -277,12 +277,12 @@ import axios from 'axios'
             if(this.$route.meta.EditFormPublication)     axios.get("https://localhost:44303/api/Catalog/getpublication/"+this.$route.params.id).
             then(Response=> {
                  console.log(Response.data);
-            this.selectedseries=Response.data.game.series; 
+            this.selectedseries=Response.data.game.series==null? 1:Response.data.game.series; 
             this.price=Response.data.price; 
             this.games=Response.data.game; 
             this.dateRealese=Response.data.game.dateRealese;
             this.titleofgame=this.games.titleofgame;
-            this.seriess=this.games.series.titleofseries
+            this.seriess=Response.data.game.series==null? 1:this.games.series.titleofseries
             this.description=this.games.description
             this.publications=Response.data
             console.log(this.publications.id)
@@ -362,7 +362,7 @@ import axios from 'axios'
      console.log(this.publications.id)
       if(this.$route.meta.EditFormPublication)
       
-      axios({method:'POST', url:`https://localhost:44303/api/Catalog/editpublication/`+this.publications.id, headers:{
+      axios({method:'POST', url:`https://localhost:44303/api/Catalog/editpublication/`+this.$route.params.id, headers:{
                     "Accept": "application/json",
                  "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{images:formData,titleofgame:this.titleofgame,
          description:this.description, dateRealese:this.dateRealese,genres:this.selectedgenres, manufactures:this.selectedmanufactures, platforms:this.selectedplatforms, 

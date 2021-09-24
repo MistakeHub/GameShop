@@ -537,8 +537,18 @@ namespace BackEnd.Models.Repository.PublicationRepository
         public void LoadfromJson()
         {
             IEnumerable<Game> Game = LoadFromJson("Games.json");
+
+            _context.Games.AddRange(Game);
+            _context.SaveChanges();
         }
 
-    
+        public void RemoveAll()
+        {
+            IEnumerable<Game> remove = _context.Games.Where(d => d.Id != 0);
+            _context.Games.RemoveRange(remove);
+            _context.SaveChanges();
+        }
+
+
     }
 }

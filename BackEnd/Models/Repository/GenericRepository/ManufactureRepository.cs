@@ -59,6 +59,16 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Manufacture> manufactures = LoadFromJson("Manufactures.json");
+
+            _context.Manufactures.AddRange(manufactures);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            IEnumerable<Manufacture> remove = _context.Manufactures.Where(d => d.Id != 0);
+            _context.Manufactures.RemoveRange(remove);
+            _context.SaveChanges();
         }
 
         public void RemoveElement(int id)

@@ -33,7 +33,7 @@ namespace BackEnd.Models.Repository.Record
         {
 
 
-            return _context.Publications.Include(d => d.Game).Include(d => d.Game.Platforms).Include(d => d.Game.Localizations).Include(d => d.Game.Genres).Include(d => d.Game.Manufactures).Include(d => d.Game.Series).Where(d => d.Game.Localizations.Any(p => localizations.Contains(p.Titleoflocalization)) && d.Game.Genres.Any(p => genres.Contains(p.Titleofgenre)) && d.Game.Platforms.Any(p => platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p => manufactures.Contains(p.Titleofmanufactures))).GroupBy(d => d.Game.Titleofgame).Select(d => new { Game = d.Key, Rating=(double?)d.Select(p=>p.Rating).First().Value }).ToList();
+            return _context.Publications.AsNoTracking().Include(d => d.Game).Include(d => d.Game.Platforms).Include(d => d.Game.Localizations).Include(d => d.Game.Genres).Include(d => d.Game.Manufactures).Include(d => d.Game.Series).Where(d => d.Game.Localizations.Any(p => localizations.Contains(p.Titleoflocalization)) && d.Game.Genres.Any(p => genres.Contains(p.Titleofgenre)) && d.Game.Platforms.Any(p => platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p => manufactures.Contains(p.Titleofmanufactures))).GroupBy(d =>new { d.Game.Titleofgame, d.Rating }).Select(d => new { Game = d.Key.Titleofgame, Rating=d.Key.Rating }).OrderByDescending(d=>d.Rating).ToList();
         }
 
         public IEnumerable MostPurcheasableProduct(DateTime? from, DateTime? to, string[] genres, string[] manufactures, string[] platforms, string[] localizations)

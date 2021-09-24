@@ -28,7 +28,7 @@ import MostRatingProducts from "../views/AdminPanelViews/MostRatingProducts.vue"
 import NotFound from "../views/NotFound.vue"
 import RestoreAccountRequest from "../views/RestoreAccountRequest.vue"
 import RestoreAccountForm from "../views/RestoreAccountForm.vue"
-
+import store from '../store/index'
 // Containers
 
 
@@ -67,7 +67,7 @@ const routes = [
     component:Admin,
     
     meta: {
-      AdminLayout: true,
+      LoginAdmin: true,
     },  
     
   },
@@ -105,7 +105,11 @@ const routes = [
         name:"MostRating",
       
         component: MostRatingProducts,
-         
+        beforeEnter: (to, from, next) => {
+       if(localStorage.getItem('admin')==null)
+     next({name:"NotFound" });
+     else next();
+        },
      
     
         meta: {
@@ -119,6 +123,11 @@ const routes = [
         name:"MostProfitable",
       
         component: MostProfitable,
+        beforeEnter: (to, from, next) => {
+          if(localStorage.getItem('admin')==null)
+        next({name:"NotFound" });
+        else next();
+           },
          
      
     
@@ -131,6 +140,11 @@ const routes = [
       path: '/admin-panel/TablesOfPublication',
       name:"Tables1",
       component: GameTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         publication:true
@@ -141,6 +155,11 @@ const routes = [
       path: '/admin-panel/TablesOfCountry',
       name:"Tables2",
       component: CountryTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         country:true
@@ -151,6 +170,11 @@ const routes = [
       path: '/admin-panel/TablesOfGenre',
       name:"Tables3",
       component: GenreTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         genre:true
@@ -161,6 +185,11 @@ const routes = [
       path: '/admin-panel/TablesOfLocalization',
       name:"Tables4",
       component: LocalizationTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         localization:true
@@ -171,6 +200,11 @@ const routes = [
       path: '/admin-panel/TablesOfManufacture',
       name:"Tables5",
       component: ManufactureTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         manufacture:true
@@ -181,6 +215,11 @@ const routes = [
       path: '/admin-panel/TablesOfPlatform',
       name:"Tables6",
       component:PlatformTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         platform:true
@@ -191,6 +230,11 @@ const routes = [
       path: '/admin-panel/TablesOfRole',
       name:"Tables7",
       component: RoleTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         role:true
@@ -201,6 +245,11 @@ const routes = [
       path: '/admin-panel/TablesOfSeries',
       name:"Tables8",
       component: SeriesTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         series:true
@@ -221,6 +270,11 @@ const routes = [
       path: '/admin-panel/TablesOfUser',
       name:"Tables10",
       component: UserTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         user:true
@@ -231,6 +285,11 @@ const routes = [
       path: '/admin-panel/TablesOfCountries',
       name:"Tables11",
       component: CountryTable,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
         country:true
@@ -241,6 +300,11 @@ const routes = [
       path: '/admin-panel/AddPublication',
       name:"AddPublication",
       component: AddPublicationForm,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         AdminPanelLayout: true,
       },  
@@ -255,6 +319,11 @@ const routes = [
       path: '/admin-panel/EditPublication/:id',
       name:"EditPublication",
       component: AddPublicationForm,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         EditFormPublication: true,
         AdminPanelLayout: true,
@@ -265,6 +334,11 @@ const routes = [
       path: '/admin-panel/EditUser/:id',
       name:"EditUser",
       component: AddEditUserForm,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
         EditFormUser: true,
         AdminPanelLayout: true,
@@ -275,6 +349,11 @@ const routes = [
       path: '/admin-panel/AddUser',
       name:"AddUser",
       component: AddEditUserForm,
+      beforeEnter: (to, from, next) => {
+        if(localStorage.getItem('admin')==null)
+      next({name:"NotFound" });
+      else next();
+         },
       meta: {
        
         AdminPanelLayout: true,
@@ -284,6 +363,11 @@ const routes = [
   {
     path: '/userProfile/:userlogin',
     name: 'UserProfile',
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('user')==null)
+    next({name:"NotFound" });
+    else next();
+       },
     component: UserProfile,
   
   },
@@ -300,6 +384,11 @@ const routes = [
   {
     path:"/cart/:user",
     name:"Cart",
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('user')==null)
+    next({name:"NotFound" });
+    else next();
+       },
     component:Cart
  
    },
@@ -308,6 +397,11 @@ const routes = [
   {
     path:"/cart/AcceptPurchase/:id",
     name:"AcceptPurchase",
+    beforeEnter: (to, from, next) => {
+      if(localStorage.getItem('user')==null)
+    next({name:"NotFound" });
+    else next();
+       },
     component:AcceptPurchase
  
    },
@@ -334,7 +428,7 @@ const routes = [
     
   },
 
-  { path: "*", component: NotFound }
+  { path: "*", name:"NotFound",component: NotFound }
 ]
 
 const router = new VueRouter({
@@ -346,3 +440,6 @@ const router = new VueRouter({
 
 
 export default router
+
+  
+

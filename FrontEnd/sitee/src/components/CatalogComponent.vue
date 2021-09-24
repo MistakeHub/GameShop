@@ -39,7 +39,7 @@
       </b-collapse>
     </b-form-group>
  
-    <b-form-group label="Палтформа:" v-b-toggle.my-collapse3 v-slot="{ ariaDescribedby }" >
+    <b-form-group label="Платформы:" v-b-toggle.my-collapse3 v-slot="{ ariaDescribedby }" >
 <b-collapse id="my-collapse3">
    
       <b-form-checkbox-group
@@ -77,12 +77,16 @@
 </b-form>
   
   </div>
-  <b-button href="#" variant="primary" @click.prevent="Filter()">Go somewhere</b-button>
+ 
 </b-card>
 <b-list-group class="">
+    
   <b-list-group-item  active class="flex-column align-items-start">
+    <h5 class="mb-1 dark">Сортировка по:</h5>
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Сортировка по</h5>
+    
+      
+
       <b-button variant="success" @click="SortByDateRealese()">Дате выхода</b-button>
        <b-button variant="success" @click="SortByTitle()">Названию</b-button>
          <b-button variant="success" @click="SortByPrice()">Цене</b-button>
@@ -94,11 +98,12 @@
     </div>
      <div>
           <b-col sm="3">
-        <label for="title">Название Игры</label>
+        <label for="title">Поиск</label>
       </b-col>
       <b-col sm="9">
         <b-form-input id="title" type="text" v-model="search"></b-form-input>
       </b-col>
+      <br>
     
    <div v-for="elem in filteredItems" >
  

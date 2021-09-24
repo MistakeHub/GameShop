@@ -227,7 +227,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get('ttps://localhost:44303/api/Record/ratingproducts/',{headers:{
+            axios.get('ttps://localhost:44303/api/Record/ratingproducts',{headers:{
                     "Accept": "application/json",
                      "Authorization": "Bearer " + localStorage.getItem("admin")
                     ,

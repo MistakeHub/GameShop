@@ -50,10 +50,7 @@ import axios from 'axios'
 
       mounted () {
         this.renderChart(this.chartData, this.options)
-         axios.get('https://localhost:44303/api/Record/visitorcount',{headers:{
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("user")}}).then(Response=>{ this.chartData.datasets[0].data=Response.data; this.chartData.labels[0]=["Май", "Апрель"];   console.log(this.Count)})
-              console.log(this.chartData.datasets); 
+       
     
     },
     watch: {

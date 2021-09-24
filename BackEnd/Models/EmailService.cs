@@ -10,7 +10,7 @@ namespace BackEnd.Models
     public static class EmailService
     {
 
-        public async static void SendVerifyEmailAsync(string userkey,string email)
+        public async static void SendVerifyEmailAsync(string userkey,string email,string subject)
         {
             var emailMessage = new MimeMessage();
 
@@ -18,7 +18,7 @@ namespace BackEnd.Models
 
             emailMessage.From.Add(new MailboxAddress("Администрация сайта", "smurf2003@mail.ua"));
             emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = "Подтверждение регистрации";
+            emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = message
@@ -35,7 +35,7 @@ namespace BackEnd.Models
             }
         }
 
-        public async static void SendChangesInfoEmailAsync( string email, string message)
+        public async static void SendChangesInfoEmailAsync( string email, string message,string subject)
         {
             var emailMessage = new MimeMessage();
 
@@ -43,7 +43,7 @@ namespace BackEnd.Models
 
             emailMessage.From.Add(new MailboxAddress("Администрация сайта", "smurf2003@mail.ua"));
             emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = "Подтверждение регистрации";
+            emailMessage.Subject =subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = message

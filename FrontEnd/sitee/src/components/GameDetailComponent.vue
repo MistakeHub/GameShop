@@ -390,7 +390,25 @@ import axios from 'axios'
             }).then((response) => {
                   this.resultcode=response.status;
                 this.$refs['cart-modal'].show();
-            });
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
             
 
@@ -432,7 +450,32 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
             }).then((response) => {
                  
                this.resultcode=response.status;
-            });
+           this.$notify({
+  group: 'foo',
+  type:'success',
+ 
+  text: "Успешно!"
+});
+             
+            }).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+});
 
 
            },

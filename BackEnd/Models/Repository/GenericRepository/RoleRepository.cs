@@ -1,4 +1,5 @@
 ﻿using BackEnd.Models.SaveToFile;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +58,18 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Role> roles = LoadFromJson("Roles.json");
+
+
+
+            _context.Roles.AddRange(roles);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            IEnumerable<Role> remove = _context.Roles.Where(d => d.Id != 0);
+            _context.Roles.RemoveRange(remove);
+            _context.SaveChanges();
         }
 
         public void RemoveElement(int id)

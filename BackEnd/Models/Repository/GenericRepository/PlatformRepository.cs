@@ -58,8 +58,17 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Platform> platforms = LoadFromJson("Platforms.json");
+
+            _context.Platforms.AddRange(platforms);
+            _context.SaveChanges();
         }
 
+        public void RemoveAll()
+        {
+            IEnumerable<Platform> remove = _context.Platforms.Where(d => d.Id != 0);
+            _context.Platforms.RemoveRange(remove);
+            _context.SaveChanges();
+        }
         public void RemoveElement(int id)
         {
             Platform platform = _context.Platforms.SingleOrDefault(p => p.Id == id);

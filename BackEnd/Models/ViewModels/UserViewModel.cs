@@ -7,6 +7,7 @@ namespace BackEnd.Models.ViewModels
 {
     public class UserViewModel
     {
+ 
 
         public string Login { get; set; }
 

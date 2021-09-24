@@ -202,8 +202,8 @@ import axios from 'axios'
             then(Response=> {
                  console.log(Response.data);
                  this.id=Response.data.id
-            this.selectedrole=Response.data.role.titleofRole; 
-            this.selectedstatuse=Response.data.status.titleofstatuse; 
+            this.selectedrole=Response.data.role==null? 1:Response.data.role.titleofRole; 
+            this.selectedstatuse=Response.data.statuse==null? 1:Response.data.status.titleofstatuse; 
           this.Login=Response.data.login;
           console.log(  this.selectedrole)
            console.log(this.selectedstatuse)
@@ -276,7 +276,7 @@ import axios from 'axios'
         if (valid) {
           axios({method:'PUT', url:`https://localhost:44303/edituser/`+this.id, headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("user")},data:formData,params:{ login:this.Login, password:this.Password, email:this.Email, statuse:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
+                    "Authorization": "Bearer " + localStorage.getItem("admin")},data:formData,params:{ login:this.Login, password:this.Password, email:this.Email, statuse:this.selectedstatuse, role:this.selectedrole }  }).then(response => {
          this.$notify({
   group: 'foo',
   type:'success',

@@ -1,6 +1,6 @@
 <template >
 <body  >
-  <div id="app"  v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout"  >
+  <div id="app"  v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout && !$route.meta.LoginAdmin"  >
    <div>
 <notifications group="foo" />
    <div>
@@ -35,7 +35,7 @@
      <div class="modal-footer">
                     <div class="options font-weight-light">
                         <p>Ещё не зарегистрированны? <a href="/register">Зарегистрироваться</a></p>
-                        <p>Забыли пароль? <a href="#">Восстановить пароль</a></p>
+                        <p>Забыли пароль? <a href="/requestrestore">Восстановить пароль</a></p>
                     </div>
                 </div>
     <button type="submit">
@@ -207,7 +207,7 @@
    <!-- Footer -->
 
   </div>
-  <div id="app" v-if="$route.meta.AdminLayout && this.$store.state.isAdmin"  >
+  <div id="app" v-if="$route.meta.AdminLayout "   >
    <div class="basic-layout">
     
    
@@ -216,20 +216,24 @@
 
    
   </div>
-
   </div>
+ 
+
+  
+
+   <div id="app" v-if="$route.meta.LoginAdmin"><router-view></router-view> </div>
   <div id="app" v-if="$route.meta.AdminPanelLayout"    >
    <div class="basic-layout">
     
   
 
- <div class="c-app " >
+<div class="c-app " >
     <div class="bg-dark" >
-    <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
-    <b-sidebar id="sidebar-1" title="Sidebar" shadow>
+    <b-button v-b-toggle.sidebar-1>Меню</b-button>
+    <b-sidebar id="sidebar-1" title="Меню" shadow>
       <div class="px-3 py-2">
         <b-nav vertical>
-            <b-nav-item href="/admin-panel/Home" >Home</b-nav-item>
+           <b-button @click="AdminLogOut()" variant="danger">Выйти</b-button> 
               <label   v-b-toggle.my-collapse3>Таблицы &#8595;</label>
                
 
@@ -269,7 +273,7 @@
   </div>
 
   </div>
-  
+      
 </body>
 
 
@@ -495,7 +499,8 @@ export default {
     };
   },
    mounted(){
-                  
+                this.$hostname=true  
+                console.log(this.$hostname)
                 
                if(this.session ==undefined){
                  this.$cookie.set('usersession', 'usersession', { expires: '1h' });
@@ -530,6 +535,18 @@ export default {
       window.location.reload();
 
     },
+
+     async AdminLogOut(){
+
+      await localStorage.removeItem("user");
+      await localStorage.removeItem("username")
+       await localStorage.removeItem("password")
+          await localStorage.removeItem("role")
+              await localStorage.removeItem("admin")
+                 this.$router.replace({ name: "Admin" });
+   
+
+    },
     async loginUser() {
      
          await axios({
@@ -542,8 +559,9 @@ export default {
                 localStorage.setItem("username",this.Login.login)
                 localStorage.setItem("password", this.Login.password)
                 localStorage.setItem("role",data.role )
+                
                 window.location.reload();
- 
+               
              
             }).catch(d=>{
               if(d.response)

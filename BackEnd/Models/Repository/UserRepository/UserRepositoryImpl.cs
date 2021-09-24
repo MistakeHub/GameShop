@@ -49,7 +49,8 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public User CheckUser(string login, string password, int? optionalrole)
         {
-            
+
+          
             if(optionalrole!=null)
             return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==HashHelper.GetHashString(password) && d.Idrole==optionalrole);
             else return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == HashHelper.GetHashString(password));
@@ -79,7 +80,9 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public void RemoveElement(int id)
         {
-            throw new NotImplementedException();
+            User user = _context.Users.FirstOrDefault(d => d.Id == id);
+           _context.Users.Remove(user);
+            _context.SaveChanges();
         }
         // Здесь заносим юзера в кэш, и высылаем на почту подтверждение об регистрации
         public void RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, string status, string role)
@@ -100,7 +103,7 @@ namespace BackEnd.Models.Repository.UserRepository
             }) ;
 
                
-            EmailService.SendVerifyEmailAsync(key, value2);
+            EmailService.SendVerifyEmailAsync(key, value2, "Подтверждение регистрации");
         }
 
         public User GetElement(string userlogin)
@@ -135,7 +138,7 @@ namespace BackEnd.Models.Repository.UserRepository
             User.Email = email;
             if (User.Login != login)
             {
-                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш логин был изменён на {login} </p>");
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш логин был изменён на {login} </p>", "Изменение Данных Аккаунта ");
                 User.Login = login;
                
 
@@ -143,7 +146,7 @@ namespace BackEnd.Models.Repository.UserRepository
 
             if (User.Password != password)
             {
-                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш пароль  был изменён на {password} </p>");
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1> Дорогой {User.Login}</h1> <p> Администрация сайта уведомляет вас о том, что ваш пароль  был изменён на {password} </p>", "Изменение Данных Аккаунта");
              
                 User.Password = HashHelper.GetHashString(password); ;
 
@@ -184,6 +187,16 @@ namespace BackEnd.Models.Repository.UserRepository
         public void LoadfromJson()
         {
             IEnumerable<User> users = LoadFromJson("Users.json");
+
+            _context.Users.AddRange(users);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            IEnumerable<User> remove = _context.Users.Where(d => d.Id != 0);
+            _context.Users.RemoveRange(remove);
+            _context.SaveChanges();
         }
 
         public User GetUserByEmail(string Email)
@@ -199,6 +212,41 @@ namespace BackEnd.Models.Repository.UserRepository
 
             _context.Users.Update(user);
 
+            _context.SaveChanges();
+        }
+
+        
+        public void ToBanUser(string username,string reason)
+        {
+            User user = _context.Users.Include(d => d.Role).FirstOrDefault(d => d.Login == username);
+
+            Statuse statuse = _context.Statuses.FirstOrDefault(d => d.Titleofstatuse == "Заблокирован");
+
+            _context.Entry(statuse).State = EntityState.Modified;
+
+            user.Status = statuse;
+
+            _context.Users.Update(user);
+
+            EmailService.SendChangesInfoEmailAsync(user.Email, $"<h1>Уважаемый пользователь!</h1><br><p>Ваш аккаунт был заблокирован по причине:{reason}</p>","Изменение Данных Аккаунта");
+
+            _context.SaveChanges();
+
+
+        }
+
+        public void ToUnBanUser(string username)
+        {
+            User user = _context.Users.Include(d => d.Role).FirstOrDefault(d => d.Login == username);
+
+            Statuse statuse = _context.Statuses.FirstOrDefault(d => d.Titleofstatuse == "Онлайн");
+
+            _context.Entry(statuse).State = EntityState.Modified;
+
+            user.Status = statuse;
+
+            _context.Users.Update(user);
+            EmailService.SendChangesInfoEmailAsync(user.Email, $"<h1>Уважаемый пользователь!</h1><br><p>Ваш аккаунт был разблокирован</p>", "Изменение Данных Аккаунта");
             _context.SaveChanges();
         }
     }

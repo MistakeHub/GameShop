@@ -17,6 +17,7 @@ namespace BackEnd.Models.Repository.GenericRepository
         void RemoveElement(int id);
         IEnumerable GetTitles();
         void SaveToJson();
+        void RemoveAll();
         void LoadfromJson();
     }
 }

@@ -57,6 +57,16 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Localization> localizations = LoadFromJson("Localizations.json");
+
+            _context.Localizations.AddRange(localizations);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAll()
+        {
+            IEnumerable<Localization> remove = _context.Localizations.Where(d => d.Id != 0);
+            _context.Localizations.RemoveRange(remove);
+            _context.SaveChanges();
         }
 
         public void RemoveElement(int id)

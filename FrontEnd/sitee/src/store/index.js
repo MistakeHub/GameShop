@@ -25,9 +25,14 @@ Vue.use(Notifications)
 
 export default new Vuex.Store({
   state: {
-    isAdmin:false
+    isAdmin:false,
+    count:0
   },
   mutations: {
+    updateIsAdmin(state,value){
+      Vue.set(this.state,'count',1)
+      Vue.set(this.state,'isAdmin',true)
+    },
   },
   actions: {
   },

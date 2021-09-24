@@ -1,5 +1,5 @@
 <template>
- <div  style="height:500px; width:900px; margin-left:520px; margin-top:220px; margin-bottom:100px" v-if="iserror!=false">
+ <div  style="height:500px; width:900px; margin-left:520px; margin-top:220px; margin-bottom:100px" >
 
     <b-form class=" bg-white"  >
 

@@ -1,6 +1,6 @@
 <template>
 
-<div class="row py-5 px-4" style="padding-top:30%">
+<div class="row py-5 px-4" style="margin-top:10%">
     <div class="col-md-5 mx-auto">
         <!-- Profile widget -->
         <div class="bg-white shadow rounded overflow-hidden">
@@ -8,15 +8,16 @@
                 <div class="media align-items-end profile-head">
                     <div class="profile mr-3"><img :src="user.avatar==null?'https://localhost:44303/getImage/Avatar/Default.jpg':user.avatar" alt="..." style="max-widht:180px; max-height:220px" class="rounded mb-2 img-thumbnail">
                            <h4 class="mt-0 mb-0">{{user.login}}</h4>
-                                <form enctype="multipart/form-data">
+                           <br>
+                                <form v-if="localusername==user.login || localrole=='Редактор'" enctype="multipart/form-data">
         <input type="file" name="photo"  v-on:change="fileChange($event.target.files)"/>
         <button type="button" class="btn btn-outline-dark btn-sm btn-block" @click="upload()">Upload</button>
     </form>
-                    <div class="media-body mb-5 text-white">
+                  
+         <div class="media-body mb-5 text-white">
                  
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
                     </div>
-        
                 </div>
             </div>
             <div class="bg-light p-4 d-flex justify-content-end text-center">
@@ -30,20 +31,26 @@
                  
                 </ul>
             </div>
-            <div class="px-4 py-3">
-                <h5 class="mb-0">About</h5>
-                <div class="p-4 rounded shadow-sm bg-light">
-                    <p class="font-italic mb-0">Web Developer</p>
-                    <p class="font-italic mb-0">Lives in New York</p>
-                    <p class="font-italic mb-0">Photographer</p>
-                </div>
-            </div>
+           
             <div class="py-4 px-4">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="mb-0">Recent photos</h5><a href="#" class="btn btn-link text-muted">Show all</a>
-                </div>
-             
+              <b-button bv-modal-example1  v-if="localrole=='Редактор' && user.statuse=='Онлайн' " variant="danger" @click="ShowBanModal()"  >Заблокировать</b-button>
+              <b-button bv-modal-example1  v-if="localrole=='Редактор' && user.statuse=='Заблокирован' " variant="success" @click="UnBanUser()"  >Разблокировать</b-button>
             </div>
+              <div>
+   
+
+  <b-modal ref="bv-modal-example1" hide-footer>
+    <template #modal-title>
+    <h1>Блокировка пользователя</h1>
+    </template>
+    
+    <div class="d-block text-center">
+      <label>Причина</label>
+      <b-input v-model="reason"></b-input>
+    </div>
+    <b-button class="mt-3" block @click="BanUser()">Подтвердить </b-button>
+  </b-modal>
+</div>
         </div>
     </div>
 </div>
@@ -80,7 +87,10 @@ import axios from 'axios'
           data(){
               return{
                  user:{},
-               files: new FormData()
+               files: new FormData(),
+               localusername:localStorage.getItem("username"),
+               localrole:localStorage.getItem("role"),
+               reason:""
               }
           },
           mounted(){
@@ -88,10 +98,47 @@ import axios from 'axios'
                  this.$cookie.set('usersession', 'usersession', { expires: '1h' });
 
                }
+               console.log(this.localusername)
             axios.get("https://localhost:44303/getuser/"+this.$route.params.userlogin).then((response)=> {this.user=response.data; console.log(this.user)});
 
           },
           methods: {
+
+                ShowBanModal:function(){
+        
+ this.$refs['bv-modal-example1'].show();
+           
+
+      },
+
+          
+
+              BanUser(){
+
+                 axios({method:'POST',url:"https://localhost:44303/banuser/"+this.$route.params.userlogin, params:{reason:this.reason},headers:{
+                
+                    'Content-Type': 'multipart/form-data',
+                        "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")
+
+                
+            }}).then((response)=> {this.user=response.data; console.log(this.user);window.location.reload();});
+                  
+              },
+
+
+                 UnBanUser(){
+
+                 axios({method:'POST',url:"https://localhost:44303/unbanuser/"+this.$route.params.userlogin,headers:{
+                
+                    'Content-Type': 'multipart/form-data',
+                        "Accept": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("user")
+
+                
+            }}).then((response)=> {this.user=response.data; console.log(this.user); window.location.reload();});
+                  
+              },
       
             fileChange(fileList) {
         this.files.append("photo", fileList[0], fileList[0].name);

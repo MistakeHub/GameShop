@@ -58,8 +58,17 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void LoadfromJson()
         {
             IEnumerable<Genre> genres = LoadFromJson("Genres.json");
+
+            _context.Genres.AddRange(genres);
+            _context.SaveChanges();
         }
 
+        public void RemoveAll()
+        {
+            IEnumerable<Genre> remove = _context.Genres.Where(d => d.Id != 0);
+            _context.Genres.RemoveRange(remove);
+            _context.SaveChanges();
+        }
         public void RemoveElement(int id)
         {
             Genre genre = _context.Genres.SingleOrDefault(p => p.Id == id);

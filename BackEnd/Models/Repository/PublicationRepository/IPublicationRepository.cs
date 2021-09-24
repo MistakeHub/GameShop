@@ -14,6 +14,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
         IEnumerable<Publication> GetPublications(int page, out int totalitems, int size=3);
         Publication GetPublicationbyTitle(string Titleofgame);
         Publication GetPublicationbyId(int id);
+        void RemoveAll();
         void AddPublication(IList<IFormFile> images,string filepath,string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price);
         void EditPublication(int id, IList<IFormFile> filenames,string filepath, string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price);
         void RemovePublication(int id);

@@ -1,6 +1,8 @@
 <template>
   <!-- Material form contact -->
+
 <div class="container">
+
   <section id="content">
 
       <h1>Админ-Панель</h1>
