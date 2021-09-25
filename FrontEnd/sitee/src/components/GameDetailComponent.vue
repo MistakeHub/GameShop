@@ -124,22 +124,13 @@
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-center row">
         <div class="d-flex flex-column col-md-8">
-            <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
-                <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
-                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><span>127</span><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
-                <div class="d-flex flex-column ml-3">
-                    <div class="d-flex flex-row post-title">
-                        <h5>{Is sketch 3.9.1 stable?}</h5><span class="ml-2">(Jesshead)</span>
-                    </div>
-                    <div class="d-flex flex-row align-items-center align-content-center post-title"><span class="bdge mr-1">video</span><span class="mr-2 comments">13 comments&nbsp;</span><span class="mr-2 dot"></span><span>6 hours ago</span></div>
-                </div>
-            </div>
+           
             <div class="coment-bottom bg-white p-2 px-4">
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2"  width="38"><input type="text" class="form-control mr-3" placeholder="Add comment" v-model="comment"> <button class="btn btn-primary" type="button" @click="addComment()">Comment</button></div>
                <div class="card p-3" v-for="item in games.comments">
                 <div class="d-flex justify-content-between align-items-center">
                  
-                    <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar.url " width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>2 days ago</small>
+                    <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar.url " width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>{{item.dateofAddComment}}</small>
                 </div>
                 <div class="action d-flex justify-content-between mt-2 align-items-center">
                     <div class="reply px-4" v-if="username==item.user.login || role=='Редактор'"> <a  @click="RemoveComment(item.id)">Remove</a>  </div>

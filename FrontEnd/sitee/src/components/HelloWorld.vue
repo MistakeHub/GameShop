@@ -52,7 +52,7 @@
   </div>
 </div>
 <!-- Slider -->
-<div class="main_slider " style="background-image:url(assets/images/1024x768_the-witcher-3-wild-hunt-game.jpg) ">
+<div class="main_slider " style="background-image:url(assets/images/osaMlV.png) ">
   <div class="container fill_height">
     <div class="row align-items-center fill_height">
       <div class="col">
@@ -79,25 +79,26 @@
       </div>
     </div>
   
- <div class="container px-4 px-lg-5 mt-5 " v-for="item in games">
+ <div class="container px-3 px-lg-4 mt-5 " v-for="item in games">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center  ">
-            <div class="col mb-5 bg-white">
+            <div class="col ">
                 <div class="card h-100">
                     <!-- Product image-->
-                    <img class="card-img-top" :src="item.images[0]" alt="...">
+                    <img class="card-img-top" style="max-height:120px" :src="item.images[0]" alt="...">
                     <!-- Product details-->
-                    <div class="card-body p-4">
+                    <div class="card-body p-3">
                         <div class="text-center">
                             <!-- Product name-->
                             <a href="#" ><h5 class="fw-bolder">{{item.titleofgame}}</h5></a>
                             <!-- Product price-->
-                         {{item.price}}
+                         {{item.price}} руб
                         </div>
+                         <div class="card-footer p-4 pt-2 border-top-0 ">
+                        <div class="text-left" ><a class="btn btn-green " style="color:black;"  :href="'/game/'+item.titleofgame">Подробнее...</a></div>
+                    </div>
                     </div>
                     <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-left"><a class="btn btn-outline-dark mt-auto" :href="'/game/'+item.titleofgame">Подробнее...</a></div>
-                    </div>
+                   
                 </div>
             </div>
          
@@ -137,7 +138,7 @@
 </template>
 
     
-</template>
+
 
 <script>
 

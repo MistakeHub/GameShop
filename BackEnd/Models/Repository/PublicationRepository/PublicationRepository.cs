@@ -22,18 +22,19 @@ namespace BackEnd.Models.Repository.PublicationRepository
         }
         public IEnumerable AddComment(string username, int idpublication, string text)
         {
-            User user = _context.Users.Include(d => d.Avatar).FirstOrDefault(d => d.Login == username);
+            User user = _context.Users.FirstOrDefault(d => d.Login == username);
             Comment comment = new Comment();
             comment.Text = text;
             comment.Countoflikes = 0;
+            comment.DateofAddComment = DateTime.Now;
             user.Comments.Add(comment);
             _context.Users.Update(user);
             _context.SaveChanges();
-            Publication publication=_context.Publications.Include(d=>d.Comments).ThenInclude(d=>d.User).SingleOrDefault(p => p.Id == idpublication);
+            Publication publication = _context.Publications.Include(d => d.Comments).SingleOrDefault(p => p.Id == idpublication);
             publication.Comments.Add(comment);
             _context.Publications.Update(publication);
             _context.SaveChanges();
-            return publication.Comments.ToList();
+            return _context.Publications.Include(d => d.Comments).ThenInclude(d=>d.User).ThenInclude(d=>d.Avatar).SingleOrDefault(p => p.Id == idpublication).Comments;
         }
 
         public void AddPublication(IList<IFormFile> filenames,string filepath, string titleofgame, string description, DateTime datarealese, string[] platforms, string[] localizations, string[] genres, string[] manufactures, string[] regionRestrict, string series, double price)

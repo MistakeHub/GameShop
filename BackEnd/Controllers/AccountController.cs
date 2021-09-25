@@ -171,7 +171,7 @@ namespace BackEnd.Controllers
 
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
                 });
-                EmailService.SendChangesInfoEmailAsync(email, $"<h1>Изменение пароля<h1><a> http://yourprojectname:8080/requestform/{key} </a>", "Изменение Данных Аккаунта");
+                EmailService.SendChangesInfoEmailAsync(email, $"<h1>Изменение пароля<h1><a href=http://yourprojectname:8080/requestform/{key}> Изменить пароль</a>", "Изменение Данных Аккаунта");
                 return Ok(new { key = key });
 
             }
@@ -191,7 +191,7 @@ namespace BackEnd.Controllers
 
             cache.TryGetValue(restoreid,out user);
 
-         
+            cache.Remove(restoreid);
             _context.EditPassword(user, password);
            
             return Ok();
