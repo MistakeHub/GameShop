@@ -14,6 +14,8 @@ namespace BackEnd.Models.Repository.Record
 
         IEnumerable MostProfitableRatingProduct( string[] genres, string[] manufactures, string[] platforms, string[] localizations);
 
+     
+
 
     }
 }

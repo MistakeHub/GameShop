@@ -1,5 +1,5 @@
 <template>
-<div class="card text-center">
+<div class="card text-center" style="margin-top:7.5%; margin-bottom:220px;">
   
   <div class="card-body">
     <h5 class="card-title">Регистрация прошла успешно</h5>

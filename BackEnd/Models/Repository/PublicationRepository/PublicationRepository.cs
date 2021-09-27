@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BackEnd.Models.Repository.PublicationRepository
 {
-    public class PublicationRepository : FileSave<Game>, IPublicationRepository
+    public class PublicationRepository :  IPublicationRepository
     {
 
 
@@ -178,7 +178,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
             }
 
-            Uploads(filenames, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
+            FileSave<Game>.Uploads(filenames, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
 
 
             _context.Entry(game).State = EntityState.Modified;
@@ -368,7 +368,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
             if (OldTitle != titleofgame) {
 
-                RemoveDirectory(filepath, $"/images/{OldTitle.Replace(" ", "")}");
+                FileSave<Publication>.RemoveDirectory(filepath, $"/images/{OldTitle.Replace(" ", "")}");
 
                 _context.Images.RemoveRange(_context.Images.Where(d=>d.Idpublication==publication.Id));
                 publication.Images.Clear();
@@ -391,7 +391,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
             if (listofdeleteimages.Count() != 0)
             {
-                RemoveImages(listofdeleteimages.ToList(), filepath, $"/images/{titleofgame.Replace(" ", "")}/");
+                FileSave<Publication>.RemoveImages(listofdeleteimages.ToList(), filepath, $"/images/{titleofgame.Replace(" ", "")}/");
            
                 _context.Images.RemoveRange(publication.Images.Where(d => listofdeleteimages.Contains(d.Filename)));
 
@@ -408,7 +408,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
         
        
             _context.Entry(publication.Game).State = EntityState.Modified;
-            Uploads(addedfiles, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
+            FileSave<Publication> .Uploads(addedfiles, filepath, $"/images/{titleofgame.Replace(" ", "")}/");
             _context.Publications.Update(publication);
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
@@ -423,11 +423,11 @@ namespace BackEnd.Models.Repository.PublicationRepository
             return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(d => d.Comments).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Images).Include(p => p.Comments).ThenInclude(d => d.User).ThenInclude(d => d.Avatar).Include(p => p.Carts).FirstOrDefault(p => p.Game.Titleofgame.Equals(Titleofgame));
         }
 
-        public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations)
+        public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations, int pricefrom, int priceto)
         {
 
             return _context.Publications.Include(p => p.Game).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(d=>d.Images).
-                Include(p => p.Game.Genres).Include(p => p.Game.Series).IgnoreAutoIncludes().Where(d=> d.Game.Localizations.Any(p=>localizations.Contains(p.Titleoflocalization))&&d.Game.Genres.Any(p=> genres.Contains(p.Titleofgenre) ) && d.Game.Platforms.Any(p=>platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p=>manufactures.Contains(p.Titleofmanufactures))).AsSplitQuery().ToList();
+                Include(p => p.Game.Genres).Include(p => p.Game.Series).IgnoreAutoIncludes().Where(d=> d.Price >= pricefrom && d.Price <= priceto && d.Game.Localizations.Any(p=>localizations.Contains(p.Titleoflocalization))&&d.Game.Genres.Any(p=> genres.Contains(p.Titleofgenre) ) && d.Game.Platforms.Any(p=>platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p=>manufactures.Contains(p.Titleofmanufactures))).AsSplitQuery().ToList();
 
         }
 
@@ -531,13 +531,13 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Games.json", _context.Games);
+            await FileSave < Game > .SaveToJson("Games.json", _context.Games);
            
         }
 
         public void LoadfromJson()
         {
-            IEnumerable<Game> Game = LoadFromJson("Games.json");
+            IEnumerable<Game> Game = FileSave<Game>.LoadFromJson("Games.json");
 
             _context.Games.AddRange(Game);
             _context.SaveChanges();

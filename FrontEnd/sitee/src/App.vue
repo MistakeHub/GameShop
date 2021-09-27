@@ -1,6 +1,6 @@
 <template >
 <body  >
-  <div id="app"  v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout && !$route.meta.LoginAdmin"  >
+  <div id="app" style="background-color: 	#dcdcdc;" v-if="!$route.meta.AdminLayout && !$route.meta.AdminPanelLayout && !$route.meta.LoginAdmin"  >
    <div>
 <notifications group="foo" />
    <div>
@@ -56,8 +56,8 @@
     
             </ul>
             <ul class="navbar_user">
-              <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+            
+              <li><a :href="'/userprofile/'+Login.user"><i class="fa fa-user" v-if="Login.local !==null" aria-hidden="true"></i></a></li>
               <li class="checkout">
                 <a :href="'/cart/'+Login.user" v-if="Login.local !==null">
                   <i class="fa fa-shopping-cart" aria-hidden="true" ></i>
@@ -222,13 +222,13 @@
   
 
    <div id="app" v-if="$route.meta.LoginAdmin"><router-view></router-view> </div>
-  <div id="app" v-if="$route.meta.AdminPanelLayout"    >
-   <div class="basic-layout">
+  <div id="app"  v-if="$route.meta.AdminPanelLayout"    >
+   <div class="basic-layout ">
     
   
 
-<div class="c-app " >
-    <div class="bg-dark" >
+ <div class="c-app" style="background-color: #c0c0c0"   >
+    <div >
     <b-button v-b-toggle.sidebar-1>Меню</b-button>
     <b-sidebar id="sidebar-1" title="Меню" shadow>
       <div class="px-3 py-2">
@@ -237,7 +237,7 @@
               <label   v-b-toggle.my-collapse3>Таблицы &#8595;</label>
                
 
-<b-collapse id="my-collapse3">
+       <b-collapse id="my-collapse3">
    
       <b-nav-item href="/admin-panel/TablesOfPublication"  v-b-toggle.my-collapse3>Публикации</b-nav-item>
     <b-nav-item href="/admin-panel/TablesOfCountries"  v-b-toggle.my-collapse3>Страны</b-nav-item>
@@ -253,10 +253,10 @@
          
                
      <label   v-b-toggle.my-collapse4>Отчёты &#8595;</label>
-<b-collapse id="my-collapse4">
+      <b-collapse id="my-collapse4">
    
-      <b-nav-item href="/admin-panel/dashboards/Visitors"  v-b-toggle.my-collapse3>Глафик Посещения </b-nav-item>
-    <b-nav-item href="/admin-panel/dashboards/MostProfitable"  v-b-toggle.my-collapse3>Самые Прибыльные Продукты</b-nav-item>
+      <b-nav-item href="/admin-panel/dashboards/Visitors"  v-b-toggle.my-collapse3>График Посещения </b-nav-item>
+     <b-nav-item href="/admin-panel/dashboards/MostProfitable"  v-b-toggle.my-collapse3>Самые Прибыльные Продукты</b-nav-item>
      <b-nav-item href="/admin-panel/dashboards/MostPurcheasable"  v-b-toggle.my-collapse3>Самые Продаваемые Продукты</b-nav-item>
        <b-nav-item href="/admin-panel/dashboards/MostRating"  v-b-toggle.my-collapse3>Самые Рейтинговые Продукты</b-nav-item>
     
@@ -265,11 +265,20 @@
       </div>
     </b-sidebar>
   
-              <router-view  class="bg-light" ></router-view>
+              <router-view  class="bg-light" style="margin-left:200px;margin-right:200px; " ></router-view>
+
+               <footer class="text-center text-lg-start text-muted " style="width:1903px; min-height:773px;background-color: 	#c0c0c0;">
+   <!-- Section: Social media -->
+  
+   <!-- Copyright -->
+   </footer>
     </div>
   </div>
 
-   
+   <div  class="bg-dark">
+
+
+</div>
   </div>
 
   </div>

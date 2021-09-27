@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class RoleRepository: FileSave<Role>, IGenericRepository<Role>
+    public class RoleRepository:  IGenericRepository<Role>
     {
 
         private readonly shopContext _context;
@@ -57,7 +57,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void LoadfromJson()
         {
-            IEnumerable<Role> roles = LoadFromJson("Roles.json");
+            IEnumerable<Role> roles = FileSave<Role>.LoadFromJson("Roles.json");
 
 
 
@@ -81,7 +81,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Roles.json", _context.Roles);
+            await FileSave < Role > .SaveToJson("Roles.json", _context.Roles);
         }
 
     }

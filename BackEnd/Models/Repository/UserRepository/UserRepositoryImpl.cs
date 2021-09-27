@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.UserRepository
 {
-    public class UserRepositoryImpl :FileSave<User>, IUserRepository
+    public class UserRepositoryImpl : IUserRepository
     {
         private shopContext _context;
 
@@ -114,7 +114,7 @@ namespace BackEnd.Models.Repository.UserRepository
         public User UploadAvatar(string login, string password, IFormFile photo, string path )
         {
             User user = CheckUser(login, password,null);
-            Upload(photo, path);
+            FileSave<User>.Upload(photo, path);
 
           
             if (user != null)
@@ -161,7 +161,7 @@ namespace BackEnd.Models.Repository.UserRepository
 
              
                 User.Avatar = new Image() { Url = $"https://localhost:44303/getImage/Avatar/{avatar.FileName}", Filename = avatar.FileName };
-                Upload(avatar, path);
+            FileSave<User>.Upload(avatar, path);
 
            
             User.Role = Role;
@@ -181,12 +181,12 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Users.json", _context.Users);
+            await FileSave<User>.SaveToJson("Users.json", _context.Users);
         }
 
         public void LoadfromJson()
         {
-            IEnumerable<User> users = LoadFromJson("Users.json");
+            IEnumerable<User> users = FileSave<User>.LoadFromJson("Users.json");
 
             _context.Users.AddRange(users);
             _context.SaveChanges();

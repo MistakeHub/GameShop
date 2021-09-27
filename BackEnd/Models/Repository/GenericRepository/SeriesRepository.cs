@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class SeriesRepository:FileSave<Serie>,IGenericRepository<Serie>
+    public class SeriesRepository:IGenericRepository<Serie>
     {
 
         private readonly shopContext _context;
@@ -56,7 +56,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void LoadfromJson()
         {
-            IEnumerable<Serie> series = LoadFromJson("Series.json");
+            IEnumerable<Serie> series = FileSave<Serie>.LoadFromJson("Series.json");
 
             _context.Series.AddRange(series);
             _context.SaveChanges();
@@ -78,7 +78,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Series.json", _context.Series);
+            await FileSave<Serie>.SaveToJson("Series.json", _context.Series);
         }
     }
 }

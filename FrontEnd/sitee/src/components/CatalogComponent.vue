@@ -1,8 +1,12 @@
 <template>
-<div style="    padding-top: 10%">
-<div class="d-flex justify-content-center">
-<b-card bg-variant="dark" class="d-flex align-items-start" text-variant="white" title="Фильтры">
- <div >
+<div style="    padding-top: 10%;">
+<div class="d-flex justify-content-center"  >
+<b-card bg-variant="dark" class="d-flex align-items-start" text-variant="white" style="text-white "  >
+ <div style="width:200px" >
+   <b-card-title class="text-white">Фильтры</b-card-title>
+   <br>
+
+    
    <b-form >
      <div class="d-flex align-items-start">
  
@@ -72,18 +76,22 @@
 
       </b-collapse>
     </b-form-group>
- 
+ <label> Цена (	&#8381):</label>
+    <vue-slider v-model="value3"  :min-range="0"
+      :max-range="50000" :marks="[0, 4000]"  @dragleave="Filter()"  :min="min"
+      :max="max" ></vue-slider>
+      <b-button variant="success" @click="Filter()">OK</b-button>
 
 </b-form>
-  
+
   </div>
  
 </b-card>
-<b-list-group class="">
+<b-list-group class="bg-white" style="width:700px">
     
-  <b-list-group-item  active class="flex-column align-items-start">
-    <h5 class="mb-1 dark">Сортировка по:</h5>
-    <div class="d-flex w-100 justify-content-between">
+  <b-list-group-item   active class="flex-column align-items-start bg-white">
+    <h5 class="mb-1 text-dark">Сортировка по:</h5>
+    <div>
     
       
 
@@ -101,7 +109,9 @@
         <label for="title">Поиск</label>
       </b-col>
       <b-col sm="9">
+          <b-input-group prepend="Поиск" class="mb-2">
         <b-form-input id="title" type="text" v-model="search"></b-form-input>
+          </b-input-group>
       </b-col>
       <br>
     
@@ -118,7 +128,7 @@
       <small class="text-black-50 d-flex justify-content-center"> {{elem.dateRealese}},</small>
       <div class="d-flex justify-content-center" >  <div v-for="genre in elem.genres">  <small class="text-black-50">{{genre}},</small></div></div>
         <b class="text-primary d-flex justify-content-center"> Цена:{{elem.price}}руб</b>
-      <b-button variant="success" :href="'/game/'+elem.titleofgame" >Подробнее </b-button>
+      <b-button variant="success" class="text-white" :href="'/game/'+elem.titleofgame" >Подробнее </b-button>
      </b-card>
 
    </div>
@@ -128,13 +138,16 @@
 
 
   </b-list-group-item>
+  <div >
   <b-pagination
       v-model="currentpage"
       :total-rows="count"
       :per-page="pagesize"
       aria-controls="my-table"
+      class="customPagination"
       @change="handlePageChange"
     ></b-pagination>
+  </div>
 </b-list-group>
 
 
@@ -143,7 +156,92 @@
 
 </template>
 
+<style>
+.customPagination > li > a {
+  color: red;
+}
+
+.range-slider {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  height: 6em;
+}
+
+.range-slider input[type=range] {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+input[type=number] {
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.6em;
+  -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number]:invalid,
+input[type=number]:out-of-range {
+  border: 2px solid #ff6347;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #2497e3;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+  background: #2497e3;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+  background: #2497e3;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: #2497e3;
+  border-radius: 1px;
+  box-shadow: none;
+  border: 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 0px 0px #000;
+  border: 1px solid #2497e3;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #a1d0ff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+
+</style>
 <script>
+
+
 
 import axios from 'axios'
   export default{
@@ -155,6 +253,9 @@ import axios from 'axios'
           data(){
               return{
       search:'',
+      value3:[10,4000],
+ min: 0,
+        max: 4000,
               games:[],
               genres:[],
               manufactures:[],
@@ -172,6 +273,7 @@ import axios from 'axios'
                pagesize:3,
                isfilted:false,
                isSorted:false,
+               sliderdata:[0,10000]
             
               
               
@@ -215,7 +317,8 @@ import axios from 'axios'
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
-                  localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, 
+                  localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations,
+                  pricefrom:this.value3[0], priceto:this.value3[1] 
                 }
             }).then((response) => {
                  
@@ -262,6 +365,7 @@ import axios from 'axios'
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
                   localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, 
+                    pricefrom:this.value3[0], priceto:this.value3[1] 
                 }
             }).then((response) => {
                  
@@ -305,7 +409,8 @@ import axios from 'axios'
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
-                  localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, 
+                  localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations,
+                    pricefrom:this.value3[0], priceto:this.value3[1]  
                 }
             }).then((response) => {
                  
@@ -351,6 +456,7 @@ import axios from 'axios'
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
                   localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, 
+                    pricefrom:this.value3[0], priceto:this.value3[1] 
                 }
             }).then((response) => {
                  
@@ -394,6 +500,7 @@ import axios from 'axios'
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
                   localizations:this.selectedlocalizations.length==0? this.localizations:this.selectedlocalizations, 
+                    pricefrom:this.value3[0], priceto:this.value3[1] 
                 }
             }).then((response) => {
                  

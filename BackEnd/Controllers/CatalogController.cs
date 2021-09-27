@@ -74,10 +74,10 @@ namespace BackEnd.Controllers
 
         [Route("filter")]
         [HttpGet]
-        public (IEnumerable, int) Filter([FromQuery(Name ="genres[]")]string[] genres, [FromQuery(Name = "manufactures[]")] string[ ] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) Filter([FromQuery(Name ="genres[]")]string[] genres, [FromQuery(Name = "manufactures[]")] string[ ] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, int pricefrom, int priceto)
         {
 
-            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations);
+            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations, pricefrom,  priceto);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
             int total=data.Count();
 
@@ -87,9 +87,9 @@ namespace BackEnd.Controllers
 
         [Route("sortbydaterealese")]
         [HttpGet]
-        public (IEnumerable, int) SortByDateRealese([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByDateRealese([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, int pricefrom, int priceto)
         {
-            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d=>d.Game.DateRelese);
+            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations, pricefrom, priceto).OrderByDescending(d=>d.Game.DateRelese);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
             int total = data.Count();
@@ -101,9 +101,9 @@ namespace BackEnd.Controllers
 
         [Route("sortbytitle")]
         [HttpGet]
-        public (IEnumerable, int) SortByTitle([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByTitle([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, int pricefrom, int priceto)
         {
-            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations).OrderBy(d => d.Game.Titleofgame);
+            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations, pricefrom, priceto).OrderBy(d => d.Game.Titleofgame);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
             int total = data.Count();
@@ -115,9 +115,9 @@ namespace BackEnd.Controllers
 
         [Route("sortbyprice")]
         [HttpGet]
-        public (IEnumerable, int) SortByPrice([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByPrice([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, int pricefrom, int priceto)
         {
-            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d => d.Price);
+            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations, pricefrom, priceto).OrderByDescending(d => d.Price);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
             int total = data.Count();
@@ -129,9 +129,9 @@ namespace BackEnd.Controllers
 
         [Route("sortbyrating")]
         [HttpGet]
-        public (IEnumerable, int) SortByRating([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations)
+        public (IEnumerable, int) SortByRating([FromQuery(Name = "genres[]")] string[] genres, [FromQuery(Name = "manufactures[]")] string[] manufactures, [FromQuery(Name = "platforms[]")] string[] platforms, [FromQuery(Name = "localizations[]")] string[] localizations, int pricefrom, int priceto)
         {
-            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations).OrderByDescending(d => d.Rating);
+            var data = _context.GetManyPublication(genres, manufactures, platforms, localizations,pricefrom,priceto).OrderByDescending(d => d.Rating);
             var dataViewModel = _mapper.Map<List<PublicationViewModel>>(data);
 
             int total = data.Count();

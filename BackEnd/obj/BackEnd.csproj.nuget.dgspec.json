@@ -48,6 +48,14 @@
               "target": "Package",
               "version": "[8.1.1, )"
             },
+            "CsvHelper": {
+              "target": "Package",
+              "version": "[27.1.1, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[5.7.5, )"
+            },
             "Imgur.API": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -77,6 +85,10 @@
             "Microsoft.EntityFrameworkCore.Proxies": {
               "target": "Package",
               "version": "[5.0.7, )"
+            },
+            "Microsoft.Office.Interop.Excel": {
+              "target": "Package",
+              "version": "[15.0.4795.1000, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

@@ -74,7 +74,7 @@
     <div class="row">
       <div class="col text-center">
         <div class="section_title new_arrivals_title">
-          <h2>New Arrivals</h2>
+          <h2>Новинки</h2>
         </div>
       </div>
     </div>
@@ -117,11 +117,9 @@
       </div>
       <div class="col-lg-6 text-right deal_ofthe_week_col">
         <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
-          <div class="section_title">
-            <h2>Deal Of The Week</h2>
-          </div>
+         
           
-          <div class="red_button deal_ofthe_week_button"><a href="/catalog">shop now</a></div>
+          <div class="red_button deal_ofthe_week_button"><a href="/catalog">каталог</a></div>
         </div>
       </div>
     </div>

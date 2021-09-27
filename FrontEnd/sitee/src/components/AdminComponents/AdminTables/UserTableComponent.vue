@@ -4,7 +4,7 @@
     <b-table striped hover  id="publication-table" :items="publications" :per-page="pagesize" :current-page="currentpage" :fields="fileds">    
        <template #cell(actions)="row" >
       
-        <b-button size="sm" @click="Remove(row.item.id)" class="mr-1">
+         <b-button variant="danger" size="sm" @click="Remove(row.item.id)" class="mr-1">
          Удаление
         </b-button>
 
@@ -38,10 +38,10 @@
 
 <div>
 
-<b-button v-if="!isHaveModal" variant="succes" @click="$bvModal.show('bv-modal-example')"  :href=AddRef > New</b-button>
-<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"  @click="$bvModal.show('bv-modal-example')"  > New</b-button>
-<b-button @click="SaveToJson()" variant="warning">SaveToJson</b-button>
-<b-button @click="LoadFromJson()" variant="warning">LoadFromJson</b-button>
+<b-button v-if="!isHaveModal" variant="success" class="text-white" @click="$bvModal.show('bv-modal-example')"  :href=AddRef >New</b-button>
+<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"   @click="$bvModal.show('bv-modal-example')"  > New</b-button>
+<b-button class="text-white bg-secondary" @click="SaveToJson()">SaveToJson</b-button>
+<b-button class="text-white bg-secondary" @click="LoadFromJson()" >LoadFromJson</b-button>
 <b-button @click="RemoveAll()" variant="danger">RemoveAll</b-button>
   <b-modal id="bv-modal-example" hide-footer>
     <template #modal-title>

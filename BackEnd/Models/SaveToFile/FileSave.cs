@@ -8,14 +8,19 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
+using CsvHelper;
+using System.Globalization;
+using System.Collections;
 
 namespace BackEnd.Models.SaveToFile
 {
-    public abstract class  FileSave<T>
+    public static class  FileSave<T>
     {
 
 
-        public void RemoveDirectory(string absolutepath, string directory)
+        public static void RemoveDirectory(string absolutepath, string directory)
         {
 
            string  path = absolutepath + directory;
@@ -32,7 +37,7 @@ namespace BackEnd.Models.SaveToFile
         }
 
 
-        public void RemoveImages(List<string> filenames, string absolutepath, string directory) {
+        public static void RemoveImages(List<string> filenames, string absolutepath, string directory) {
 
             string path;
             FileInfo file;
@@ -50,8 +55,27 @@ namespace BackEnd.Models.SaveToFile
 
         }
 
+        public static void SaveToExcel(string filename, IEnumerable collection)
+        {
 
-        public List<string> Uploads(IList<IFormFile> photos, string path, string directory)
+            var csvPath = Path.Combine(Environment.CurrentDirectory, filename);
+
+            using (var streamWriter=new StreamWriter(csvPath))
+            {
+
+                using (var csvWriter=new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                {
+
+                    csvWriter.WriteRecords(collection);
+                }
+
+            }
+
+
+        }
+
+
+        public static List<string> Uploads(IList<IFormFile> photos, string path, string directory)
         {
             string filename;
             List<string> filenames=new List<string>();
@@ -77,7 +101,7 @@ namespace BackEnd.Models.SaveToFile
 
 
 
-        public async Task<bool> Upload(IFormFile photo, string path, string directory="/images/Avatar/")
+        public static async Task<bool> Upload(IFormFile photo, string path, string directory="/images/Avatar/")
         {
             string filename = photo.FileName;
        
@@ -96,7 +120,7 @@ namespace BackEnd.Models.SaveToFile
             return photo != null;
         }
 
-        public async Task SaveToJson(string filename, IEnumerable<T> collection)
+        public static async Task SaveToJson(string filename, IEnumerable<T> collection)
         {
 
             using (FileStream fs=new FileStream(filename, FileMode.OpenOrCreate))
@@ -108,7 +132,7 @@ namespace BackEnd.Models.SaveToFile
 
         }
 
-        public void SaveToXml(string filename, IEnumerable<T> collection)
+        public static void SaveToXml(string filename, IEnumerable<T> collection)
         {
              XmlSerializer formatter = new XmlSerializer(typeof(T));
             using (FileStream fs=new FileStream(filename, FileMode.OpenOrCreate))
@@ -118,7 +142,7 @@ namespace BackEnd.Models.SaveToFile
             }
         }
 
-        public IEnumerable<T> LoadFromJson(string filename)
+        public static IEnumerable<T> LoadFromJson(string filename)
         {
 
             IEnumerable<T> collection = null;
@@ -135,7 +159,7 @@ namespace BackEnd.Models.SaveToFile
             return collection;
         }
 
-        public async Task LoadFromXml(string filename, IEnumerable<T> collection)
+        public static async Task LoadFromXml(string filename, IEnumerable<T> collection)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(T));
             using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))

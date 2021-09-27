@@ -35,9 +35,9 @@
 
      
   
-      <b-button type="reset" variant="danger">Reset</b-button>
+      
     </b-form>
-       <b-button type="submit" variant="primary" @click="Register">Submit</b-button>
+       <b-button type="submit" variant="success" @click="Register">Submit</b-button>
 
        <notifications group="foo" />
   </div>

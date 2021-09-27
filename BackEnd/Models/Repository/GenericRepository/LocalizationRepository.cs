@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class LocalizationRepository: FileSave<Localization>, IGenericRepository<Localization>
+    public class LocalizationRepository:  IGenericRepository<Localization>
     {
 
         private readonly shopContext _context;
@@ -56,7 +56,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void LoadfromJson()
         {
-            IEnumerable<Localization> localizations = LoadFromJson("Localizations.json");
+            IEnumerable<Localization> localizations = FileSave<Localization>.LoadFromJson("Localizations.json");
 
             _context.Localizations.AddRange(localizations);
             _context.SaveChanges();
@@ -78,7 +78,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Localizations.json", _context.Localizations);
+            await FileSave<Localization>.SaveToJson("Localizations.json", _context.Localizations);
         }
 
     }

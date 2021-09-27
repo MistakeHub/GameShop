@@ -6,31 +6,34 @@
   <notifications group="foo"/>
     <h2>Самые прибыльные игры </h2>
    <div>   
+     
   
-     <b-button @click="Submit()" >OK</b-button>
+      <b-button variant="success" class="text-white" @click="Submit()" >Получить</b-button>
       <b-button @click="Reset()" variant="danger" >Очистить</b-button>
+        <b-dropdown text="Фильтры"  variant="primary">
       <label for="genres">Жанр</label>
-           <b-form-select v-model="selectedgenre" :options="Genres" size="sm" class="mt-3" id="genres">
+           <b-form-select v-model="selectedgenre" :options="Genres" size="sm" id="genres">
 
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
-            <label for="platform">Палтформа</label>
-           <b-form-select v-model="selectedplatform" :options="Platforms" size="sm" class="mt-3" id="platform">
+        <label for="platform">Платформа</label>
+           <b-form-select v-model="selectedplatform" :options="Platforms" size="sm"  id="platform">
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
-            <label for="localization">Локализация</label>
-           <b-form-select v-model="selectedlocalization" :options="Localizations" size="sm" class="mt-3" id="localization">
+            <label for="localization">Локализация:</label>
+           <b-form-select v-model="selectedlocalization" :options="Localizations" size="sm"  id="localization">
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
-            <label for="series">Серия Игр</label>
-           <b-form-select v-model="selectedserie" :options="Series" size="sm" class="mt-3" id="series">
+            <label for="series">Серия Игр:</label>
+           <b-form-select v-model="selectedserie" :options="Series" size="sm" id="series">
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
-            <label for="manufacture">Производители</label>
-           <b-form-select v-model="selectedmanufacture" :options="Manufactures" size="sm" class="mt-3" id="manufacture">
+            <label for="manufacture">Производители:</label>
+           <b-form-select v-model="selectedmanufacture" :options="Manufactures" size="sm"  id="manufacture">
             <b-form-select-option :value="[]" >Все</b-form-select-option>
 
            </b-form-select>
+        </b-dropdown>
        </div>
     <b-table label="asdas" striped hover  id="table2" :items=" ratingProducts" :per-page="pagesize" :current-page="currentpage"  >    
        
@@ -53,20 +56,15 @@
     
  
     </b-pagination>
+    <b-button class="text-white bg-secondary" @click="SaveToExcel()">SaveToExcel</b-button>
 </div>
 
-<div>
+
+<div  class="bg-dark">
 
 
 </div>
 
-<div>
-
-
-  
-   <router-view></router-view>
-  
-</div>
 </div>
 </template>
 
@@ -258,6 +256,39 @@ import axios from 'axios'
                 } ) 
           },
              methods:{
+
+               SaveToExcel(){
+axios({method:'PUT',url:'https://localhost:44303/api/Record/ratingproducts/savetoexcel',headers:{
+                    "Accept": "application/json",
+                     "Authorization": "Bearer " + localStorage.getItem("admin")
+                    ,
+                    'set-cookie':document.cookie},params:{genres:this.selectedgenre.length==0? this.Genres:[this.selectedgenre],
+                 manufactures:this.selectedmanufacture.length==0? this.Manufactures:[this.selectedmanufacture], 
+                  platforms:this.selectedplatform.length==0? this.Platforms:[this.selectedplatform],
+                  localizations:this.selectedlocalization.length==0? this.Localizations:[this.selectedlocalizations] }}).then(Response=>
+                           { 
+              console.log(Response.data); 
+                } ).catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+}); 
+
+               },
 
 Submit:function(){
        console.log(this.selectedplatform)

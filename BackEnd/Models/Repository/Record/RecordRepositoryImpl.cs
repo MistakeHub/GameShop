@@ -46,5 +46,7 @@ namespace BackEnd.Models.Repository.Record
 
             return _context.Transactions.Where(d => d.Publication.Game.Localizations.Any(p => localizations.Contains(p.Titleoflocalization)) && d.Publication.Game.Genres.Any(p => genres.Contains(p.Titleofgenre)) && d.Publication.Game.Platforms.Any(p => platforms.Contains(p.Titleofplatform)) && d.Publication.Game.Manufactures.Any(p => manufactures.Contains(p.Titleofmanufactures)) && d.DateOfOperation >= from && d.DateOfOperation <= to).GroupBy(d => d.Publication.Game.Titleofgame).Select(d => new { Game = d.Key, Total = d.Count() }).OrderByDescending(d=>d.Total);
         }
+
+       
     }
 }

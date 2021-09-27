@@ -7,15 +7,16 @@
     <input type="date" id="from" v-model="from" name="trip-start">
           <label for="to">До:</label>  
      <input type="date" id="to" v-model="to" name="trip-start">
-     <b-button @click="Submit()" >OK</b-button>
+ <b-button variant="success" class="text-white" @click="Submit()" >Получить</b-button>
       <b-button @click="Reset()" variant="danger" >Очистить</b-button>
+        <b-dropdown text="Фильтры"  variant="primary">
 
         <label for="genres">Жанр</label>
            <b-form-select v-model="selectedgenre" :options="Genres" size="sm" class="mt-3" id="genres">
 
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
-            <label for="platform">Палтформа</label>
+            <label for="platform">Платформа</label>
            <b-form-select v-model="selectedplatform" :options="Platforms" size="sm" class="mt-3" id="platform">
                <b-form-select-option :value="[]" >Все</b-form-select-option>
            </b-form-select>
@@ -32,6 +33,7 @@
             <b-form-select-option :value="[]" >Все</b-form-select-option>
 
            </b-form-select>
+        </b-dropdown>
        </div>
        
     
@@ -56,6 +58,7 @@
     
  
     </b-pagination>
+    <b-button class="text-white bg-secondary" @click="SaveToExcel()">SaveToExcel</b-button>
 </div>
  
 
@@ -261,7 +264,42 @@ import axios from 'axios'
           },
           methods:{
 
+            SaveToExcel(){
+axios({method:'PUT',url:'https://localhost:44303/api/Record/purcheasableproducts/savetoexcel',headers:{
+                    "Accept": "application/json",
+                     "Authorization": "Bearer " + localStorage.getItem("admin")
+                    ,
+                    'set-cookie':document.cookie},params:{from:this.from, to:this.to,genres:this.selectedgenre.length==0? this.Genres:[this.selectedgenre],
+                 manufactures:this.selectedmanufacture.length==0? this.Manufactures:[this.selectedmanufacture], 
+                  platforms:this.selectedplatform.length==0? this.Platforms:[this.selectedplatform],
+                  localizations:this.selectedlocalization.length==0? this.Localizations:[this.selectedlocalization], }}).then(Response=>
+                           {  
+              console.log(Response.data); 
+                } ) .catch(d=>{
+              if(d.response)
+         
+              this.$notify({
+  group: 'foo',
+  type:'error',
+  title: d.response.status,
+  text: d.message
+});
+  if(d.request){
+         console.log(d.request.status)
+     this.$notify({
+  group: 'foo',
+  type:'error',
+  title: 'Ошибка',
+  text:d.message
+});
+  }
+}); 
+
+            },
+
 Submit:function(){
+
+  
        
 axios({method:'GET',url:'https://localhost:44303/api/Record/purcheasableproducts',headers:{
                     "Accept": "application/json",

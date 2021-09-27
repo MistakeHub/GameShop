@@ -1,5 +1,5 @@
 <template>
- <div  style="height:500px; width:900px; margin-left:520px; margin-top:220px; margin-bottom:100px">
+ <div  style="height:500px; width:900px; margin-left:520px; margin-top:150px; margin-bottom:100px">
 
     <b-form class=" bg-white" >
 
@@ -31,7 +31,7 @@
   
      
     </b-form>
-       <b-button type="submit" variant="primary" @click="RequestRestore">Submit</b-button>
+       <b-button type="submit" variant="success" @click="RequestRestore">Подтвердить</b-button>
 
        <notifications group="foo" />
   </div>

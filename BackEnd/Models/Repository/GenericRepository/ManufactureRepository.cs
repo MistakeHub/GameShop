@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class ManufactureRepository: FileSave<Manufacture>, IGenericRepository<Manufacture>
+    public class ManufactureRepository: IGenericRepository<Manufacture>
     {
 
 
@@ -58,7 +58,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void LoadfromJson()
         {
-            IEnumerable<Manufacture> manufactures = LoadFromJson("Manufactures.json");
+            IEnumerable<Manufacture> manufactures = FileSave<Manufacture>.LoadFromJson("Manufactures.json");
 
             _context.Manufactures.AddRange(manufactures);
             _context.SaveChanges();
@@ -80,7 +80,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Manufactures.json", _context.Manufactures);
+            await FileSave<Manufacture>.SaveToJson("Manufactures.json", _context.Manufactures);
         }
 
 

@@ -1,5 +1,5 @@
 <template>
- <div  style="height:500px; width:900px; margin-left:520px; margin-top:220px; margin-bottom:100px">
+ <div  style="height:500px; width:900px; margin-left:520px; margin-top:150px; margin-bottom:100px">
 
     <b-form class=" bg-white" >
 
@@ -75,9 +75,9 @@
 
      
   
-      <b-button type="reset" variant="danger">Reset</b-button>
+     
     </b-form>
-       <b-button type="submit" variant="primary" @click="Register">Submit</b-button>
+       <b-button type="submit" variant="success" @click="Register">Зарегистрироваться</b-button>
 
        <notifications group="foo" />
   </div>

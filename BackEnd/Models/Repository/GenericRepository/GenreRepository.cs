@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Models.Repository.GenericRepository
 {
-    public class GenreRepository: FileSave<Genre>, IGenericRepository<Genre>
+    public class GenreRepository:  IGenericRepository<Genre>
     {
 
         private readonly shopContext _context;
@@ -57,7 +57,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void LoadfromJson()
         {
-            IEnumerable<Genre> genres = LoadFromJson("Genres.json");
+            IEnumerable<Genre> genres = FileSave<Genre>.LoadFromJson("Genres.json");
 
             _context.Genres.AddRange(genres);
             _context.SaveChanges();
@@ -78,7 +78,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public async void SaveToJson()
         {
-            await SaveToJson("Genres.json", _context.Genres);
+            await FileSave<Genre>.SaveToJson("Genres.json", _context.Genres);
         }
     }
 }

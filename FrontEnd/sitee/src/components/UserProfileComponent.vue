@@ -1,6 +1,6 @@
 <template>
 
-<div class="row py-5 px-4" style="margin-top:10%">
+<div class="row py-5 px-4" style="margin-top:3%">
     <div class="col-md-5 mx-auto">
         <!-- Profile widget -->
         <div class="bg-white shadow rounded overflow-hidden">
