@@ -26,7 +26,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Role role = _context.Roles.SingleOrDefault(p => p.Id == id);
+            Role role = _context.Roles.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
             role.TitleofRole = value;
             _context.Roles.Update(role);
             _context.SaveChanges();
@@ -34,20 +34,20 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Role GetElement(int id)
         {
-            return _context.Roles.SingleOrDefault(p => p.Id == id);
+            return _context.Roles.SingleOrDefault(p => p.Id == id&&p.IsDeleted==false);
         }
 
         public IEnumerable<Role> GetElements(out int total)
         {
-            total = _context.Roles.Count();
-            return _context.Roles.ToList();
+            total = _context.Roles.Where(d => d.IsDeleted == false).Count();
+            return _context.Roles.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Role> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Roles.Count();
+            totalitems = _context.Roles.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Roles.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Roles.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
@@ -68,14 +68,19 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Role> remove = _context.Roles.Where(d => d.Id != 0);
-            _context.Roles.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Roles.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
             Role role = _context.Roles.SingleOrDefault(p => p.Id == id);
-            _context.Roles.Remove(role);
+            role.IsDeleted = true;
+            _context.Roles.Update(role);
             _context.SaveChanges();
         }
 

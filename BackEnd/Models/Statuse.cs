@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Statuse
+    public class Statuse:Delete
     {
 
         public int Id { get; }

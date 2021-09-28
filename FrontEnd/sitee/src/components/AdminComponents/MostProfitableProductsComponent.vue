@@ -3,7 +3,7 @@
 
  
 <div >
-    <h2>Самые прибыльные игры </h2>
+    <h2>Самые прибыльные продукты </h2>
    <div>   
        <label for="from">От:</label>  
     <input type="date" id="from" v-model="from" name="trip-start">
@@ -36,8 +36,15 @@
 
            </b-form-select>
         </b-dropdown>
+        <b-button class="text-white bg-secondary" @click="SaveToExcel()">Сохранить в CSV</b-button>
        </div>
-    <b-table label="asdas" striped hover  id="table2" :items="ProfitableProducts" :per-page="pagesize" :current-page="currentpage"  >    
+       <br>
+          <h1 v-if="from==='' && to===''" > За всё время</h1>
+    <div style=" display: table; width: 100%;  ">
+     <h3 v-if="from!==''" style="display: table-cell; "> от:{{from}} </h3>
+      <h3 v-if="to!==''" style="display: table-cell;"> до:{{to}} </h3>
+    </div>
+    <b-table label="asdas" striped hover  id="table2" :items="ProfitableProducts" :per-page="pagesize" :current-page="currentpage"  :fields="fields" >    
        
       
      
@@ -58,7 +65,7 @@
     
  
     </b-pagination>
-    <b-button class="text-white bg-secondary" @click="SaveToExcel()">SaveToExcel</b-button>
+   
 </div>
 
 <div>
@@ -105,7 +112,7 @@ import axios from 'axios'
               return{
               
                  search: '',
-            
+             fields:[{key:"game", label:"Название Игр"},{key:"total", label:"Всего"}],
              Games:[],
               Genres:[],
               Manufactures:[],
@@ -132,12 +139,9 @@ import axios from 'axios'
       
          
           mounted(){
-                if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+               
            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Platform",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Platforms=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -156,7 +160,7 @@ import axios from 'axios'
 });
   }
 });
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data).catch(d=>{
+               axios.get("https://localhost:44303/api/Localization",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Localizations=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -175,7 +179,7 @@ import axios from 'axios'
 });
   }
 });
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Series",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Series=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -194,7 +198,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data).catch(d=>{
+            axios.get("https://localhost:44303/api/Manufacture",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Manufactures=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -213,7 +217,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get("https://localhost:44303/api/Genre").then(Response=> {this.Genres=Response.data; console.log(this.Genres)}).catch(d=>{
+            axios.get("https://localhost:44303/api/Genre",{headers:{'set-cookie':document.cookie}}).then(Response=> {this.Genres=Response.data; console.log(this.Genres)}).catch(d=>{
               if(d.response)
          
               this.$notify({

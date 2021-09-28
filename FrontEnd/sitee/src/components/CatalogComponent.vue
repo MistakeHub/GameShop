@@ -282,17 +282,16 @@ import axios from 'axios'
               }
           },
           mounted(){
-              if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+            
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.platforms=Response.data)
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.localizations=Response.data)
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.series=Response.data)
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.manufactures=Response.data)
-            axios.get("https://localhost:44303/api/Genre").then(Response=> this.genres=Response.data)
-           axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3}}).then(Response=>{   this.games=Response.data.item1; console.log(this.games);this.count=Response.data.item2  } )
+             axios.get("https://localhost:44303/api/Platform",{headers:{
+                    'set-cookie':document.cookie},}).then(Response=> this.platforms=Response.data)
+               axios.get("https://localhost:44303/api/Localization",{ headers:{'set-cookie':document.cookie},}).then(Response=> this.localizations=Response.data)
+             axios.get("https://localhost:44303/api/Series",{ headers:{'set-cookie':document.cookie},}).then(Response=> this.series=Response.data)
+            axios.get("https://localhost:44303/api/Manufacture",{ headers:{'set-cookie':document.cookie},}).then(Response=> this.manufactures=Response.data)
+            axios.get("https://localhost:44303/api/Genre",{ headers:{'set-cookie':document.cookie},}).then(Response=> this.genres=Response.data)
+           axios({method: 'GET', url:'https://localhost:44303/api/Catalog/1', params:{pagesize:3},   headers:{
+                    'set-cookie':document.cookie},}).then(Response=>{   this.games=Response.data.item1; console.log(this.games);this.count=Response.data.item2  } )
           },
                   computed: {
     filteredItems () {
@@ -313,7 +312,7 @@ import axios from 'axios'
             axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/filter/',
-             
+             headers:{'set-cookie':document.cookie},
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
@@ -360,7 +359,8 @@ import axios from 'axios'
                 axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/sortbydaterealese/',
-             
+             headers:{
+                    'set-cookie':document.cookie},
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
@@ -405,7 +405,8 @@ import axios from 'axios'
                  axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/sortbytitle/',
-             
+                      headers:{
+                    'set-cookie':document.cookie},
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
@@ -451,7 +452,8 @@ import axios from 'axios'
             axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/sortbyprice/',
-             
+                      headers:{
+                    'set-cookie':document.cookie},
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,
@@ -495,7 +497,8 @@ import axios from 'axios'
              axios({
                 method: 'GET',
                 url: 'https://localhost:44303/api/Catalog/sortbyrating/',
-             
+                      headers:{
+                    'set-cookie':document.cookie},
                 params: { genres:this.selectedgenres.length==0? this.genres:this.selectedgenres,
                  manufactures:this.selectedmanufactures.length==0? this.manufactures:this.selectedmanufactures, 
                   platforms:this.selectedplatforms.length==0? this.platforms:this.selectedplatforms,

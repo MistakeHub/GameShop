@@ -158,7 +158,7 @@ import axios from 'axios'
   group: 'foo',
   type:'error',
   title: d.response.status,
-  text: d.message
+  text: d.response.data.message
 });
   if(d.request){
          console.log(d.request.status)

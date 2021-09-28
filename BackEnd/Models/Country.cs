@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Country
+    public class Country : Delete
     {
         [Display(Name = "ИД")]
         public int Id { get;  }

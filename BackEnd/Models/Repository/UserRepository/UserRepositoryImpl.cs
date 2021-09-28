@@ -24,8 +24,8 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public void AddElement(User user)
         {
-            Statuse status = _context.Statuses.FirstOrDefault(d => d.Id == user.Idstatus);
-            Role role = _context.Roles.FirstOrDefault(d => d.Id == user.Idrole);
+            Statuse status = _context.Statuses.Where(d => d.IsDeleted == false).FirstOrDefault(d => d.Id == user.Idstatus);
+            Role role = _context.Roles.Where(d => d.IsDeleted == false).FirstOrDefault(d => d.Id == user.Idrole);
 
             Image image = _context.Images.First();
 
@@ -52,8 +52,8 @@ namespace BackEnd.Models.Repository.UserRepository
 
           
             if(optionalrole!=null)
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==HashHelper.GetHashString(password) && d.Idrole==optionalrole);
-            else return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == HashHelper.GetHashString(password));
+            return _context.Users.Where(d => d.IsDeleted == false).Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d=>d.Avatar).FirstOrDefault(d=>d.Login==login && d.Password==HashHelper.GetHashString(password) && d.Idrole==optionalrole);
+            else return _context.Users.Where(d => d.IsDeleted == false).Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).FirstOrDefault(d => d.Login == login && d.Password == HashHelper.GetHashString(password));
         }
 
         public IEnumerable<User> GetElements(out int total)
@@ -81,12 +81,20 @@ namespace BackEnd.Models.Repository.UserRepository
         public void RemoveElement(int id)
         {
             User user = _context.Users.FirstOrDefault(d => d.Id == id);
-           _context.Users.Remove(user);
+            user.IsDeleted = true;
+            _context.Users.Update(user);
             _context.SaveChanges();
         }
         // Здесь заносим юзера в кэш, и высылаем на почту подтверждение об регистрации
-        public void RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, string status, string role)
+        public string RequestForVerification(ref IMemoryCache cache, string value1, string value2, string value3, DateTime value4, string status, string role)
         {
+
+            User check = GetElement(value1);
+
+            if (check != null) return "Пользователь с таким логином уже существует";
+            check = GetUserByEmail(value2);
+            if (check != null) return "Пользователь с такой почтой уже существует";
+
             value3 = HashHelper.GetHashString(value3);
 
             Role Role = _context.Roles.FirstOrDefault(d => d.TitleofRole == role); 
@@ -104,6 +112,8 @@ namespace BackEnd.Models.Repository.UserRepository
 
                
             EmailService.SendVerifyEmailAsync(key, value2, "Подтверждение регистрации");
+
+            return null;
         }
 
         public User GetElement(string userlogin)
@@ -130,9 +140,9 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public void EditElement(int id, IFormFile avatar, string login, string password, string email, string role, string statuse,string path)
         {
-            User User = _context.Users.Include(d => d.Status).Include(d => d.Role).Include(d=>d.Avatar).FirstOrDefault(d => d.Id == id);
-            Role Role = _context.Roles.FirstOrDefault(d => d.TitleofRole == role);
-            Statuse Statuse = _context.Statuses.FirstOrDefault(d => d.Titleofstatuse == statuse);
+            User User = _context.Users.Where(d => d.IsDeleted == false).Include(d => d.Status).Include(d => d.Role).Include(d=>d.Avatar).FirstOrDefault(d => d.Id == id);
+            Role Role = _context.Roles.Where(d => d.IsDeleted == false).FirstOrDefault(d => d.TitleofRole == role);
+            Statuse Statuse = _context.Statuses.Where(d => d.IsDeleted == false).FirstOrDefault(d => d.Titleofstatuse == statuse);
 
 
             User.Email = email;
@@ -176,7 +186,7 @@ namespace BackEnd.Models.Repository.UserRepository
 
         public User GetElementById(int id)
         {
-            return _context.Users.Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d => d.Comments).FirstOrDefault(d => d.Id == id);
+            return _context.Users.Where(d => d.IsDeleted == false).Include(p => p.Role).Include(d => d.Status).Include(d => d.Marks).Include(d => d.Avatar).Include(d => d.Comments).FirstOrDefault(d => d.Id == id);
         }
 
         public async void SaveToJson()
@@ -195,7 +205,11 @@ namespace BackEnd.Models.Repository.UserRepository
         public void RemoveAll()
         {
             IEnumerable<User> remove = _context.Users.Where(d => d.Id != 0);
-            _context.Users.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Users.Update(item);
+            }
             _context.SaveChanges();
         }
 

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Serie
+    public class Serie : Delete
     {
 
         public int Id { get; set; }

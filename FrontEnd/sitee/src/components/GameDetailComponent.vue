@@ -62,7 +62,7 @@
        
  
 
-  <b-modal id="modal-1" v-bind:title="resultcode===200?'Товар Успешно Добавлен' : 'Ошибка!' " ref="cart-modal">
+  <b-modal id="modal-1" v-if="resultcode==200" v-bind:title="resultcode===200?'Товар Успешно Добавлен' : 'Ошибка!' " ref="cart-modal">
     <div v-if="resultcode===200">
      
      <table class="table table-borderless">
@@ -97,7 +97,7 @@
       </div>
 <hr>
       <div class="product-detail-columns-container">
-            <button v-b-modal.modal-1 type="button" class="btn btn-success" @click="addToCart()" > В корзину </button>
+            <button v-b-modal.modal-1 type="button" class="btn btn-success" @click="addToCart()" v-bind:readonly="username==null" > В корзину </button>
 <div >
 <div >
 
@@ -126,14 +126,14 @@
         <div class="d-flex flex-column col-md-8">
            
             <div class="coment-bottom bg-white p-2 px-4">
-                <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2"  width="38"><input type="text" class="form-control mr-3" placeholder="Add comment" v-model="comment"> <button class="btn btn-primary" type="button" @click="addComment()">Comment</button></div>
+                <div class="d-flex flex-row add-comment-section mt-4 mb-4" v-bind:readonly="username==null"><img class="img-fluid img-responsive rounded-circle mr-2"  width="38"><input  type="text" class="form-control mr-3" placeholder="Add comment" v-model="comment"> <button class="btn btn-primary" v-bind:readonly="username==null" type="button" @click="addComment()"  >Добавить</button></div>
                <div class="card p-3" v-for="item in games.comments">
                 <div class="d-flex justify-content-between align-items-center">
                  
                     <div class="user d-flex flex-row align-items-center"> <img :src="item.user.avatar.url " width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">{{item.user.login}}</small> <small class="font-weight-bold">{{item.text}}</small></span> </div> <small>{{item.dateofAddComment}}</small>
                 </div>
                 <div class="action d-flex justify-content-between mt-2 align-items-center">
-                    <div class="reply px-4" v-if="username==item.user.login || role=='Редактор'"> <a  @click="RemoveComment(item.id)">Remove</a>  </div>
+                    <div class="reply px-4" v-if="username==item.user.login || role=='Редактор'"> <a  @click="RemoveComment(item.id)">Удалить</a>  </div>
                     <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
                 </div>
             </div>
@@ -337,10 +337,7 @@ import axios from 'axios'
               }
           },
           mounted(){
-              if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+           
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
              axios.get("https://localhost:44303/api/Platform").then(Response=> this.platforms=Response.data)
                axios.get("https://localhost:44303/api/Localization").then(Response=> this.localizations=Response.data)
@@ -359,7 +356,7 @@ import axios from 'axios'
                this.games=response.data
                 console.log(this.games)
                  this.selectedimage=this.games.images[0]
-            });
+            }).catch(()=> this.$router.replace({ name: "NotFound" }));
            
               
               
@@ -396,7 +393,7 @@ import axios from 'axios'
   group: 'foo',
   type:'error',
   title: 'Ошибка',
-  text:d.message
+  text:"В корзину могут добавлять только авторизированые пользователи!"
 });
   }
 });
@@ -553,7 +550,7 @@ Authorization:"Bearer 3641054d57d0b5106c837d64d0a6f2b43746b8eb",
   group: 'foo',
   type:'error',
   title: 'Ошибка',
-  text:d.message
+  text:"Комментарии могут оставлять только авторизированые пользователи!"
 });
   }
 });

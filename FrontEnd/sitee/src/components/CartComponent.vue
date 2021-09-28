@@ -36,7 +36,7 @@
                                                         <td>
                                                            
                                                         </td>
-                                                        <td>{{elem.price}}</td>
+                                                        <td>{{elem.price}} руб</td>
                                                         <td class="text-right"></td>
                                                     </tr>
                                                    
@@ -52,7 +52,7 @@
                                                         <tbody>
                                                           
                                                                 <td class="f-w-7 font-18"><h4>Итого :</h4></td>
-                                                                <td class="f-w-7 font-18"><h4>{{cart.sumof}}</h4></td>
+                                                                <td class="f-w-7 font-18"><h4>{{cart.sumof}} руб</h4></td>
                                                            
                                                         </tbody>
                                                     </table>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="cart-footer text-right">
                                       
-                                        <a :href="'/cart/AcceptPurchase/'+cart.id" class="btn btn-success my-1" >Оплатить<i class="ri-arrow-right-line ml-2"></i></a>
+                                        <a :href="'/cart/AcceptPurchase/'+cart.id" class="btn btn-success my-1 text-white" >Оплатить<i class="ri-arrow-right-line ml-2"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -117,10 +117,7 @@ import axios from 'axios'
               }
           },
           mounted(){
-                if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+              
             axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
                            
          axios({
@@ -155,8 +152,9 @@ import axios from 'axios'
                 params:{ game:elem.game.titleofgame},
                 headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("user")}
-             
+                    "Authorization": "Bearer " + localStorage.getItem("user"),
+                    'set-cookie':document.cookie}
+              
               
             }).then((response) => {
                  

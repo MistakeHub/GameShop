@@ -9,9 +9,9 @@
      <input type="date" id="to" v-model="to" name="trip-start">
  <b-button variant="success" class="text-white" @click="Submit()" >Получить</b-button>
       <b-button @click="Reset()" variant="danger" >Очистить</b-button>
-        <b-dropdown text="Фильтры"  variant="primary">
+        <b-dropdown text="Фильтры"   >
 
-        <label for="genres">Жанр</label>
+        <label for="genres" >Жанр</label>
            <b-form-select v-model="selectedgenre" :options="Genres" size="sm" class="mt-3" id="genres">
 
                <b-form-select-option :value="[]" >Все</b-form-select-option>
@@ -34,10 +34,17 @@
 
            </b-form-select>
         </b-dropdown>
+        <b-button class="text-white bg-secondary" @click="SaveToExcel()">Сохранить в CSV</b-button>
        </div>
        
     
-    <b-table striped hover  id="table1" :items="PurcheasableProducts" :per-page="pagesize" :current-page="currentpage" >    
+    <br>
+    <h1 v-if="from==='' && to===''" > За всё время</h1>
+    <div style=" display: table; width: 100%;  ">
+     <h3 v-if="from!==''" style="display: table-cell; "> от:{{from}} </h3>
+      <h3 v-if="to!==''" style="display: table-cell;"> до:{{to}} </h3>
+    </div>
+    <b-table striped hover  id="table1" :items="PurcheasableProducts" :per-page="pagesize" :current-page="currentpage" :fields=" fields" >    
        
       
      
@@ -58,7 +65,7 @@
     
  
     </b-pagination>
-    <b-button class="text-white bg-secondary" @click="SaveToExcel()">SaveToExcel</b-button>
+   
 </div>
  
 
@@ -95,7 +102,7 @@ import axios from 'axios'
               
             search:'',
              PurcheasableProducts:[   ],
-            
+            fields:[{key:"game", label:"Название Игр"},{key:"total", label:"Всего"}],
             Games:[],
               Genres:[],
               Manufactures:[],
@@ -127,13 +134,10 @@ import axios from 'axios'
                
        
           mounted(){
-                if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+              
           
            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Platform", {headers:{ 'set-cookie':document.cookie}}).then(Response=> this.Platforms=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -152,7 +156,7 @@ import axios from 'axios'
 });
   }
 });
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data).catch(d=>{
+               axios.get("https://localhost:44303/api/Localization", {headers:{ 'set-cookie':document.cookie}}).then(Response=> this.Localizations=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -171,7 +175,7 @@ import axios from 'axios'
 });
   }
 });
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Series", {headers:{ 'set-cookie':document.cookie}}).then(Response=> this.Series=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -190,7 +194,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data).catch(d=>{
+            axios.get("https://localhost:44303/api/Manufacture", {headers:{ 'set-cookie':document.cookie}}).then(Response=> this.Manufactures=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -209,7 +213,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get("https://localhost:44303/api/Genre").then(Response=> this.Genres=Response.data).catch(d=>{
+            axios.get("https://localhost:44303/api/Genre", {headers:{ 'set-cookie':document.cookie}}).then(Response=> this.Genres=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({

@@ -27,7 +27,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Manufacture manufacture = _context.Manufactures.SingleOrDefault(p => p.Id == id);
+            Manufacture manufacture = _context.Manufactures.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
             manufacture.Titleofmanufactures = value;
             _context.Manufactures.Update(manufacture);
             _context.SaveChanges();
@@ -35,25 +35,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Manufacture GetElement(int id)
         {
-            return _context.Manufactures.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
+            return _context.Manufactures.Include(d => d.Games).SingleOrDefault(p => p.Id == id && p.IsDeleted == false) ;
         }
 
         public IEnumerable<Manufacture> GetElements(out int total)
         {
-            total = _context.Manufactures.Count();
-            return _context.Manufactures.ToList();
+            total = _context.Manufactures.Where(d => d.IsDeleted == false).Count();
+            return _context.Manufactures.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Manufacture> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Manufactures.Count();
+            totalitems = _context.Manufactures.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Manufactures.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Manufactures.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Manufactures.Select(d => d.Titleofmanufactures).ToList(); ;
+            return _context.Manufactures.Where(d => d.IsDeleted == false).Select(d => d.Titleofmanufactures).ToList(); ;
         }
 
         public void LoadfromJson()
@@ -67,14 +67,20 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Manufacture> remove = _context.Manufactures.Where(d => d.Id != 0);
-            _context.Manufactures.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Manufactures.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
-            Manufacture manufacture = _context.Manufactures.SingleOrDefault(p => p.Id == id);
-            _context.Manufactures.Remove(manufacture);
+            Manufacture manufacture = _context.Manufactures.AsNoTrackingWithIdentityResolution().SingleOrDefault(p => p.Id == id);
+            manufacture.IsDeleted = true;
+            _context.Entry(manufacture).State = EntityState.Modified;
+     
             _context.SaveChanges();
         }
 

@@ -25,7 +25,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Serie serie = _context.Series.SingleOrDefault(p => p.Id == id);
+            Serie serie = _context.Series.SingleOrDefault(p => p.Id == id&&p.IsDeleted==false);
             serie.Titleofseries = value;
             _context.Series.Update(serie);
             _context.SaveChanges();
@@ -33,25 +33,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Serie GetElement(int id)
         {
-            return _context.Series.SingleOrDefault(p => p.Id == id);
+            return _context.Series.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Serie> GetElements(out int total)
         {
-            total = _context.Series.Count();
-            return _context.Series.ToList();
+            total = _context.Series.Where(d => d.IsDeleted == false).Count();
+            return _context.Series.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Serie> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Series.Count();
+            totalitems = _context.Series.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Series.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Series.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Series.Select(d => d.Titleofseries);
+            return _context.Series.Where(d => d.IsDeleted == false).Select(d => d.Titleofseries);
         }
 
         public void LoadfromJson()
@@ -65,14 +65,19 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Serie> remove = _context.Series.Where(d => d.Id != 0);
-            _context.Series.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Series.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
             Serie serie = _context.Series.SingleOrDefault(p => p.Id == id);
-            _context.Series.Remove(serie);
+           serie.IsDeleted = true;
+            _context.Series.Update(serie);
             _context.SaveChanges();
         }
 

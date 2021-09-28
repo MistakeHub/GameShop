@@ -25,7 +25,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Localization localization = _context.Localizations.SingleOrDefault(p => p.Id == id);
+            Localization localization = _context.Localizations.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
             localization.Titleoflocalization = value;
             _context.Localizations.Update(localization);
             _context.SaveChanges();
@@ -33,25 +33,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Localization GetElement(int id)
         {
-            return _context.Localizations.SingleOrDefault(p => p.Id == id);
+            return _context.Localizations.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Localization> GetElements(out int total)
         {
-            total = _context.Localizations.Count();
-            return _context.Localizations.ToList();
+            total = _context.Localizations.Where(d => d.IsDeleted == false).Count();
+            return _context.Localizations.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Localization> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Localizations.Count();
+            totalitems = _context.Localizations.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Localizations.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Localizations.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-               return _context.Localizations.Select(d => d.Titleoflocalization).ToList();
+               return _context.Localizations.Where(d => d.IsDeleted == false).Select(d => d.Titleoflocalization).ToList();
         }
 
         public void LoadfromJson()
@@ -65,14 +65,19 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Localization> remove = _context.Localizations.Where(d => d.Id != 0);
-            _context.Localizations.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Localizations.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
             Localization localization = _context.Localizations.SingleOrDefault(p => p.Id == id);
-            _context.Localizations.Remove(localization);
+            localization.IsDeleted = true;
+            _context.Localizations.Update(localization);
             _context.SaveChanges();
         }
 

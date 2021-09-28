@@ -1,12 +1,12 @@
 <template>
-<div class="card text-center">
+<div class="card text-center " style="margin-top:7.5%; margin-bottom:220px;">
   <div class="card-header">
-    Featured
+    
   </div>
   <div class="card-body">
     <h5 class="card-title">Успешно!</h5>
-    <p class="card-text">Продукт был отправлен на вашу почту</p>
-    <a href="/" class="btn btn-primary">Вернуться обратно</a>
+   
+    <a href="/" class="btn btn-primary text-white">Вернуться обратно</a>
   </div>
   <div class="card-footer text-muted">
    

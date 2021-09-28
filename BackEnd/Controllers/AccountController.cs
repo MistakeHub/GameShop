@@ -199,10 +199,15 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost(("/register"))]
-        public void Register(string login, string email, string password,IFormFile avatar, string status="Онлайн", string role="Пользователь")
+        public IActionResult Register(string login, string email, string password,IFormFile avatar, string status="Онлайн", string role="Пользователь")
         {
-            
-            _context.RequestForVerification(ref cache,login, email, password, DateTime.UtcNow, status, role);
+
+            var statu = _context.RequestForVerification(ref cache, login, email, password, DateTime.UtcNow, status, role);
+
+            if (statu !=null )
+                return BadRequest(new { Message=statu});
+
+            return Ok();
 
         }
         [HttpPost(("/checkuserforrestore/{restoreid}"))]

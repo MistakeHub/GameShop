@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Platform
+    public class Platform : Delete
     {
         public int Id { get; set; }
 

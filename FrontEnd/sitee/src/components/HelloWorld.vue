@@ -154,10 +154,7 @@ import axios from 'axios'
               }
           },
           mounted(){
-  if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
 
-               }
            axios.get('https://localhost:44303/api/Home',{headers:{
                     "Accept": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("user") ,

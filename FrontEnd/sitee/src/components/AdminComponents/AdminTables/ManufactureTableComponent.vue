@@ -1,6 +1,6 @@
 <template  >
 <div >
-
+<h1>Производители</h1>
     <b-table striped hover  id="publication-table" :items="publications" :per-page="pagesize" :current-page="currentpage" :fields="fileds">    
        <template #cell(actions)="row" >
       
@@ -36,11 +36,10 @@
 
 <div>
 
-<b-button v-if="!isHaveModal" variant="success" class="text-white" @click="$bvModal.show('bv-modal-example')"  :href=AddRef >New</b-button>
-<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"   @click="$bvModal.show('bv-modal-example')"  > New</b-button>
-<b-button class="text-white bg-secondary" @click="SaveToJson()">SaveToJson</b-button>
-<b-button class="text-white bg-secondary" @click="LoadFromJson()" >LoadFromJson</b-button>
-<b-button @click="RemoveAll()" variant="danger">RemoveAll</b-button>
+<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="success"   @click="$bvModal.show('bv-modal-example')"  >Добавить</b-button>
+<b-button class="text-white bg-secondary" @click="SaveToJson()">Сохранить в Json</b-button>
+<b-button class="text-white bg-secondary" @click="LoadFromJson()" >Загрузить с JSON</b-button>
+<b-button @click="RemoveAll()" variant="danger">Удалить всё</b-button>
   <b-modal id="bv-modal-example" hide-footer>
     <template #modal-title>
     <h1>Добавление нового элемента</h1>
@@ -110,10 +109,7 @@ import axios from 'axios'
               }
           },
           mounted(){
-              if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+        
           
                            
                             if(this.$route.meta.manufacture)
@@ -121,7 +117,7 @@ import axios from 'axios'
                     'set-cookie':document.cookie}}).then(Response=>
                            { 
                              this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
-                             this.isHaveModal=true;this.Type="Manufacture";   console.log(this.publications) ; this.fileds=['id', 'titleofmanufactures', { key: 'actions', label: 'Actions' }] } ).catch(d=>{
+                             this.isHaveModal=true;this.Type="Manufacture";   console.log(this.publications) ; this.fileds=['id', {key:'titleofmanufactures', label:"Название"}, { key: 'actions', label: 'Actions' }] } ).catch(d=>{
               if(d.response)
          
               this.$notify({

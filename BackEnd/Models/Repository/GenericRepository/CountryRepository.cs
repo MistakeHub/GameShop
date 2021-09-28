@@ -25,7 +25,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Country country = _context.Countries.SingleOrDefault(p => p.Id == id);
+            Country country = _context.Countries.SingleOrDefault(p => p.Id == id && p.IsDeleted);
             country.Titleofcountry = value;
             _context.Countries.Update(country);
             _context.SaveChanges();
@@ -33,25 +33,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Country GetElement(int id)
         {
-           return _context.Countries.SingleOrDefault(p => p.Id == id);
+           return _context.Countries.Where(d => d.IsDeleted == false).SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Country> GetElements(out int total)
         {
-            total = _context.Countries.Count();
-           return _context.Countries.ToList();
+            total = _context.Countries.Where(d => d.IsDeleted == false).Count();
+           return _context.Countries.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Country> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Countries.Count();
+            totalitems = _context.Countries.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Countries.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Countries.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Countries.Select(d=>d.Titleofcountry);
+            return _context.Countries.Where(d => d.IsDeleted == false).Select(d=>d.Titleofcountry);
         }
 
         public void LoadfromJson()
@@ -66,14 +66,19 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Country> remove = _context.Countries.Where(d => d.Id != 0);
-            _context.Countries.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Countries.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
             Country country = _context.Countries.SingleOrDefault(p => p.Id == id);
-            _context.Countries.Remove(country);
+            country.IsDeleted = true;
+            _context.Countries.Update(country);
             _context.SaveChanges();
         }
 

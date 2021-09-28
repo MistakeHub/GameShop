@@ -34,25 +34,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Genre GetElement(int id)
         {
-            return _context.Genres.SingleOrDefault(p => p.Id == id);
+            return _context.Genres.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Genre> GetElements(out int total)
         {
-            total = _context.Genres.Count();
-            return _context.Genres.ToList();
+            total = _context.Genres.Where(d => d.IsDeleted == false).Count();
+            return _context.Genres.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Genre> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Genres.Count();
+            totalitems = _context.Genres.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Genres.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Genres.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Genres.Select(d=>d.Titleofgenre);
+            return _context.Genres.Where(d => d.IsDeleted == false).Select(d=>d.Titleofgenre);
         }
 
         public void LoadfromJson()
@@ -66,13 +66,18 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Genre> remove = _context.Genres.Where(d => d.Id != 0);
-            _context.Genres.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Genres.Update(item);
+            }
             _context.SaveChanges();
         }
         public void RemoveElement(int id)
         {
             Genre genre = _context.Genres.SingleOrDefault(p => p.Id == id);
-            _context.Genres.Remove(genre);
+            genre.IsDeleted = true;
+            _context.Genres.Update(genre);
             _context.SaveChanges();
         }
 

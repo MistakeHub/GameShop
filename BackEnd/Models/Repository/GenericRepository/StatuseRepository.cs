@@ -26,7 +26,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Statuse statuse = _context.Statuses.SingleOrDefault(p => p.Id == id);
+            Statuse statuse = _context.Statuses.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
             statuse.Titleofstatuse = value;
             _context.Statuses.Update(statuse);
             _context.SaveChanges();
@@ -34,25 +34,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Statuse GetElement(int id)
         {
-            return _context.Statuses.SingleOrDefault(p => p.Id == id);
+            return _context.Statuses.SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Statuse> GetElements(out int total)
         {
-            total = _context.Statuses.Count();
-            return _context.Statuses.ToList();
+            total = _context.Statuses.Where(d => d.IsDeleted == false).Count();
+            return _context.Statuses.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Statuse> GetElementsByPage(int page, out int totalitems, int size)
         {
             totalitems = _context.Statuses.Count();
 
-            return _context.Statuses.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Statuses.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Statuses.Select(d => d.Titleofstatuse).ToList();
+            return _context.Statuses.Where(d => d.IsDeleted == false).Select(d => d.Titleofstatuse).ToList();
         }
 
         public void LoadfromJson()
@@ -66,14 +66,20 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Statuse> remove = _context.Statuses.Where(d => d.Id != 0 && d.Titleofstatuse !="Администратор");
-            _context.Statuses.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Statuses.Update(item);
+            }
             _context.SaveChanges();
         }
 
         public void RemoveElement(int id)
         {
             Statuse statuse = _context.Statuses.SingleOrDefault(p => p.Id == id);
-            _context.Statuses.Remove(statuse);
+           
+           statuse.IsDeleted = true;
+            _context.Statuses.Update(statuse);
             _context.SaveChanges();
         }
 

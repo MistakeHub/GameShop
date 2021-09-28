@@ -4,13 +4,13 @@
  
 <div >
   <notifications group="foo"/>
-    <h2>Самые прибыльные игры </h2>
+    <h2>Самые рейтинговые продукты </h2>
    <div>   
      
   
       <b-button variant="success" class="text-white" @click="Submit()" >Получить</b-button>
       <b-button @click="Reset()" variant="danger" >Очистить</b-button>
-        <b-dropdown text="Фильтры"  variant="primary">
+        <b-dropdown text="Фильтры" >
       <label for="genres">Жанр</label>
            <b-form-select v-model="selectedgenre" :options="Genres" size="sm" id="genres">
 
@@ -34,8 +34,9 @@
 
            </b-form-select>
         </b-dropdown>
+        <b-button class="text-white bg-secondary" @click="SaveToExcel()">Сохранить в CSV</b-button>
        </div>
-    <b-table label="asdas" striped hover  id="table2" :items=" ratingProducts" :per-page="pagesize" :current-page="currentpage"  >    
+    <b-table label="asdas" striped hover  id="table2" :items=" ratingProducts" :per-page="pagesize" :current-page="currentpage"   >    
        
       
      
@@ -56,7 +57,7 @@
     
  
     </b-pagination>
-    <b-button class="text-white bg-secondary" @click="SaveToExcel()">SaveToExcel</b-button>
+    
 </div>
 
 
@@ -129,7 +130,7 @@ import axios from 'axios'
 
                }
 
-                 axios.get("https://localhost:44303/api/Genre").then(Response=> {this.Genres=Response.data; console.log(this.Genres)}).catch(d=>{
+                 axios.get("https://localhost:44303/api/Genre",{headers:{'set-cookie':document.cookie}}).then(Response=> {this.Genres=Response.data; console.log(this.Genres)}).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -149,7 +150,7 @@ import axios from 'axios'
   }
 });
            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-             axios.get("https://localhost:44303/api/Platform").then(Response=> this.Platforms=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Platform",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Platforms=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -168,7 +169,7 @@ import axios from 'axios'
 });
   }
 });
-               axios.get("https://localhost:44303/api/Localization").then(Response=> this.Localizations=Response.data).catch(d=>{
+               axios.get("https://localhost:44303/api/Localization",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Localizations=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -187,7 +188,7 @@ import axios from 'axios'
 });
   }
 });
-             axios.get("https://localhost:44303/api/Series").then(Response=> this.Series=Response.data).catch(d=>{
+             axios.get("https://localhost:44303/api/Series",{headers:{'set-cookie':document.cookie}}).then(Response=> this.Series=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -206,7 +207,7 @@ import axios from 'axios'
 });
   }
 });
-            axios.get("https://localhost:44303/api/Manufacture").then(Response=> this.Manufactures=Response.data).catch(d=>{
+            axios.get("https://localhost:44303/api/Manufacture", {headers:{'set-cookie':document.cookie}}).then(Response=> this.Manufactures=Response.data).catch(d=>{
               if(d.response)
          
               this.$notify({

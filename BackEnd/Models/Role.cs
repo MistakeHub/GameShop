@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Role
+    public class Role : Delete
     {
         public int Id { get; }
         

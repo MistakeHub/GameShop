@@ -30,7 +30,7 @@ namespace BackEnd.Middlewares
                 await _next?.Invoke(context);
 
             }
-            if(context.Request.Headers["set-cookie"] != "usersession=usersession" && context.Request.Method!="OPTIONS" )
+            if(context.Request.Headers["set-cookie"] != "usersession=usersession" && context.Request.Method!="OPTIONS" && context.Request.Headers["Accept"] != "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8")
             {
                 context.Response.Cookies.Append("userssesionnn", HashHelper.GetHashString("asdas"));
                 visitorRepository.AddNewVisitor();

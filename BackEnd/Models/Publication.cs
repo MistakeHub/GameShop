@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BackEnd.Models
 {
     [Serializable]
-    public class Publication
+    public class Publication : Delete
     {
         public int Id { get; }
 

@@ -265,7 +265,7 @@
       </div>
     </b-sidebar>
   
-              <router-view  class="bg-light" style="margin-left:200px;margin-right:200px; " ></router-view>
+              <router-view  class="bg-light" style="margin-left:400px;margin-right:400px; " ></router-view>
 
                <footer class="text-center text-lg-start text-muted " style="width:1903px; min-height:773px;background-color: 	#c0c0c0;">
    <!-- Section: Social media -->
@@ -523,7 +523,8 @@ export default {
                 params: { username: localStorage.getItem('username'), password:localStorage.getItem("password") },
                   headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("user")}
+                    "Authorization": "Bearer " + localStorage.getItem("user"),'set-cookie':document.cookie,}
+                    ,  
             }).catch(d=>{
            localStorage.removeItem("user");
       localStorage.removeItem("username")

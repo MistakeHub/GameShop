@@ -1,6 +1,6 @@
 <template  >
 <div >
-
+<h1>Страны</h1>
     <b-table striped hover  id="publication-table" :items="publications" :per-page="pagesize" :current-page="currentpage" :fields="fileds">    
        <template #cell(actions)="row" >
       
@@ -37,11 +37,10 @@
 
 <div>
 
-<b-button v-if="!isHaveModal" variant="success" class="text-white" @click="$bvModal.show('bv-modal-example')"  :href=AddRef >New</b-button>
-<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="succes"   @click="$bvModal.show('bv-modal-example')"  > New</b-button>
-<b-button class="text-white bg-secondary" @click="SaveToJson()">SaveToJson</b-button>
-<b-button class="text-white bg-secondary" @click="LoadFromJson()" >LoadFromJson</b-button>
-<b-button @click="RemoveAll()" variant="danger">RemoveAll</b-button>
+<b-button v-if="isHaveModal" v-b-modal.modal-1 variant="success"   @click="$bvModal.show('bv-modal-example')"  >Добавить</b-button>
+<b-button class="text-white bg-secondary" @click="SaveToJson()">Сохранить в Json</b-button>
+<b-button class="text-white bg-secondary" @click="LoadFromJson()" >Загрузить с JSON</b-button>
+<b-button @click="RemoveAll()" variant="danger">Удалить всё</b-button>
   <b-modal id="bv-modal-example" hide-footer>
     <template #modal-title>
     <h1>Добавление нового элемента</h1>
@@ -111,10 +110,7 @@ import axios from 'axios'
               }
           },
           mounted(){
-              if(this.session ==undefined){
-                 this.$cookie.set('usersession', 'usersession', { expires: '1h' });
-
-               }
+            
           
                          
 
@@ -122,7 +118,7 @@ import axios from 'axios'
                            axios.get('https://localhost:44303/api/Country/getAll', {headers:{
                     'set-cookie':document.cookie}}).then(Response=>
                            { this.publications=Response.data.item1;this.countPublication=Response.data.item2; 
-                           this.isHaveModal=true;this.Type="Country";   console.log(this.publications); this.fileds=['id', 'titleofcountry', { key: 'actions', label: 'Actions' }]  } ).catch(d=>{
+                           this.isHaveModal=true;this.Type="Country";   console.log(this.publications); this.fileds=['id', {key:'titleofcountry', label:"Название"}, { key: 'actions', label: 'Actions' }]  } ).catch(d=>{
               if(d.response)
          
               this.$notify({
@@ -166,7 +162,7 @@ import axios from 'axios'
 
  axios({method:'DELETE',url:'https://localhost:44303/api/'+this.Type+'/removeall', headers:{
                     "Accept": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("admin")},})
+                "Authorization": "Bearer " + localStorage.getItem("admin"),},})
                 .then(response=>{   this.$notify({
   group: 'foo',
   type:'success',
@@ -223,7 +219,7 @@ this.$bvModal.msgBoxConfirm('Удалить запись?', {
             if(value){
             axios.delete('https://localhost:44303/api/'+this.Type+'/remove'+this.Type+'/'+index,{headers:{
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("admin")}}).then(Response=>{  window.location.reload(); this.$notify({
+                    "Authorization": "Bearer " + localStorage.getItem("admin"),}}).then(Response=>{  window.location.reload(); this.$notify({
   group: 'foo',
   type:'success',
  
@@ -264,7 +260,7 @@ this.$bvModal.msgBoxConfirm('Удалить запись?', {
       Add:function(){
            axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/add', headers: {
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}})
+                   "Authorization": "Bearer " + localStorage.getItem("admin"),}, params:{ title:this.title}})
                    .then(response=>{  window.location.reload();  this.$notify({
   group: 'foo',
   type:'success',
@@ -299,7 +295,7 @@ this.$bvModal.msgBoxConfirm('Удалить запись?', {
         EditElement:function(){
            axios({method:'PUT',url:'https://localhost:44303/api/'+this.Type+'/edit/'+this.Index, headers:{
                     "Accept": "application/json",
-                   "Authorization": "Bearer " + localStorage.getItem("admin")}, params:{ title:this.title}}).then(response=>{  window.location.reload(); this.$notify({
+                   "Authorization": "Bearer " + localStorage.getItem("admin"),}, params:{ title:this.title}}).then(response=>{  window.location.reload(); this.$notify({
   group: 'foo',
   type:'success',
   duration:10000,
@@ -347,7 +343,7 @@ this.$bvModal.msgBoxConfirm('Удалить запись?', {
 
          axios({method:'POST',url:'https://localhost:44303/api/'+this.Type+'/savetojson', headers:{
                     "Accept": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("admin")},})
+                "Authorization": "Bearer " + localStorage.getItem("admin"),},})
                 .then(response=>{  window.location.reload(); this.$notify({
   group: 'foo',
   type:'success',

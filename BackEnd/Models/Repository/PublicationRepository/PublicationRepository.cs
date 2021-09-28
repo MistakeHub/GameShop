@@ -30,7 +30,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
             user.Comments.Add(comment);
             _context.Users.Update(user);
             _context.SaveChanges();
-            Publication publication = _context.Publications.Include(d => d.Comments).SingleOrDefault(p => p.Id == idpublication);
+            Publication publication = _context.Publications.Where(d => d.IsDeleted == false).Include(d => d.Comments).SingleOrDefault(p => p.Id == idpublication);
             publication.Comments.Add(comment);
             _context.Publications.Update(publication);
             _context.SaveChanges();
@@ -182,7 +182,7 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
 
             _context.Entry(game).State = EntityState.Modified;
-            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images = images });
+            _context.Publications.Add(new Publication { Game = game, Price = price, Comments = new List<Comment>(), Images = images, IsDeleted=false });
     
             _context.SaveChanges();
 
@@ -420,13 +420,13 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         {
             AverageRating();
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(d => d.Comments).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Images).Include(p => p.Comments).ThenInclude(d => d.User).ThenInclude(d => d.Avatar).Include(p => p.Carts).FirstOrDefault(p => p.Game.Titleofgame.Equals(Titleofgame));
+            return _context.Publications.Where(d => d.IsDeleted == false).Include(p => p.Game).Include(p => p.Marks).Include(d => d.Comments).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Images).Include(p => p.Comments).ThenInclude(d => d.User).ThenInclude(d => d.Avatar).Include(p => p.Carts).FirstOrDefault(p => p.Game.Titleofgame.Equals(Titleofgame));
         }
 
         public IEnumerable<Publication> GetManyPublication(string[] genres, string[] manufactures, string[] platforms, string[] localizations, int pricefrom, int priceto)
         {
 
-            return _context.Publications.Include(p => p.Game).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(d=>d.Images).
+            return _context.Publications.Where(d => d.IsDeleted == false).Include(p => p.Game).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(d=>d.Images).
                 Include(p => p.Game.Genres).Include(p => p.Game.Series).IgnoreAutoIncludes().Where(d=> d.Price >= pricefrom && d.Price <= priceto && d.Game.Localizations.Any(p=>localizations.Contains(p.Titleoflocalization))&&d.Game.Genres.Any(p=> genres.Contains(p.Titleofgenre) ) && d.Game.Platforms.Any(p=>platforms.Contains(p.Titleofplatform)) && d.Game.Manufactures.Any(p=>manufactures.Contains(p.Titleofmanufactures))).AsSplitQuery().ToList();
 
         }
@@ -435,11 +435,11 @@ namespace BackEnd.Models.Repository.PublicationRepository
         {
 
 
-            totalitems = _context.Publications.Count();
+            totalitems = _context.Publications.Where(d => d.IsDeleted == false).Count();
 
 
 
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(d => d.Images).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
+            return _context.Publications.Where(d => d.IsDeleted == false).Include(p => p.Game).Include(p => p.Marks).Include(d => d.Images).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(p => p.Game.Platforms).Include(p => p.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable RemoveComment(int id,int idpublication)
@@ -455,7 +455,8 @@ namespace BackEnd.Models.Repository.PublicationRepository
         public void RemovePublication(int id)
         {
             var remove = _context.Publications.SingleOrDefault(p => p.Id == id);
-            _context.Remove(remove);
+            remove.IsDeleted = true;
+            _context.Publications.Update(remove);
             _context.SaveChanges();
         }
 
@@ -521,12 +522,12 @@ namespace BackEnd.Models.Repository.PublicationRepository
         {
 
             totalitems = _context.Publications.Count();
-            return _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d=>d.Game.Platforms).Include(d=>d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
+            return _context.Publications.Include(p => p.Game).Where(d => d.IsDeleted == false).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d=>d.Game.Platforms).Include(d=>d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).ToList();
         }
 
         public Publication GetPublicationbyId(int id)
         {
-           return  _context.Publications.Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d => d.Game.Platforms).Include(d => d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Include(d=>d.Images).FirstOrDefault(d=>d.Id==id) ;
+           return  _context.Publications.Where(d => d.IsDeleted == false).Include(p => p.Game).Include(p => p.Marks).Include(p => p.Game.Localizations).Include(p => p.Game.Manufactures).Include(d => d.Game.Platforms).Include(d => d.Game.RegionRestricts).Include(p => p.Game.Genres).Include(p => p.Game.Series).Include(p => p.Comments).Include(d=>d.Images).FirstOrDefault(d=>d.Id==id) ;
         }
 
         public async void SaveToJson()
@@ -545,8 +546,13 @@ namespace BackEnd.Models.Repository.PublicationRepository
 
         public void RemoveAll()
         {
-            IEnumerable<Game> remove = _context.Games.Where(d => d.Id != 0);
-            _context.Games.RemoveRange(remove);
+            IEnumerable<Publication> remove = _context.Publications.Where(d => d.Id != 0);
+          foreach(var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Publications.Update(item);
+            }
+          
             _context.SaveChanges();
         }
 

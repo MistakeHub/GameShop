@@ -26,7 +26,7 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public void EditElement(int id, string value)
         {
-            Platform platform = _context.Platforms.SingleOrDefault(p => p.Id == id);
+            Platform platform = _context.Platforms.SingleOrDefault(p => p.Id == id&& p.IsDeleted==false);
             platform.Titleofplatform = value;
             _context.Platforms.Update(platform);
             _context.SaveChanges();
@@ -34,25 +34,25 @@ namespace BackEnd.Models.Repository.GenericRepository
 
         public Platform GetElement(int id)
         {
-            return _context.Platforms.Include(d=>d.Games).SingleOrDefault(p => p.Id == id);
+            return _context.Platforms.Include(d=>d.Games).SingleOrDefault(p => p.Id == id && p.IsDeleted==false);
         }
 
         public IEnumerable<Platform> GetElements(out int total)
         {
-            total = _context.Platforms.Count();
-            return _context.Platforms.ToList();
+            total = _context.Platforms.Where(d => d.IsDeleted == false).Count();
+            return _context.Platforms.Where(d => d.IsDeleted == false).ToList();
         }
 
         public IEnumerable<Platform> GetElementsByPage(int page, out int totalitems, int size)
         {
-            totalitems = _context.Platforms.Count();
+            totalitems = _context.Platforms.Where(d => d.IsDeleted == false).Count();
 
-            return _context.Platforms.Skip((page - 1) * size).Take(size).ToList();
+            return _context.Platforms.Where(d => d.IsDeleted == false).Skip((page - 1) * size).Take(size).ToList();
         }
 
         public IEnumerable GetTitles()
         {
-            return _context.Platforms.Select(d => d.Titleofplatform).ToList();
+            return _context.Platforms.Where(d => d.IsDeleted == false).Select(d => d.Titleofplatform).ToList();
         }
 
         public void LoadfromJson()
@@ -66,13 +66,18 @@ namespace BackEnd.Models.Repository.GenericRepository
         public void RemoveAll()
         {
             IEnumerable<Platform> remove = _context.Platforms.Where(d => d.Id != 0);
-            _context.Platforms.RemoveRange(remove);
+            foreach (var item in remove)
+            {
+                item.IsDeleted = true;
+                _context.Platforms.Update(item);
+            }
             _context.SaveChanges();
         }
         public void RemoveElement(int id)
         {
             Platform platform = _context.Platforms.SingleOrDefault(p => p.Id == id);
-            _context.Platforms.Remove(platform);
+            platform.IsDeleted = true;
+            _context.Platforms.Update(platform);
             _context.SaveChanges();
         }
 

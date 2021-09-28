@@ -316,6 +316,7 @@ import store from '../../store/index'
          await axios({
                 method: 'POST',
                 url: 'https://localhost:44303/token',
+                headers:{'set-cookie':document.cookie},
                 params: { login: this.Login, password:this.Password, optionalrole:1 }
             }).then((response) => {
 
