@@ -16,7 +16,7 @@ namespace BackEnd.Models
 
           string  message = $"<a href='http://yourprojectname:8080/register/approve/{userkey}/{email}'>Подтвердите Регистрацию </a>";
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "smurf2003@mail.ua"));
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "kirill.cherkez@mail.ru"));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -27,7 +27,7 @@ namespace BackEnd.Models
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.mail.ru", 25, false);
-                await client.AuthenticateAsync("smurf2003@mail.ua", "vfvfvfif1");
+                await client.AuthenticateAsync("kirill.cherkez@mail.ru", "Mpnetvi100");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
@@ -41,7 +41,7 @@ namespace BackEnd.Models
 
           
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "smurf2003@mail.ua"));
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "kirill.cherkez@mail.ru"));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject =subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -52,7 +52,7 @@ namespace BackEnd.Models
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.mail.ru", 25, false);
-                await client.AuthenticateAsync("smurf2003@mail.ua", "vfvfvfif1");
+                await client.AuthenticateAsync("kirill.cherkez@mail.ru", "Mpnetvi100");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);

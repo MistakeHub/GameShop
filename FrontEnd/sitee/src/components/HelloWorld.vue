@@ -69,7 +69,7 @@
 <!-- Banner -->
 
 <!-- New Arrivals -->
-<div class="new_arrivals bg-dark">
+<div class="new_arrivals bg-dark row" >
   <div class="container">
     <div class="row">
       <div class="col text-center">
@@ -78,11 +78,11 @@
         </div>
       </div>
     </div>
-  
- <div class="container px-3 px-lg-4 mt-5 " v-for="item in games">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center  ">
-            <div class="col ">
-                <div class="card h-100">
+  <div class="row">
+ <div class="container  px-lg-4 "  v-for="item in games" style="max-width:700px;">
+       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center  " >
+            <div class="col " style="display:table-cell;">
+                <div class="card h-100" style="width:200px; display:table-cell;">
                     <!-- Product image-->
                     <img class="card-img-top" style="max-height:120px" :src="item.images[0]" alt="...">
                     <!-- Product details-->
@@ -93,6 +93,7 @@
                             <!-- Product price-->
                          {{item.price}} руб
                         </div>
+                        <br>
                          <div class="card-footer p-4 pt-2 border-top-0 ">
                         <div class="text-left" ><a class="btn btn-green " style="color:black;"  :href="'/game/'+item.titleofgame">Подробнее...</a></div>
                     </div>
@@ -104,6 +105,7 @@
          
         </div>
             </div>
+  </div>
   </div>
 </div>
 <!-- Deal of the week -->
